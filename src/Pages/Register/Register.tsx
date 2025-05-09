@@ -13,6 +13,7 @@ import { styled } from '@mui/material/styles';
 import AppTheme from '../../shared-theme/AppTheme';
 import { SitemarkIcon } from '../../Components/CustomIcon/CustomIcons';
 import ColorModeSelect from '../../shared-theme/ColorModeSelect';
+import { supabaseClient } from '../../service/supabaseClient';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -101,16 +102,47 @@ export default function Register(props: { disableCustomTheme?: boolean }) {
     return isValid;
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (validateInputs()) {
-      const data = new FormData(event.currentTarget);
-      console.log({
-        email: data.get('email'),
-        password: data.get('password'),
+    if (!validateInputs()) return;
+  
+    const data = new FormData(event.currentTarget);
+    const email = data.get('email') as string;
+    const password = data.get('password') as string;
+  
+    try {
+      // 1. auth.users tablosuna kayıt (Supabase Auth)
+      const { data: signUpData, error } = await supabaseClient.auth.signUp({
+        email,
+        password,
       });
+  
+      if (error) {
+        alert(`Kayıt başarısız: ${error.message}`);
+        return;
+      }
+  
+      // 2. Kendi users tablosuna ekleme
+      const insertResult = await supabaseClient.from('users').insert([
+        {
+          email: email,
+          password: password, // Normalde şifreyi burada tutma, sadece demo için
+          role: 'student',    // Default olarak "student" rolü 
+        },
+      ]);
+  
+      if (insertResult.error) {
+        console.warn('Auth başarılı ama users tablosuna eklenemedi:', insertResult.error.message);
+      }
+  
+      alert('Kayıt başarılı! Doğrulama e-postası gönderildi.');
+      console.log('auth.users:', signUpData);
+    } catch (err) {
+      alert('Bir hata oluştu!');
+      console.error(err);
     }
   };
+  
 
   return (
     <AppTheme {...props}>
@@ -126,8 +158,8 @@ export default function Register(props: { disableCustomTheme?: boolean }) {
           <Typography
             component="h1"
             variant="h4"
-            sx={{ 
-              width: '100%', 
+            sx={{
+              width: '100%',
               fontSize: 'clamp(2rem, 10vw, 2.15rem)',
               textAlign: 'center',
               fontWeight: 600,
@@ -138,7 +170,7 @@ export default function Register(props: { disableCustomTheme?: boolean }) {
           </Typography>
           <Typography
             variant="body1"
-            sx={{ 
+            sx={{
               textAlign: 'center',
               color: 'text.secondary',
               mb: 3
@@ -225,7 +257,6 @@ export default function Register(props: { disableCustomTheme?: boolean }) {
               type="submit"
               fullWidth
               variant="contained"
-              onClick={validateInputs}
               sx={{
                 mt: 2,
                 py: 1.5,
@@ -244,7 +275,7 @@ export default function Register(props: { disableCustomTheme?: boolean }) {
               <Link
                 href="/login"
                 variant="body2"
-                sx={{ 
+                sx={{
                   color: 'primary.main',
                   fontWeight: 500,
                   '&:hover': {
