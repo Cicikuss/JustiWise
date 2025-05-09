@@ -17,7 +17,9 @@ import { SitemarkIcon } from '../../Components/CustomIcon/CustomIcons';
 import ForgotPassword from '../../Components/ForgotPassword/ForgotPassword';
 import ColorModeSelect from '../../shared-theme/ColorModeSelect';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../../Context/AuthContext';
+//import { useAuth } from '../../Context/AuthContext';
+import { supabaseClient } from '../../service/supabaseClient';
+
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -70,7 +72,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { login } = useAuth();
+  // const { login } = useAuth();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -81,21 +83,30 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    if (emailError || passwordError) {
-      event.preventDefault();
-      return;
-    }
+    event.preventDefault();
+    if (!validateInputs()) return;
+  
     const data = new FormData(event.currentTarget);
     const email = data.get('email') as string;
     const password = data.get('password') as string;
+  
     try {
-      await login(email, password);
-      const from = location.state?.from?.pathname || '/';
-      navigate(from, { replace: true });
-    } catch (error) {
-      console.error('Login failed:', error);
+      const { data: loginData, error } = await supabaseClient.auth.signInWithPassword({
+        email,
+        password,
+      });
+  
+      if (error) {
+        alert(`Giriş başarısız: ${error.message}`);
+      } else {
+        alert('Giriş başarılı!');
+        navigate('/', { replace: true });
+      }
+    } catch (err) {
+      alert('Bir hata oluştu!');
+      console.error(err);
     }
-  };
+  };  
 
   const validateInputs = () => {
     const email = document.getElementById('email') as HTMLInputElement;
@@ -236,7 +247,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
               type="submit"
               fullWidth
               variant="contained"
-              onClick={validateInputs}
+              //onClick={validateInputs}
               sx={{
                 mt: 2,
                 py: 1.5,
