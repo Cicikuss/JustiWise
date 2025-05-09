@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'; //deneme
 import { Box, Typography, Paper, Avatar, Grid } from '@mui/material';
 
 const Profile: React.FC = () => {
