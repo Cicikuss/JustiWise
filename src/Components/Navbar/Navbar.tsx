@@ -201,7 +201,7 @@ export const Navbar = () => {
 
                         <Button
                             onClick={handleMenuOpen}
-                            startIcon={<Avatar sx={{ width: 28, height: 28 }}>{user?.name?.[0] || 'A'}</Avatar>}
+                            startIcon={<Avatar sx={{ width: 28, height: 28 }}>{user?.username?.[0] || 'A'}</Avatar>}
                             sx={{
                                 textTransform: 'none',
                                 color: theme.palette.text.primary,
@@ -213,7 +213,7 @@ export const Navbar = () => {
                             }}
                         >
                             <Typography variant="body2" sx={{ ml: 1, display: { xs: 'none', sm: 'block' } }}>
-                                {user?.name || 'User'}
+                                {user?.username || 'User'}
                             </Typography>
                         </Button>
                     </Stack>

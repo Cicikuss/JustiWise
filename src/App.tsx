@@ -12,9 +12,10 @@ import { SearchResults } from './Pages/SearchResults/SearchResults';
 import { AuthProvider, useAuth } from './Context/AuthContext';
 import { ProtectedRoute } from './Components/ProtectedRoute/ProtectedRoute';
 import Profile from './Pages/Profile';
+import ProfileCreatePage from './Pages/ProfileCreatePage/ProfileCreatePage';
 
 function AppContent() {
-  const { isAuthenticated } = useAuth();
+  
 
   return (
     <>
@@ -31,6 +32,12 @@ function AppContent() {
           <ProtectedRoute>
             <Navbar />
             <MyCases />
+          </ProtectedRoute>
+        } />
+        <Route path="/create-profile" element={
+          <ProtectedRoute>
+            <Navbar />
+            <ProfileCreatePage/>
           </ProtectedRoute>
         } />
         <Route path="/search-results" element={
