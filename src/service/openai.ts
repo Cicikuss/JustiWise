@@ -39,3 +39,4 @@ export async function fileprocess(file: File, prompt: string): Promise<string> {
     reader.readAsDataURL(file);
   });
 }
+

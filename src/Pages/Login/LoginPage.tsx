@@ -19,6 +19,7 @@ import ColorModeSelect from '../../shared-theme/ColorModeSelect';
 import { useNavigate, useLocation } from 'react-router-dom';
 //import { useAuth } from '../../Context/AuthContext';
 import { supabaseClient } from '../../service/supabaseClient';
+import { useAuth } from '../../Context/AuthContext';
 
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -72,7 +73,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  // const { login } = useAuth();
+  const { login } = useAuth();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -91,17 +92,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
     const password = data.get('password') as string;
   
     try {
-      const { data: loginData, error } = await supabaseClient.auth.signInWithPassword({
-        email,
-        password,
-      });
-  
-      if (error) {
-        alert(`Giriş başarısız: ${error.message}`);
-      } else {
-        alert('Giriş başarılı!');
-        navigate('/', { replace: true });
-      }
+     await login(email, password);
     } catch (err) {
       alert('Bir hata oluştu!');
       console.error(err);

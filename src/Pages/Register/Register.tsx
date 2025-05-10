@@ -14,6 +14,7 @@ import AppTheme from '../../shared-theme/AppTheme';
 import { SitemarkIcon } from '../../Components/CustomIcon/CustomIcons';
 import ColorModeSelect from '../../shared-theme/ColorModeSelect';
 import { supabaseClient } from '../../service/supabaseClient';
+import { useAuth } from '../../Context/AuthContext';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -64,6 +65,7 @@ export default function Register(props: { disableCustomTheme?: boolean }) {
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [confirmPasswordError, setConfirmPasswordError] = React.useState(false);
   const [confirmPasswordErrorMessage, setConfirmPasswordErrorMessage] = React.useState('');
+  const {signup} = useAuth();
 
   const validateInputs = () => {
     const email = document.getElementById('email') as HTMLInputElement;
@@ -111,32 +113,7 @@ export default function Register(props: { disableCustomTheme?: boolean }) {
     const password = data.get('password') as string;
   
     try {
-      // 1. auth.users tablosuna kayıt (Supabase Auth)
-      const { data: signUpData, error } = await supabaseClient.auth.signUp({
-        email,
-        password,
-      });
-  
-      if (error) {
-        alert(`Kayıt başarısız: ${error.message}`);
-        return;
-      }
-  
-      // 2. Kendi users tablosuna ekleme
-      const insertResult = await supabaseClient.from('users').insert([
-        {
-          email: email,
-          password: password, // Normalde şifreyi burada tutma, sadece demo için
-          role: 'student',    // Default olarak "student" rolü 
-        },
-      ]);
-  
-      if (insertResult.error) {
-        console.warn('Auth başarılı ama users tablosuna eklenemedi:', insertResult.error.message);
-      }
-  
-      alert('Kayıt başarılı! Doğrulama e-postası gönderildi.');
-      console.log('auth.users:', signUpData);
+      await signup(email, password);
     } catch (err) {
       alert('Bir hata oluştu!');
       console.error(err);
