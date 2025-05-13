@@ -46,7 +46,7 @@ export const fetchUser = async (id:string) => {
         .select('*')
         .eq('id', id)
         .single();
-
+   
     if (error) {
         throw new Error(error.message);
     }
@@ -56,7 +56,18 @@ export const fetchUser = async (id:string) => {
 export async function uploadImage(file: File) {
   const fileExt = file.name.split('.').pop();
   const fileName = `${Date.now()}.${fileExt}`;
-  const filePath = `avatars/${fileName}`; // klasör ismi ve dosya adı
+  
+  // 🟡 Kullanıcı ID'sini al
+  const {
+    data: { user },
+    error: userError
+  } = await supabaseClient.auth.getUser();
+
+  if (userError || !user) {
+    throw new Error('Kullanıcı bilgisi alınamadı.');
+  }
+
+  const filePath = `${user.id}/${fileName}`; // 🔥 Kullanıcıya özel klasör
 
   const { error } = await supabaseClient.storage.from('profile-images').upload(filePath, file, {
     cacheControl: '3600',
@@ -68,8 +79,8 @@ export async function uploadImage(file: File) {
   }
 
   const { data: publicUrlData } = supabaseClient.storage.from('profile-images').getPublicUrl(filePath);
-  return publicUrlData.publicUrl; 
-}
+  return publicUrlData.publicUrl;
+}   
 
 export const updateUser = async (id: string, user: EditableUser) => {
     const { data, error } = await supabaseClient
