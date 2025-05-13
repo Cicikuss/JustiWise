@@ -13,17 +13,9 @@ import PersonIcon from '@mui/icons-material/Person';
 import DescriptionIcon from '@mui/icons-material/Description';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { CaseType } from '../../Models/Case';
 
-export type CaseType = {
-    id: string;
-    title: string;
-    description: string;
-    status: 'active' | 'pending' | 'closed';
-    client: string;
-    date: string;
-    category: string;
-    priority: 'high' | 'medium' | 'low';
-};
+
 
 const getStatusColor = (status: string, theme: any) => {
     switch (status) {

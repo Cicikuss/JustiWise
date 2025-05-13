@@ -95,3 +95,13 @@ export const updateUser = async (id: string, user: EditableUser) => {
     }
     return data;
 }
+
+
+export const getLoggedInUser = async () => {
+    const { data: { user }, error } = await supabaseClient.auth.getUser();
+    if (error) {
+        throw new Error(error.message);
+    }
+    return user;
+}
+
