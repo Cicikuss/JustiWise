@@ -13,6 +13,8 @@ import { AuthProvider, useAuth } from './Context/AuthContext';
 import { ProtectedRoute } from './Components/ProtectedRoute/ProtectedRoute';
 import Profile from './Pages/Profile';
 import ProfileCreatePage from './Pages/ProfileCreatePage/ProfileCreatePage';
+import { Home } from '@mui/icons-material';
+import HomePage from './Pages/HomePage/HomePage';
 
 function AppContent() {
   
@@ -25,13 +27,19 @@ function AppContent() {
         <Route path="/" element={
           <ProtectedRoute>
             <Navbar />
-            <AIChat />
+           <HomePage />
           </ProtectedRoute>
         } />
         <Route path="/my-cases" element={
           <ProtectedRoute>
             <Navbar />
             <MyCases />
+          </ProtectedRoute>
+        } />
+        <Route path="/qa" element={
+          <ProtectedRoute>
+            <Navbar />
+            <AIChat />
           </ProtectedRoute>
         } />
         <Route path="/create-profile" element={
