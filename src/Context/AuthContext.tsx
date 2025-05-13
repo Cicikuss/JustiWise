@@ -2,12 +2,14 @@ import React, { createContext, useContext, useState, ReactNode, useEffect } from
 import { useNavigate } from 'react-router-dom';
 import { UserType } from '../Models/User';
 import { fetchUser, userLogin, userSignUp } from '../service/supabaseClient';
+import { supabaseClient } from '../service/supabaseClient'; // NEW: Supabase client import edildi
+
 
 type AuthContextType = {
 
     user: UserType | null;
     login: (email: string, password: string) => Promise<void>;
-    signup: (email: string, password: string) => Promise<void>;
+    signup: (email: string, password: string, role: string) => Promise<void>; //  UPDATED: role parametresi eklendi
     checkLoggedInUser: () => boolean;
     logout: () => void;
 };
@@ -45,25 +47,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
     }, []); // Bu useEffect sadece component mount edildiğinde çalışacak
 
-    const signup = async (email: string, password: string) => {
+    const signup = async (email: string, password: string, role: string) => { // ✅ UPDATED
         try {
-            const data = await userSignUp(email, password);
+            const { data, error } = await supabaseClient.auth.signUp({
+                email,
+                password,
+                options: {
+                    data: { role } //  NEW: Rolü metadata'ya kaydet
+                }
+            });
 
-            if (!data) {
-                throw new Error("Kullanıcı bilgisi alınamadı.");
-            }
+            if (error) throw error;
 
+            // Kullanıcı bilgisi döndü mü?
+            if (!data.user) throw new Error("Kullanıcı oluşturulamadı.");
 
-            // auth durumunu localStorage'a kaydet
-            localStorage.setItem('isAuthenticated', 'true');
-            localStorage.setItem('user', JSON.stringify(data)); // Kullanıcı bilgilerini localStorage'a kaydet
+            // Kullanıcıyı localStorage'a kaydet
+            localStorage.setItem('isAuthenticated', 'true'); //  NEW
+            localStorage.setItem('user', JSON.stringify(data.user)); //  NEW
 
-            navigate('/'); // Başarıyla giriş yaptıktan sonra yönlendir
-
+            navigate('/'); //  NEW: Başarılı kayıt sonrası yönlendirme
         } catch (error) {
             console.error('Kayıt başarısız:', error);
-          
-            setUser(null);
+            setUser(null); //  NEW: Başarısızlıkta user'ı temizle
         }
     };
 
