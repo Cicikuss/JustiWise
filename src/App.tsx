@@ -15,6 +15,7 @@ import Profile from './Pages/Profile';
 import ProfileCreatePage from './Pages/ProfileCreatePage/ProfileCreatePage';
 import { Home } from '@mui/icons-material';
 import HomePage from './Pages/HomePage/HomePage';
+import CourtroomPage from './Pages/Courtroom/CourtroomPage';
 
 function AppContent() {
   
@@ -40,6 +41,12 @@ function AppContent() {
           <ProtectedRoute>
             <Navbar />
             <AIChat />
+          </ProtectedRoute>
+        } />
+        <Route path="/courtroom" element={
+          <ProtectedRoute>
+            <Navbar />
+            <CourtroomPage />
           </ProtectedRoute>
         } />
         <Route path="/create-profile" element={
