@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserType } from '../Models/User';
-import { fetchUser, userLogin, userSignUp } from '../service/supabaseClient';
+import { fetchUser, userLogin, userLogout, userSignUp } from '../service/supabaseClient';
 
 type AuthContextType = {
 
@@ -111,14 +111,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
     };
 
-    const logout = () => {
+    const logout = async () => {
       
         setUser(null);
 
-        // auth bilgisini localStorage'dan temizle
+       
         localStorage.removeItem('isAuthenticated');
 
-        navigate('/login'); // Çıkış yapıldığında login sayfasına yönlendir
+        navigate('/login'); 
+        await userLogout();
+        localStorage.removeItem('user'); 
     };
 
     return (

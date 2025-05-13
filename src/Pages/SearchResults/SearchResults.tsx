@@ -1,8 +1,9 @@
 import { Box, Typography, useTheme, Paper, Stack } from '@mui/material';
 import { useSearch } from '../../Context/SearchContext';
-import { Case, CaseType } from '../../Components/Case/Case';
+
 import { Grid } from '@mui/material';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import { Case } from '../../Components/Case/Case';
 
 type ChatMessageType = {
     id: string;

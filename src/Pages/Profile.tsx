@@ -38,10 +38,12 @@ const Profile: React.FC = () => {
     setSelectedImage(null);
   };
 
-  
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+
+  const handleChange =  (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedUser({ ...editedUser, [e.target.name]: e.target.value });
+
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -104,7 +106,10 @@ const Profile: React.FC = () => {
           </Grid>
           <Grid item xs={12}>
             <Typography variant="body1" color="text.secondary">
-              <strong>Katılma Tarihi:</strong> {user?.created_at}
+              <strong>Katılma Tarihi:</strong> {new Date(user!.created_at).toLocaleString("tr-TR", {
+  dateStyle: "medium",
+  timeStyle: "short",
+})}
             </Typography>
           </Grid>
           <Grid item xs={12} display="flex" justifyContent="flex-end">
