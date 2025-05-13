@@ -31,9 +31,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                     role: fetchedUser.role,
                     username: fetchedUser.username,
                     created_at: fetchedUser.created_at,
-                    profile_image_url: fetchedUser.user_metadata?.profile_image_url ?? null,
+                    profile_image_url: fetchedUser.profile_image_url,
                 };
                 setUser(userData);
+                console.log("Kullanıcı bilgileri alındı:", userData);
+               
             }).catch((error) => {
                 console.error('Kullanıcı bilgileri alınamadı:', error);
                 setUser(null);
