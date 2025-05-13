@@ -18,9 +18,10 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import AddIcon from '@mui/icons-material/Add';
-import { Case, CaseType } from '../../Components/Case/Case';
 import { useState } from 'react';
 import { NewCaseForm } from '../../Components/NewCaseForm/NewCaseForm';
+import { Case } from '../../Components/Case/Case';
+import { CaseType } from '../../Models/Case';
 
 // Dummy data
 const dummyCases: CaseType[] = [

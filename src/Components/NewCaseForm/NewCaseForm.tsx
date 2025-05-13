@@ -10,8 +10,8 @@ import {
   Stack,
   Typography
 } from '@mui/material';
-import { CaseType } from '../../Components/Case/Case'; // CaseType'ı import ediyoruz
 import { useTheme } from '@mui/material/styles';
+import { CaseType } from '../../Models/Case';
 
 interface NewCaseFormProps {
   onClose: () => void;
