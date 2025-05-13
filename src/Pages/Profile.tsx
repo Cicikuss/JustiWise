@@ -38,6 +38,8 @@ const Profile: React.FC = () => {
     setSelectedImage(null);
   };
 
+  
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedUser({ ...editedUser, [e.target.name]: e.target.value });
   };
