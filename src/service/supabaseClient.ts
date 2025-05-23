@@ -1,6 +1,8 @@
 // src/service/supabaseClient.ts
 import { createClient } from '@supabase/supabase-js';
 import { EditableUser } from '../Models/User';
+import { newCase } from '../Models/Case';
+import { title } from 'process';
 
 
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL!;
@@ -57,7 +59,7 @@ export async function uploadImage(file: File) {
   const fileExt = file.name.split('.').pop();
   const fileName = `${Date.now()}.${fileExt}`;
   
-  // 🟡 Kullanıcı ID'sini al
+  
   const {
     data: { user },
     error: userError
@@ -67,7 +69,7 @@ export async function uploadImage(file: File) {
     throw new Error('Kullanıcı bilgisi alınamadı.');
   }
 
-  const filePath = `${user.id}/${fileName}`; // 🔥 Kullanıcıya özel klasör
+  const filePath = `${user.id}/${fileName}`; 
 
   const { error } = await supabaseClient.storage.from('profile-images').upload(filePath, file, {
     cacheControl: '3600',
@@ -105,3 +107,48 @@ export const getLoggedInUser = async () => {
     return user;
 }
 
+
+
+export const uploadFile = async (file: File) => {
+     const {
+    data: { user },
+    error: userError
+  } = await supabaseClient.auth.getUser();
+    if (userError || !user) {
+    throw new Error('Kullanıcı bilgisi alınamadı.');
+    }
+    const filePath = `${user.id}/${file.name}`; 
+    const { data,error } = await supabaseClient.storage.from('case-files').upload(filePath, file, {
+        cacheControl: '3600',
+        upsert: false,
+    });
+    if (error) {
+        throw new Error(error.message);
+    }
+    return data;
+}
+
+
+export const addNewCase = async (caseData: newCase) => {
+
+const {
+    data: { user },
+    error: userError
+  } = await supabaseClient.auth.getUser();
+
+  if (userError || !user) {
+    throw new Error('Kullanıcı bilgisi alınamadı.');
+  }
+ 
+  const fileurl =!caseData.file? "" :(await uploadFile(caseData.file!)).path;
+    const { data, error } = await supabaseClient
+        .from('cases')
+        .insert([{title: caseData.title, description: caseData.description, status: caseData.status, category: caseData.category, priority: caseData.priority,client:user.id,document_url:fileurl}])
+        .select()
+        .single();
+
+    if (error) {
+        throw new Error(error.message);
+    }
+    return data;
+}
