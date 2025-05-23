@@ -1,8 +1,7 @@
-// src/service/supabaseClient.ts
 import { createClient } from '@supabase/supabase-js';
 import { EditableUser } from '../Models/User';
 import { newCase } from '../Models/Case';
-import { title } from 'process';
+
 
 
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL!;
@@ -107,6 +106,28 @@ export const getLoggedInUser = async () => {
     return user;
 }
 
+export const getUserById = async (id: string) => {
+    const { data, error } = await supabaseClient
+        .from('users')
+        .select('*')
+        .eq('id', id)
+        .single();
+    if (error) {
+        throw new Error(error.message);
+    }
+    return data;
+}
+export const getNotifications = async () => {
+    
+    const { data, error } = await supabaseClient
+        .from('notifications')
+        .select('*');
+
+    if (error) {
+        throw new Error(error.message);
+    }
+    return data;
+}
 
 
 export const uploadFile = async (file: File) => {
@@ -144,6 +165,62 @@ const {
     const { data, error } = await supabaseClient
         .from('cases')
         .insert([{title: caseData.title, description: caseData.description, status: caseData.status, category: caseData.category, priority: caseData.priority,client:user.id,document_url:fileurl}])
+        .select()
+        .single();
+
+    if (error) {
+        throw new Error(error.message);
+    }
+    return data;
+}
+
+export const getCasesClient = async () => {
+    const {
+        data: { user },
+        error: userError
+      } = await supabaseClient.auth.getUser();
+  
+      if (userError || !user) {
+        throw new Error('Kullanıcı bilgisi alınamadı.');
+      }
+    const { data, error } = await supabaseClient
+        .from('cases')
+        .select('*')
+        .eq('client', user.id);
+
+    if (error) {
+        throw new Error(error.message);
+    }
+    return data;
+}
+
+export const getCasesLawyer = async () => {
+    const {
+        data: { user },
+        error: userError
+      } = await supabaseClient.auth.getUser();
+  
+      if (userError || !user) {
+        throw new Error('Kullanıcı bilgisi alınamadı.');
+      }
+    const { data, error } = await supabaseClient
+        .from('cases')
+        .select('*')
+        .eq('lawyer_id', user.id);
+
+    if (error) {
+        throw new Error(error.message);
+    }
+    return data;
+}
+
+
+
+export const deleteCase = async (caseId: string) => {
+    const { data, error } = await supabaseClient
+        .from('cases')
+        .delete()
+        .eq('id', caseId)
         .select()
         .single();
 
