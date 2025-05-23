@@ -4,19 +4,15 @@ import { useSearch } from '../../Context/SearchContext';
 import { Grid } from '@mui/material';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import { Case } from '../../Components/Case/Case';
+import { CaseType } from '../../Models/Case';
 
-type ChatMessageType = {
-    id: string;
-    content: string;
-    timestamp: string;
-    sender: string;
-};
+
 
 export const SearchResults = () => {
     const theme = useTheme();
     const { searchQuery } = useSearch();
 
-    // Dummy data for search results
+    
     const searchResults = {
         cases: [
             {
@@ -26,7 +22,7 @@ export const SearchResults = () => {
                 status: 'active' as const,
                 client: 'Johnson Enterprises',
                 lawyer: 'Emily Davis',
-                date: '2024-03-15',
+                created_at: '2024-03-15',
                 category: 'Contract Law',
                 priority: 'high' as const
             },
@@ -37,7 +33,7 @@ export const SearchResults = () => {
                 status: 'pending' as const,
                 client: 'Sarah Williams',
                 lawyer: 'Michael Brown',
-                date: '2024-03-10',
+                created_at: '2024-03-10',
                 category: 'Personal Injury',
                 priority: 'medium' as const
             }
@@ -75,7 +71,11 @@ export const SearchResults = () => {
                             <Grid container spacing={3}>
                                 {searchResults.cases.map((caseData) => (
                                     <Grid item xs={12} sm={6} md={4} key={caseData.id}>
-                                        <Case caseData={caseData} />
+                                        <Case caseData={caseData} onEdit={function (caseData: CaseType): void {
+                                            throw new Error('Function not implemented.');
+                                        } } onDelete={function (caseId: string): void {
+                                            throw new Error('Function not implemented.');
+                                        } } />
                                     </Grid>
                                 ))}
                             </Grid>
