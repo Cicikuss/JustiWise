@@ -25,6 +25,7 @@ export const SearchResults = () => {
                 description: 'Breach of contract case involving intellectual property rights and non-compete clauses.',
                 status: 'active' as const,
                 client: 'Johnson Enterprises',
+                lawyer: 'Emily Davis',
                 date: '2024-03-15',
                 category: 'Contract Law',
                 priority: 'high' as const
@@ -35,6 +36,7 @@ export const SearchResults = () => {
                 description: 'Slip and fall accident at a commercial property.',
                 status: 'pending' as const,
                 client: 'Sarah Williams',
+                lawyer: 'Michael Brown',
                 date: '2024-03-10',
                 category: 'Personal Injury',
                 priority: 'medium' as const

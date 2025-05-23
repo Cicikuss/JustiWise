@@ -123,6 +123,10 @@ export const Case = ({ caseData }: { caseData: CaseType }) => {
                     <Typography variant="body2">{caseData.client}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    <PersonIcon fontSize="small" />
+                    <Typography variant="body2">{caseData.lawyer}</Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                     <AccessTimeIcon fontSize="small" />
                     <Typography variant="body2">{caseData.date}</Typography>
                 </Box>

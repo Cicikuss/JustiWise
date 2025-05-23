@@ -21,7 +21,8 @@ import AddIcon from '@mui/icons-material/Add';
 import { useState } from 'react';
 import { NewCaseForm } from '../../Components/NewCaseForm/NewCaseForm';
 import { Case } from '../../Components/Case/Case';
-import { CaseType } from '../../Models/Case';
+import { CaseType, newCase } from '../../Models/Case';
+import { addNewCase } from '../../service/supabaseClient';
 
 // Dummy data
 const dummyCases: CaseType[] = [
@@ -31,6 +32,7 @@ const dummyCases: CaseType[] = [
     description: 'Breach of contract case involving intellectual property rights and non-compete clauses.',
     status: 'active',
     client: 'Johnson Enterprises',
+    lawyer: 'Jane Smith',
     date: '2024-03-15',
     category: 'Contract Law',
     priority: 'high'
@@ -41,6 +43,7 @@ const dummyCases: CaseType[] = [
     description: 'Slip and fall accident at a commercial property resulting in severe injuries.',
     status: 'pending',
     client: 'Sarah Williams',
+    lawyer: 'John Doe',
     date: '2024-03-10',
     category: 'Personal Injury',
     priority: 'medium'
@@ -51,6 +54,7 @@ const dummyCases: CaseType[] = [
     description: 'Complex divorce case involving multiple properties and business assets.',
     status: 'closed',
     client: 'Michael Brown',
+    lawyer: 'Jane Smith',
     date: '2024-02-28',
     category: 'Family Law',
     priority: 'high'
@@ -61,6 +65,7 @@ const dummyCases: CaseType[] = [
     description: 'Case involving workplace discrimination based on gender and age.',
     status: 'active',
     client: 'Emily Davis',
+    lawyer: 'Jane Smith',
     date: '2024-03-05',
     category: 'Employment Law',
     priority: 'medium'
@@ -71,13 +76,14 @@ const dummyCases: CaseType[] = [
     description: 'Boundary dispute between neighboring properties.',
     status: 'pending',
     client: 'Thompson Properties',
+    lawyer: 'John Doe',
     date: '2024-03-12',
     category: 'Real Estate',
     priority: 'low'
   }
 ];
 
-// Define custom types for filters
+
 type StatusFilter = 'all' | 'active' | 'pending' | 'closed';
 type PriorityFilter = 'all' | 'high' | 'medium' | 'low';
 
@@ -102,6 +108,11 @@ export const MyCases = () => {
 
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
+  const handleSaveNewCase = async (newCase: newCase) => {
+    await addNewCase(newCase);
+
+    handleCloseModal();
+  }
 
   return (
     <Box sx={{ p: 3 }}>
@@ -373,9 +384,7 @@ export const MyCases = () => {
           }}>
             {/* New Case Form can go here */}
             <Typography variant="h6"><NewCaseForm onClose={handleCloseModal}
-                        onSave={function (newCase: CaseType): void {
-                          throw new Error('Function not implemented.');
-                      } }/></Typography>
+                        onSave={handleSaveNewCase }/></Typography>
             {/* Add form elements here */}
           </Box>
         </Fade>
