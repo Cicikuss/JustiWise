@@ -17,6 +17,7 @@ import { Home } from '@mui/icons-material';
 import HomePage from './Pages/HomePage/HomePage';
 import CourtroomPage from './Pages/Courtroom/CourtroomPage';
 import DocumentSummaryChat from './Pages/DocumentSummaryChat/DocumentSummaryChat';
+import { NotificationsPage } from './Pages/NotificationsPage/NotifcationsPage';
 
 function AppContent() {
   
@@ -42,6 +43,13 @@ function AppContent() {
           <ProtectedRoute>
             <Navbar />
             <AIChat />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/notifications" element={
+          <ProtectedRoute>
+            <Navbar />
+            <NotificationsPage/>
           </ProtectedRoute>
         } />
         <Route path="/courtroom" element={

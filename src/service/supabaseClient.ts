@@ -6,8 +6,9 @@ import { newCase } from '../Models/Case';
 
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL!;
 const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY!;
- 
+
 export const supabaseClient = createClient(supabaseUrl, supabaseAnonKey);
+const userID= JSON.parse(localStorage.getItem('user') || '{}').id;
 export const userLogin = async (email: string, password: string) => {
     const { data, error } = await supabaseClient.auth.signInWithPassword({
         email,
@@ -58,17 +59,9 @@ export async function uploadImage(file: File) {
   const fileExt = file.name.split('.').pop();
   const fileName = `${Date.now()}.${fileExt}`;
   
-  
-  const {
-    data: { user },
-    error: userError
-  } = await supabaseClient.auth.getUser();
 
-  if (userError || !user) {
-    throw new Error('Kullanıcı bilgisi alınamadı.');
-  }
 
-  const filePath = `${user.id}/${fileName}`; 
+  const filePath = `${userID}/${fileName}`; 
 
   const { error } = await supabaseClient.storage.from('profile-images').upload(filePath, file, {
     cacheControl: '3600',
@@ -131,14 +124,8 @@ export const getNotifications = async () => {
 
 
 export const uploadFile = async (file: File) => {
-     const {
-    data: { user },
-    error: userError
-  } = await supabaseClient.auth.getUser();
-    if (userError || !user) {
-    throw new Error('Kullanıcı bilgisi alınamadı.');
-    }
-    const filePath = `${user.id}/${file.name}`; 
+ 
+    const filePath = `${userID}/${file.name}`; 
     const { data,error } = await supabaseClient.storage.from('case-files').upload(filePath, file, {
         cacheControl: '3600',
         upsert: false,
@@ -152,19 +139,11 @@ export const uploadFile = async (file: File) => {
 
 export const addNewCase = async (caseData: newCase) => {
 
-const {
-    data: { user },
-    error: userError
-  } = await supabaseClient.auth.getUser();
-
-  if (userError || !user) {
-    throw new Error('Kullanıcı bilgisi alınamadı.');
-  }
  
   const fileurl =!caseData.file? "" :(await uploadFile(caseData.file!)).path;
     const { data, error } = await supabaseClient
         .from('cases')
-        .insert([{title: caseData.title, description: caseData.description, status: caseData.status, category: caseData.category, priority: caseData.priority,client:user.id,document_url:fileurl}])
+        .insert([{title: caseData.title, description: caseData.description, status: caseData.status, category: caseData.category, priority: caseData.priority,client:userID,document_url:fileurl}])
         .select()
         .single();
 
@@ -175,18 +154,11 @@ const {
 }
 
 export const getCasesClient = async () => {
-    const {
-        data: { user },
-        error: userError
-      } = await supabaseClient.auth.getUser();
   
-      if (userError || !user) {
-        throw new Error('Kullanıcı bilgisi alınamadı.');
-      }
     const { data, error } = await supabaseClient
         .from('cases')
         .select('*')
-        .eq('client', user.id);
+        .eq('client', userID);
 
     if (error) {
         throw new Error(error.message);
@@ -195,18 +167,11 @@ export const getCasesClient = async () => {
 }
 
 export const getCasesLawyer = async () => {
-    const {
-        data: { user },
-        error: userError
-      } = await supabaseClient.auth.getUser();
-  
-      if (userError || !user) {
-        throw new Error('Kullanıcı bilgisi alınamadı.');
-      }
+   
     const { data, error } = await supabaseClient
         .from('cases')
         .select('*')
-        .eq('lawyer_id', user.id);
+        .eq('lawyer_id', userID);
 
     if (error) {
         throw new Error(error.message);
