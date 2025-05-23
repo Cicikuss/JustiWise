@@ -21,7 +21,7 @@ import AddIcon from '@mui/icons-material/Add';
 import { useEffect, useState } from 'react';
 import { NewCaseForm } from '../../Components/NewCaseForm/NewCaseForm';
 import { Case } from '../../Components/Case/Case';
-import { CaseType, newCase } from '../../Models/Case';
+import { CaseType, CaseTypeWithURL, newCase } from '../../Models/Case';
 import { addNewCase, deleteCase, getCasesClient, getCasesLawyer } from '../../service/supabaseClient';
 
 
@@ -35,7 +35,7 @@ export const MyCases = () => {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [priorityFilter, setPriorityFilter] = useState<PriorityFilter>('all');
   const [openModal, setOpenModal] = useState(false);
-  const [cases, setCases] = useState<CaseType[]>([]);
+  const [cases, setCases] = useState<CaseTypeWithURL[]>([]);
 
   const filteredCases = cases.filter((caseData) => {
     const matchesSearch =
