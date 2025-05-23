@@ -11,11 +11,11 @@ import {
   Typography
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { CaseType } from '../../Models/Case';
+import { CaseType, newCase } from '../../Models/Case';
 
 interface NewCaseFormProps {
   onClose: () => void;
-  onSave: (newCase: CaseType) => void;
+  onSave: (newCase: newCase) => void;
 }
 
 export const NewCaseForm: React.FC<NewCaseFormProps> = ({ onClose, onSave }) => {
@@ -23,24 +23,38 @@ export const NewCaseForm: React.FC<NewCaseFormProps> = ({ onClose, onSave }) => 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [status, setStatus] = useState<'active' | 'pending' | 'closed'>('active');
-  const [client, setClient] = useState('');
   const [category, setCategory] = useState('');
   const [priority, setPriority] = useState<'high' | 'medium' | 'low'>('medium');
+  const [attachedFile, setAttachedFile] = useState<File | undefined>(undefined);
+
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const allowedTypes = [
+        'application/pdf',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      ];
+      if (allowedTypes.includes(file.type)) {
+        setAttachedFile(file);
+      } else {
+        alert('Only PDF or DOCX files are allowed.');
+      }
+    }
+  };
 
   const handleSubmit = () => {
-    const newCase: CaseType = {
-      id: (Math.random() * 1000).toString(), // Geçici bir id oluşturuyoruz
+    const newCase: newCase = {
       title,
       description,
       status,
-      client,
-      date: new Date().toISOString(), // Bugünün tarihini ekliyoruz
       category,
-      priority
+      priority,
+      file: attachedFile 
     };
 
-    onSave(newCase); // Yeni davayı üst bileşene kaydetmesi için gönderiyoruz
-    onClose(); // Formu kapatıyoruz
+    onSave(newCase);
+    onClose();
   };
 
   return (
@@ -65,12 +79,6 @@ export const NewCaseForm: React.FC<NewCaseFormProps> = ({ onClose, onSave }) => 
           rows={4}
         />
         <TextField
-          label="Client"
-          value={client}
-          onChange={(e) => setClient(e.target.value)}
-          fullWidth
-        />
-        <TextField
           label="Category"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
@@ -84,48 +92,41 @@ export const NewCaseForm: React.FC<NewCaseFormProps> = ({ onClose, onSave }) => 
             value={status}
             onChange={(e) => setStatus(e.target.value as 'active' | 'pending' | 'closed')}
             label="Status"
-            sx={{ // Styles for the Select input field itself
+            sx={{
               '& .MuiSelect-icon': {
-                color: theme.palette.text.primary, 
+                color: theme.palette.text.primary
               },
-              '& .MuiOutlinedInput-root': { // Styles the input box wrapper
-                backgroundColor: theme.palette.mode === 'dark' 
-                  ? '#333'
-                  : 'transparent',
+              '& .MuiOutlinedInput-root': {
+                backgroundColor:
+                  theme.palette.mode === 'dark' ? '#333' : 'transparent',
                 '&:hover': {
-                  backgroundColor: theme.palette.mode === 'dark' 
-                    ? '#444'
-                    : 'transparent',
+                  backgroundColor:
+                    theme.palette.mode === 'dark' ? '#444' : 'transparent'
                 },
-                // Style for the text of the selected value inside the input box
                 '& .MuiSelect-select': {
-                   color: theme.palette.mode === 'dark' ? theme.palette.text.primary : theme.palette.text.primary,
+                  color: theme.palette.text.primary
                 }
-              },
-              // This InputLabel styling here is likely ineffective as InputLabel is not a child.
-              // Style InputLabel directly or rely on theme.
-              // '& .MuiInputLabel-root': {
-              //   color: theme.palette.mode === 'dark' ? 'white' : 'black',
-              // },
+              }
             }}
             MenuProps={{
               sx: {
-                // These styles apply to the dropdown menu and its items
-                '& .MuiPaper-root': { // Optional: Style the paper containing the menu items
-                    backgroundColor: theme.palette.mode === 'dark' ? '#333' : 'white',
+                '& .MuiPaper-root': {
+                  backgroundColor:
+                    theme.palette.mode === 'dark' ? '#333' : 'white'
                 },
                 '& .MuiMenuItem-root': {
-                  // backgroundColor is now handled by MuiPaper-root or can be set per item if needed
-                  // For simplicity, let MuiPaper-root handle overall BG
                   color: theme.palette.mode === 'dark' ? 'white' : 'black',
                   '&:hover': {
-                    backgroundColor: theme.palette.mode === 'dark' ? '#444' : '#f5f5f5',
+                    backgroundColor:
+                      theme.palette.mode === 'dark' ? '#444' : '#f5f5f5'
                   },
                   '&.Mui-selected': {
-                    backgroundColor: theme.palette.mode === 'dark' ? '#555' : '#e0e0e0', // Adjust selected background
-                    color: theme.palette.mode === 'dark' ? 'white' : 'black', // Ensure text color is appropriate
+                    backgroundColor:
+                      theme.palette.mode === 'dark' ? '#555' : '#e0e0e0',
+                    color: theme.palette.mode === 'dark' ? 'white' : 'black',
                     '&:hover': {
-                      backgroundColor: theme.palette.mode === 'dark' ? '#666' : '#d5d5d5',
+                      backgroundColor:
+                        theme.palette.mode === 'dark' ? '#666' : '#d5d5d5'
                     }
                   }
                 }
@@ -145,42 +146,41 @@ export const NewCaseForm: React.FC<NewCaseFormProps> = ({ onClose, onSave }) => 
             value={priority}
             onChange={(e) => setPriority(e.target.value as 'high' | 'medium' | 'low')}
             label="Priority"
-            sx={{ // Styles for the Select input field itself
+            sx={{
               '& .MuiSelect-icon': {
-                color: theme.palette.text.primary,
+                color: theme.palette.text.primary
               },
               '& .MuiOutlinedInput-root': {
-                backgroundColor: theme.palette.mode === 'dark' 
-                  ? '#333'
-                  : 'transparent',
+                backgroundColor:
+                  theme.palette.mode === 'dark' ? '#333' : 'transparent',
                 '&:hover': {
-                  backgroundColor: theme.palette.mode === 'dark' 
-                    ? '#444'
-                    : 'transparent',
+                  backgroundColor:
+                    theme.palette.mode === 'dark' ? '#444' : 'transparent'
                 },
                 '& .MuiSelect-select': {
-                   color: theme.palette.mode === 'dark' ? theme.palette.text.primary : theme.palette.text.primary,
+                  color: theme.palette.text.primary
                 }
-              },
-              // '& .MuiInputLabel-root': {
-              //   color: theme.palette.mode === 'dark' ? 'white' : 'black',
-              // },
+              }
             }}
             MenuProps={{
               sx: {
-                '& .MuiPaper-root': { 
-                    backgroundColor: theme.palette.mode === 'dark' ? '#333' : 'white',
+                '& .MuiPaper-root': {
+                  backgroundColor:
+                    theme.palette.mode === 'dark' ? '#333' : 'white'
                 },
                 '& .MuiMenuItem-root': {
                   color: theme.palette.mode === 'dark' ? 'white' : 'black',
                   '&:hover': {
-                    backgroundColor: theme.palette.mode === 'dark' ? '#444' : '#f5f5f5',
+                    backgroundColor:
+                      theme.palette.mode === 'dark' ? '#444' : '#f5f5f5'
                   },
                   '&.Mui-selected': {
-                    backgroundColor: theme.palette.mode === 'dark' ? '#555' : '#e0e0e0',
+                    backgroundColor:
+                      theme.palette.mode === 'dark' ? '#555' : '#e0e0e0',
                     color: theme.palette.mode === 'dark' ? 'white' : 'black',
                     '&:hover': {
-                      backgroundColor: theme.palette.mode === 'dark' ? '#666' : '#d5d5d5',
+                      backgroundColor:
+                        theme.palette.mode === 'dark' ? '#666' : '#d5d5d5'
                     }
                   }
                 }
@@ -192,6 +192,19 @@ export const NewCaseForm: React.FC<NewCaseFormProps> = ({ onClose, onSave }) => 
             <MenuItem value="low">Low</MenuItem>
           </Select>
         </FormControl>
+
+        <Box>
+          <Typography variant="subtitle1">Upload Document (PDF or DOCX)</Typography>
+          <Button variant="outlined" component="label">
+            {attachedFile ? attachedFile.name : 'Choose File'}
+            <input
+              type="file"
+              hidden
+              accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+              onChange={handleFileChange}
+            />
+          </Button>
+        </Box>
 
         <Stack direction="row" spacing={2} sx={{ justifyContent: 'flex-end' }}>
           <Button
@@ -215,3 +228,4 @@ export const NewCaseForm: React.FC<NewCaseFormProps> = ({ onClose, onSave }) => 
     </Box>
   );
 };
+export default NewCaseForm;
