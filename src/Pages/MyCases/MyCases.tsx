@@ -18,70 +18,12 @@ import {
 import SearchIcon from '@mui/icons-material/Search';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import AddIcon from '@mui/icons-material/Add';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NewCaseForm } from '../../Components/NewCaseForm/NewCaseForm';
 import { Case } from '../../Components/Case/Case';
 import { CaseType, newCase } from '../../Models/Case';
-import { addNewCase } from '../../service/supabaseClient';
+import { addNewCase, deleteCase, getCasesClient, getCasesLawyer } from '../../service/supabaseClient';
 
-// Dummy data
-const dummyCases: CaseType[] = [
-  {
-    id: '1',
-    title: 'Contract Dispute - Johnson vs. Smith',
-    description: 'Breach of contract case involving intellectual property rights and non-compete clauses.',
-    status: 'active',
-    client: 'Johnson Enterprises',
-    lawyer: 'Jane Smith',
-    date: '2024-03-15',
-    category: 'Contract Law',
-    priority: 'high'
-  },
-  {
-    id: '2',
-    title: 'Personal Injury Claim',
-    description: 'Slip and fall accident at a commercial property resulting in severe injuries.',
-    status: 'pending',
-    client: 'Sarah Williams',
-    lawyer: 'John Doe',
-    date: '2024-03-10',
-    category: 'Personal Injury',
-    priority: 'medium'
-  },
-  {
-    id: '3',
-    title: 'Divorce Settlement',
-    description: 'Complex divorce case involving multiple properties and business assets.',
-    status: 'closed',
-    client: 'Michael Brown',
-    lawyer: 'Jane Smith',
-    date: '2024-02-28',
-    category: 'Family Law',
-    priority: 'high'
-  },
-  {
-    id: '4',
-    title: 'Employment Discrimination',
-    description: 'Case involving workplace discrimination based on gender and age.',
-    status: 'active',
-    client: 'Emily Davis',
-    lawyer: 'Jane Smith',
-    date: '2024-03-05',
-    category: 'Employment Law',
-    priority: 'medium'
-  },
-  {
-    id: '5',
-    title: 'Real Estate Dispute',
-    description: 'Boundary dispute between neighboring properties.',
-    status: 'pending',
-    client: 'Thompson Properties',
-    lawyer: 'John Doe',
-    date: '2024-03-12',
-    category: 'Real Estate',
-    priority: 'low'
-  }
-];
 
 
 type StatusFilter = 'all' | 'active' | 'pending' | 'closed';
@@ -93,8 +35,9 @@ export const MyCases = () => {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [priorityFilter, setPriorityFilter] = useState<PriorityFilter>('all');
   const [openModal, setOpenModal] = useState(false);
+  const [cases, setCases] = useState<CaseType[]>([]);
 
-  const filteredCases = dummyCases.filter((caseData) => {
+  const filteredCases = cases.filter((caseData) => {
     const matchesSearch =
       caseData.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       caseData.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -108,11 +51,32 @@ export const MyCases = () => {
 
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
+  useEffect(() => {
+    const fetchCases = async () => {
+      const user = JSON.parse(localStorage.getItem('user')!);
+      if(user.role === 'lawyer'){
+       const caseS =await getCasesLawyer();
+        setCases(caseS);
+      }
+      else{
+        const caseS=await getCasesClient();
+        setCases(caseS);
+      }
+      
+    }
+    fetchCases();
+  }
+  , []);
   const handleSaveNewCase = async (newCase: newCase) => {
     await addNewCase(newCase);
 
     handleCloseModal();
   }
+
+  const handleDeleteCase = async (caseId: string) => {
+    await deleteCase(caseId);
+    setCases((prevCases) => prevCases.filter((caseData) => caseData.id !== caseId));
+  };
 
   return (
     <Box sx={{ p: 3 }}>
@@ -133,7 +97,7 @@ export const MyCases = () => {
               bgcolor: theme.palette.primary.dark
             }
           }}
-          onClick={handleOpenModal} // Open modal when clicked
+          onClick={handleOpenModal} 
         >
           New Case
         </Button>
@@ -356,7 +320,11 @@ export const MyCases = () => {
       <Grid container spacing={3}>
         {filteredCases.map((caseData) => (
           <Grid item xs={12} sm={6} md={4} key={caseData.id}>
-            <Case caseData={caseData} />
+            <Case caseData={caseData} onEdit={function (caseData: CaseType): void {
+              throw new Error('Function not implemented.');
+            } } onDelete={async function (caseId: string): Promise<void> {
+              await handleDeleteCase(caseId);
+            } } />
           </Grid>
         ))}
       </Grid>

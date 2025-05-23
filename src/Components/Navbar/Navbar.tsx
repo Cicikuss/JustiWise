@@ -26,10 +26,13 @@ import FolderIcon from '@mui/icons-material/Folder';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useThemeContext } from "../../Context/ThemeContext";
 import { useSearch } from '../../Context/SearchContext';
 import { useAuth } from '../../Context/AuthContext';
+import { Notification } from '../../Models/Notification';
+import { get } from "http";
+import { getNotifications } from "../../service/supabaseClient";
 
 export const Navbar = () => {
     const theme = useTheme();
@@ -39,6 +42,22 @@ export const Navbar = () => {
     const { user, logout } = useAuth();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [notificationsAnchor, setNotificationsAnchor] = useState<null | HTMLElement>(null);
+
+    const [notifications, setNotifications] = useState<Notification[]>([]);
+
+useEffect(() => {
+    const fetchNotifications = async () => {
+        try {
+            const response = await getNotifications();
+           
+            setNotifications(response);
+        } catch (error) {
+            console.error("Error fetching notifications:", error);
+        }
+    };
+
+    fetchNotifications();
+}, []);
 
     const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -194,9 +213,9 @@ export const Navbar = () => {
                                 }
                             }}
                         >
-                            <Badge badgeContent={3} color="error">
-                                <NotificationsIcon />
-                            </Badge>
+                             <Badge badgeContent={notifications.length} color="error">
+        <NotificationsIcon />
+    </Badge>
                         </IconButton>
 
                         <Button
@@ -313,82 +332,62 @@ export const Navbar = () => {
 
                     {/* Notifications Menu */}
                     <Menu
-                        anchorEl={notificationsAnchor}
-                        open={Boolean(notificationsAnchor)}
-                        onClose={handleNotificationsClose}
-                        PaperProps={{
-                            elevation: 0,
-                            sx: {
-                                overflow: 'visible',
-                                filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                                mt: 1.5,
-                                bgcolor: theme.palette.mode === 'dark' ? '#1e1e1e' : 'white',
-                                '&:before': {
-                                    content: '""',
-                                    display: 'block',
-                                    position: 'absolute',
-                                    top: 0,
-                                    right: 14,
-                                    width: 10,
-                                    height: 10,
-                                    bgcolor: theme.palette.mode === 'dark' ? '#1e1e1e' : 'white',
-                                    transform: 'translateY(-50%) rotate(45deg)',
-                                    zIndex: 0,
-                                },
-                            },
-                        }}
-                        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                    >
-                        <MenuItem 
-                            onClick={handleNotificationsClose}
-                            sx={{
-                                color: theme.palette.mode === 'dark' ? '#ffffff' : 'rgba(0, 0, 0, 0.87)',
-                                '&:hover': {
-                                    backgroundColor: theme.palette.mode === 'dark' 
-                                        ? 'rgba(255, 255, 255, 0.1)' 
-                                        : 'rgba(0, 0, 0, 0.05)'
-                                }
-                            }}
-                        >
-                            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                                <Typography variant="body2" sx={{ color: 'inherit' }}>New case assigned</Typography>
-                                <Typography variant="caption" sx={{ color: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)' }}>2 hours ago</Typography>
-                            </Box>
-                        </MenuItem>
-                        <MenuItem 
-                            onClick={handleNotificationsClose}
-                            sx={{
-                                color: theme.palette.mode === 'dark' ? '#ffffff' : 'rgba(0, 0, 0, 0.87)',
-                                '&:hover': {
-                                    backgroundColor: theme.palette.mode === 'dark' 
-                                        ? 'rgba(255, 255, 255, 0.1)' 
-                                        : 'rgba(0, 0, 0, 0.05)'
-                                }
-                            }}
-                        >
-                            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                                <Typography variant="body2" sx={{ color: 'inherit' }}>Meeting reminder</Typography>
-                                <Typography variant="caption" sx={{ color: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)' }}>Yesterday</Typography>
-                            </Box>
-                        </MenuItem>
-                        <MenuItem 
-                            onClick={handleNotificationsClose}
-                            sx={{
-                                color: theme.palette.mode === 'dark' ? '#ffffff' : 'rgba(0, 0, 0, 0.87)',
-                                '&:hover': {
-                                    backgroundColor: theme.palette.mode === 'dark' 
-                                        ? 'rgba(255, 255, 255, 0.1)' 
-                                        : 'rgba(0, 0, 0, 0.05)'
-                                }
-                            }}
-                        >
-                            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                                <Typography variant="body2" sx={{ color: 'inherit' }}>Document approved</Typography>
-                                <Typography variant="caption" sx={{ color: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)' }}>2 days ago</Typography>
-                            </Box>
-                        </MenuItem>
-                    </Menu>
+    anchorEl={notificationsAnchor}
+    open={Boolean(notificationsAnchor)}
+    onClose={handleNotificationsClose}
+    PaperProps={{
+        elevation: 0,
+        sx: {
+            overflow: 'visible',
+            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+            mt: 1.5,
+            bgcolor: theme.palette.mode === 'dark' ? '#1e1e1e' : 'white',
+            '&:before': {
+                content: '""',
+                display: 'block',
+                position: 'absolute',
+                top: 0,
+                right: 14,
+                width: 10,
+                height: 10,
+                bgcolor: theme.palette.mode === 'dark' ? '#1e1e1e' : 'white',
+                transform: 'translateY(-50%) rotate(45deg)',
+                zIndex: 0,
+            },
+        },
+    }}
+    transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+>
+    {notifications.length === 0 ? (
+        <MenuItem disabled>
+            <Typography variant="body2" color="text.secondary">No new notifications</Typography>
+        </MenuItem>
+    ) : (
+        notifications.map((notif) => (
+            <MenuItem 
+                key={notif.id} 
+                onClick={handleNotificationsClose}
+                sx={{
+                    color: theme.palette.mode === 'dark' ? '#ffffff' : 'rgba(0, 0, 0, 0.87)',
+                    '&:hover': {
+                        backgroundColor: theme.palette.mode === 'dark' 
+                            ? 'rgba(255, 255, 255, 0.1)' 
+                            : 'rgba(0, 0, 0, 0.05)'
+                    }
+                }}
+            >
+                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <Typography variant="body2" sx={{ color: 'inherit' }}>{notif.message}</Typography>
+                    <Typography variant="caption" sx={{ color: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)' }}>
+                        {notif.timestamp}
+                    </Typography>
+                </Box>
+            </MenuItem>
+        ))
+    )}
+</Menu>
+
                 </Toolbar>
             </Container>
         </AppBar>

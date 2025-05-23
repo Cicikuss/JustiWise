@@ -5,11 +5,11 @@ export type CaseType ={
   status: 'active' | 'pending' | 'closed';
   client: string;
   lawyer: string;
-  date: string;
+  created_at: string;
   category: string;
   priority: 'high' | 'medium' | 'low';
   file?: File; 
 }
 
-export type EditableCase = Partial<Omit<CaseType, 'id' | 'date'>>;
-export type newCase = Omit<CaseType, 'id' | 'date'| 'lawyer'|"client">;
+export type EditableCase = Partial<Omit<CaseType, 'id' | 'created_at'>>;
+export type newCase = Omit<CaseType, 'id' | 'created_at'| 'lawyer'|"client">;

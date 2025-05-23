@@ -1,21 +1,26 @@
-import { 
-    Paper, 
-    Typography, 
-    Box, 
-    Chip, 
-    Stack, 
-    IconButton, 
+import {
+    Paper,
+    Typography,
+    Box,
+    Chip,
+    Stack,
+    IconButton,
     useTheme,
-    Tooltip
+    Tooltip,
 } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PersonIcon from '@mui/icons-material/Person';
-import DescriptionIcon from '@mui/icons-material/Description';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { CaseType } from '../../Models/Case';
+import { getUserById } from '../../service/supabaseClient';
+import { useEffect, useState } from 'react';
 
-
+type CaseProps = {
+    caseData: CaseType;
+    onEdit: (caseData: CaseType) => void;
+    onDelete: (caseId: string) => void;
+};
 
 const getStatusColor = (status: string, theme: any) => {
     switch (status) {
@@ -43,44 +48,80 @@ const getPriorityColor = (priority: string, theme: any) => {
     }
 };
 
-export const Case = ({ caseData }: { caseData: CaseType }) => {
+export const Case = ({ caseData, onEdit, onDelete }: CaseProps) => {
     const theme = useTheme();
+   const [clientName, setClientName] = useState<string>('');
+   const [lawyerName, setLawyerName] = useState<string>('');
 
+   useEffect(() => {
+        const fetchClientName = async () => {
+            const client = await getUserById(caseData.client);
+            setClientName(client?.username || 'Unknown');
+        };
+
+        const fetchLawyerName = async () => {
+            if (!caseData.lawyer) {
+                setLawyerName('Unknown');
+                return;
+            }
+            // Fetch lawyer name only if it exists
+            const lawyer = await getUserById(caseData.lawyer);
+            setLawyerName(lawyer?.username || 'Unknown');
+        };
+
+        fetchClientName();
+        fetchLawyerName();
+    }, []);
     return (
-        <Paper 
+        <Paper
             elevation={2}
-            sx={{ 
+            sx={{
                 p: 3,
                 borderRadius: 2,
                 transition: 'all 0.3s ease',
                 '&:hover': {
                     transform: 'translateY(-2px)',
                     boxShadow: theme.shadows[4],
-                }
+                },
             }}
         >
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-start',
+                    mb: 2,
+                }}
+            >
                 <Typography variant="h6" sx={{ fontWeight: 600 }}>
                     {caseData.title}
                 </Typography>
                 <Stack direction="row" spacing={1}>
                     <Tooltip title="Edit Case">
-                        <IconButton size="small" color="primary">
+                        <IconButton
+                            size="small"
+                            color="primary"
+                            onClick={() => onEdit(caseData)}
+                        >
                             <EditIcon />
                         </IconButton>
                     </Tooltip>
                     <Tooltip title="Delete Case">
-                        <IconButton size="small" color="error">
+                        <IconButton
+                            size="small"
+                            color="error"
+                            onClick={() => onDelete(caseData.id)}
+                        >
                             <DeleteIcon />
                         </IconButton>
                     </Tooltip>
                 </Stack>
             </Box>
 
-            <Typography 
-                variant="body2" 
-                color="text.secondary" 
-                sx={{ 
+            <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{
                     mb: 2,
                     display: '-webkit-box',
                     WebkitLineClamp: 2,
@@ -92,26 +133,26 @@ export const Case = ({ caseData }: { caseData: CaseType }) => {
             </Typography>
 
             <Stack direction="row" spacing={1} sx={{ mb: 2 }}>
-                <Chip 
-                    label={caseData.status.toUpperCase()} 
+                <Chip
+                    label={caseData.status.toUpperCase()}
                     size="small"
-                    sx={{ 
+                    sx={{
                         bgcolor: getStatusColor(caseData.status, theme),
                         color: 'white',
-                        fontWeight: 500
+                        fontWeight: 500,
                     }}
                 />
-                <Chip 
-                    label={caseData.priority.toUpperCase()} 
+                <Chip
+                    label={caseData.priority.toUpperCase()}
                     size="small"
-                    sx={{ 
+                    sx={{
                         bgcolor: getPriorityColor(caseData.priority, theme),
                         color: 'white',
-                        fontWeight: 500
+                        fontWeight: 500,
                     }}
                 />
-                <Chip 
-                    label={caseData.category} 
+                <Chip
+                    label={caseData.category}
                     size="small"
                     variant="outlined"
                 />
@@ -120,17 +161,21 @@ export const Case = ({ caseData }: { caseData: CaseType }) => {
             <Stack direction="row" spacing={2} sx={{ color: 'text.secondary' }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                     <PersonIcon fontSize="small" />
-                    <Typography variant="body2">{caseData.client}</Typography>
+                    <Typography variant="body2">{clientName}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                     <PersonIcon fontSize="small" />
-                    <Typography variant="body2">{caseData.lawyer}</Typography>
+                    <Typography variant="body2">{lawyerName}</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                     <AccessTimeIcon fontSize="small" />
-                    <Typography variant="body2">{caseData.date}</Typography>
+                    <Typography variant="body2">{new Date(caseData.created_at).toLocaleString("tr-TR",{
+                        dateStyle: "medium",
+                        timeStyle: "short",     
+                    })}</Typography>
                 </Box>
             </Stack>
         </Paper>
     );
-}; 
+};
+export default Case;
