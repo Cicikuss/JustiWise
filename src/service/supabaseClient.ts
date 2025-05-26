@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { EditableUser } from '../Models/User';
-import { newCase } from '../Models/Case';
+import { CaseType, newCase } from '../Models/Case';
 
 
 
@@ -207,6 +207,21 @@ export const getCaseById = async (caseId: string) => {
         throw new Error(error.message);
     }
     return data;
+
+}
+export const getCaseRequestsForCaseIds = async (caseIds: string[]) => {
+    if (!caseIds || caseIds.length === 0) {
+        return [];
+    }
+    const { data, error } = await supabaseClient
+        .from('case_requests')
+        .select('*')
+        .in('case_id', caseIds);
+    if (error) {
+        console.error('Error fetching case requests:', error.message);
+        throw new Error(`Dava talepleri alınırken hata oluştu: ${error.message}`);
+    }
+    return data || [];
 }
 
 export const applyForCase = async (caseId: string) => {
@@ -226,6 +241,7 @@ export const applyForCase = async (caseId: string) => {
     if (existingRequests && existingRequests.length > 0) {
         throw new Error("Bu dava için zaten bir başvurunuz bulunuyor veya başvurunuz onaylanmış.");
     }
+
 
     
     const { data, error } = await supabaseClient
@@ -252,4 +268,48 @@ export const getCaseRequestByLawyerAndCase = async (caseId: string, lawyerId: st
         return null;
     }
     return data;
+};
+
+export const updateCaseRequestStatus = async (id:number,request_status:string) => {
+    const { data, error } = await supabaseClient
+        .from('case_requests')
+        .update({ request_status })
+        .eq('id', id)
+        .select()
+        .single();
+
+    if (error) {
+        console.error('Error updating case request status:', error.message);
+        throw new Error(`Dava talebi durumu güncellenirken hata oluştu: ${error.message}`);
+    }
+    return data;
+}
+
+export const assignLawyerToCase = async (caseId: string, lawyerId: string) => {
+    const { data, error } = await supabaseClient
+        .from('cases')
+        .update({ lawyer_id: lawyerId })
+        .eq('id', caseId)
+        .select()
+        .single();
+
+    if (error) {
+        console.error('Error assigning lawyer to case:', error.message);
+        throw new Error(`Avukat dava ataması yapılırken hata oluştu: ${error.message}`);
+    }
+    return data;
+}
+
+
+export const searchCases = async (query: string): Promise<CaseType[]> => {
+
+    const { data, error } = await supabaseClient.rpc('search_all_cases', {
+        search_query: query.toLowerCase() 
+    });
+
+    if (error) {
+        console.error('Error searching cases via RPC:', error.message);
+        throw new Error(`Dava araması yapılırken hata oluştu: ${error.message}`);
+    }
+    return data || [];
 };
