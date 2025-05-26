@@ -79,8 +79,7 @@ export const Navbar = () => {
 
     const handleNotificationClick = (notification: Notification) => {
         handleNotificationsClose();
-        // TODO: Consider marking notification as read here or on the target page
-        // e.g., markNotificationAsRead(notification.id);
+     
         if (notification.case_id) {
             navigate(`/case/${notification.case_id}`);
         } else {
@@ -91,7 +90,7 @@ export const Navbar = () => {
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const query = event.target.value;
         setSearchQuery(query);
-        // Consider debouncing navigation if '/search-results' is heavy or makes API calls on load
+    
         if (query.trim()) {
             navigate('/search-results');
         }
@@ -115,7 +114,7 @@ export const Navbar = () => {
                     : 'rgba(255, 255, 255, 0.9)',
                 backdropFilter: 'blur(10px)',
                 borderBottom: `1px solid ${theme.palette.divider}`,
-                transition: 'background-color 0.3s ease-in-out, border-color 0.3s ease-in-out' // Refined transition
+                transition: 'background-color 0.3s ease-in-out, border-color 0.3s ease-in-out' 
             }}
         >
             <Container maxWidth="xl">
@@ -125,7 +124,7 @@ export const Navbar = () => {
                     alignItems: 'center',
                     minHeight: 70
                 }}>
-                    {/* Logo Section */}
+                   
                     <Box
                         sx={{
                             display: 'flex',
@@ -158,7 +157,7 @@ export const Navbar = () => {
                         </Typography>
                     </Box>
 
-                    {/* Search Bar */}
+                  
                     <Box sx={{
                         display: { xs: 'none', md: 'flex' },
                         flex: 1,
@@ -167,7 +166,7 @@ export const Navbar = () => {
                     }}>
                         <TextField
                             fullWidth
-                            placeholder="Search across the site..."
+                            placeholder="Site genelinde ara..."
                             value={searchQuery}
                             onChange={handleSearchChange}
                             InputProps={{
@@ -203,7 +202,7 @@ export const Navbar = () => {
                         />
                     </Box>
 
-                    {/* Right Section */}
+                   
                     <Stack direction="row" spacing={1} alignItems="center">
                         <IconButton
                             aria-label="toggle theme"
@@ -262,7 +261,7 @@ export const Navbar = () => {
                         </Button>
                     </Stack>
 
-                    {/* Profile Menu */}
+                 
                     <Menu
                         id={profileMenuId}
                         anchorEl={anchorEl}
@@ -298,14 +297,14 @@ export const Navbar = () => {
                                 navigate('/profile');
                             }}
                             sx={{
-                                color: theme.palette.text.primary, // Use theme for text color
+                                color: theme.palette.text.primary, 
                                 '&:hover': {
                                     backgroundColor: theme.palette.action.hover
                                 }
                             }}
                         >
                             <PersonIcon sx={{ mr: 1 }} />
-                            Profile
+                            Profil
                         </MenuItem>
                         <MenuItem
                             onClick={() => {
@@ -320,7 +319,7 @@ export const Navbar = () => {
                             }}
                         >
                             <FolderIcon sx={{ mr: 1 }} />
-                            My Cases
+                            Davalarım
                         </MenuItem>
                         <MenuItem
                             onClick={() => {
@@ -336,7 +335,7 @@ export const Navbar = () => {
                             }}
                         >
                             <SettingsIcon sx={{ mr: 1 }} />
-                            Settings
+                            Ayarlar
                         </MenuItem>
                         <MenuItem
                             onClick={handleLogout}
@@ -350,11 +349,11 @@ export const Navbar = () => {
                             }}
                         >
                             <LogoutIcon sx={{ mr: 1 }} />
-                            Logout
+                            Oturumu kapat
                         </MenuItem>
                     </Menu>
 
-                    {/* Notifications Menu */}
+                    
                     <Menu
                         id={notificationsMenuId}
                         anchorEl={notificationsAnchor}
@@ -387,7 +386,7 @@ export const Navbar = () => {
                     >
                         {notifications.length === 0 ? (
                             <MenuItem disabled sx={{ color: theme.palette.text.secondary, cursor: 'default' }}>
-                                <Typography variant="body2">No new notifications</Typography>
+                                <Typography variant="body2">Yeni bildirim yok</Typography>
                             </MenuItem>
                         ) : (
                             notifications.map((notif) => (
@@ -399,7 +398,7 @@ export const Navbar = () => {
                                         cursor: 'pointer',
                                         whiteSpace: 'normal',
                                         minHeight: 'auto',
-                                        py: 1.5, // Adjusted padding
+                                        py: 1.5, 
                                         '&:hover': {
                                             backgroundColor: theme.palette.action.hover
                                         }
@@ -419,11 +418,11 @@ export const Navbar = () => {
                                         <Typography
                                             variant="caption"
                                             sx={{
-                                                color: theme.palette.text.secondary, // Use theme color
+                                                color: theme.palette.text.secondary, 
                                                 fontSize: '0.75rem'
                                             }}
                                         >
-                                            {/* Consider formatting timestamp if it's not pre-formatted */}
+                                           
                                             {notif.timestamp}
                                         </Typography>
                                     </Box>
@@ -447,7 +446,7 @@ export const Navbar = () => {
                                     }
                                 }}
                             >
-                                <Typography variant="body2">View All Notifications</Typography>
+                                <Typography variant="body2">Tüm Bildirimleri Görüntüle</Typography>
                             </MenuItem>
                         )}
                     </Menu>
