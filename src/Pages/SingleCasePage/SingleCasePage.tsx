@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CaseTypeWithURL } from "../../Models/Case";
-// applyForCase ve getCaseRequestByLawyerAndCase'i içe aktarın
+
 import { applyForCase, getCaseById, getUserById, getCaseRequestByLawyerAndCase } from "../../service/supabaseClient";
 
 import {
@@ -18,8 +18,8 @@ import {
     Button
 } from "@mui/material";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-// Toast fonksiyonlarının doğru yerden geldiğinden emin olun
-import { showErrorToast, showSuccessToast } from "../../Helper/ErrorHandler"; // showErrorToast'ın burada olduğunu varsayıyorum
+
+import { showErrorToast, showSuccessToast } from "../../Helper/ErrorHandler"; 
 
 import { useAuth } from "../../Context/AuthContext";
 
@@ -75,9 +75,7 @@ const SingleCasePage = () => {
                         response.lawyer ? getUserById(response.lawyer) : Promise.resolve(null)
                     ]);
 
-                    // DİKKAT: Burada 'username' hatası alıyorsanız,
-                    // getUserById'den dönen objede kullanıcı adının hangi sütunda olduğunu kontrol edin.
-                    // Örneğin: clientRes?.full_name veya clientRes?.display_name olabilir.
+                 
                     setClientName(clientRes?.username || 'Bilinmiyor');
                     setLawyerName(lawyerRes?.username || 'Bilinmiyor');
 
@@ -104,7 +102,7 @@ const SingleCasePage = () => {
             }
         };
 
-        // currentUserId ve currentUserType güncellendiğinde de useEffect'in çalışmasını sağla
+       
         fetchAllCaseDetails();
     }, [caseId, currentUserId, currentUserType]);
 
@@ -131,27 +129,27 @@ const SingleCasePage = () => {
         }
     };
 
-    // Davaya başvurma fonksiyonu (isim 'handleClaimCase' yerine 'handleApplyForCase' olarak değiştirildi)
+
     const handleApplyForCase = async () => {
-        // currentUserId'nin null olmadığından emin olun
+        
         if (!caseId || !currentUserId) {
             showErrorToast("Dava ID'si veya avukat bilgisi eksik.");
             return;
         }
-        setApplyingForCase(true); // Başvuru sürecini başlat
+        setApplyingForCase(true); 
         try {
-            await applyForCase(caseId); // currentUserId'yi applyForCase'e geçirin
-            setHasAppliedForCase(true); // Başvuru başarılı olduğunda state'i güncelle
+            await applyForCase(caseId);
+            setHasAppliedForCase(true); 
             showSuccessToast("Başvurunuz başarıyla gönderildi! Onay bekleniyor.");
-            // Dava avukatını burada güncellemiyoruz, çünkü sadece başvuru yapıldı, atanmadı.
+            
         } catch (err: any) {
             showErrorToast(err.message || "Davaya başvurmaya çalışırken bir hata oluştu.");
         } finally {
-            setApplyingForCase(false); // Başvuru sürecini sonlandır
+            setApplyingForCase(false);
         }
     };
 
-    // Yüklenme durumunda
+    
     if (loading) {
         return (
             <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', py: 4 }}>
@@ -280,7 +278,7 @@ const SingleCasePage = () => {
                     </>
                 )}
 
-                {/* Buton veya başvuru mesajı buraya eklendi */}
+               
                 {(showApplyButton || showAppliedMessage) && (
                     <Box sx={{ mt: 4, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
                         {showApplyButton && (
@@ -288,10 +286,10 @@ const SingleCasePage = () => {
                                 variant="contained"
                                 color="primary"
                                 size="large"
-                                onClick={handleApplyForCase} // Correct handler
-                                disabled={applyingForCase} // Correct state
+                                onClick={handleApplyForCase} 
+                                disabled={applyingForCase} 
                             >
-                                {applyingForCase ? <CircularProgress size={24} color="inherit" /> : 'Bu Davaya Başvur'} {/* Correct button text */}
+                                {applyingForCase ? <CircularProgress size={24} color="inherit" /> : 'Bu Davaya Başvur'} 
                             </Button>
                         )}
                         {showAppliedMessage && (
