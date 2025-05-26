@@ -17,12 +17,13 @@ import {
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { useAuth } from '../Context/AuthContext';
 import { updateUser, uploadImage } from '../service/supabaseClient';
+import { showErrorToast } from '../Helper/ErrorHandler';
 
 const roles = ['client', 'lawyer', 'student']; 
 
 const Profile: React.FC = () => {
   const { user } = useAuth();
-
+ 
   const [open, setOpen] = useState(false);
   const [editedUser, setEditedUser] = useState({
     username: user?.username || '',
@@ -32,6 +33,9 @@ const Profile: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>(user?.profile_image_url || '');
 
+   if (!user) {
+  return <Typography>Yükleniyor...</Typography>;
+}
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
@@ -63,7 +67,7 @@ const Profile: React.FC = () => {
     try {
       imageUrl = await uploadImage(selectedImage);
     } catch (error) {
-      console.error('Resim yükleme hatası:', error);
+      showErrorToast(error);
       return;
     }
   }

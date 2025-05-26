@@ -1,0 +1,960 @@
+{
+  "stats": {
+    "suites": 10,
+    "tests": 32,
+    "passes": 13,
+    "pending": 0,
+    "failures": 19,
+    "start": "2025-05-26T16:57:59.999Z",
+    "end": "2025-05-26T17:00:33.930Z",
+    "duration": 153931,
+    "testsRegistered": 32,
+    "passPercent": 40.625,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "bc391159-0da1-4fcd-b597-23101b494b1f",
+      "title": "",
+      "fullFile": "cypress\\e2e\\profile.cy.ts",
+      "file": "cypress\\e2e\\profile.cy.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "08cebef9-7872-4fa0-96e3-c39b8ba0a1da",
+          "title": "Profile Component Tests",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [],
+          "suites": [
+            {
+              "uuid": "ff7b54b2-4673-4710-b1b2-39e729f04302",
+              "title": "Profile Display",
+              "fullFile": "",
+              "file": "",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "should display user profile information correctly",
+                  "fullTitle": "Profile Component Tests Profile Display should display user profile information correctly",
+                  "timedOut": null,
+                  "duration": 2011,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "// Check if profile title is displayed\ncy.contains('h4', 'Profil').should('be.visible');\n// Check if user information is displayed\ncy.get('[data-testid=\"username\"], .MuiTypography-h5').should('be.visible').and('not.be.empty');\ncy.contains('E-posta:').should('be.visible');\ncy.contains('ahmetbyk49@gmail.com').should('be.visible');\ncy.contains('Rol:').should('be.visible');\n// Check if avatar is displayed\ncy.get('.MuiAvatar-root').should('be.visible');\n// Check if join date is displayed\ncy.contains('Katılma Tarihi:').should('be.visible');\n// Check if edit button is present\ncy.contains('button', 'Profili Düzenle').should('be.visible');",
+                  "err": {},
+                  "uuid": "9acaf30c-6920-4aa6-b4d7-e57089f5091b",
+                  "parentUUID": "ff7b54b2-4673-4710-b1b2-39e729f04302",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should display user avatar correctly",
+                  "fullTitle": "Profile Component Tests Profile Display should display user avatar correctly",
+                  "timedOut": null,
+                  "duration": 5368,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.get('.MuiAvatar-root')\n    .should('be.visible')\n    .and('have.css', 'width', '120px')\n    .and('have.css', 'height', '120px');",
+                  "err": {
+                    "message": "AssertionError: Timed out retrying after 4000ms: expected '[ <div.MuiAvatar-root.MuiAvatar-circular.MuiAvatar-colorDefault.css-1p5b6ca-MuiAvatar-root>, 1 more... ]' to have CSS property 'width' with the value '120px', but the value was '28px'",
+                    "estack": "AssertionError: Timed out retrying after 4000ms: expected '[ <div.MuiAvatar-root.MuiAvatar-circular.MuiAvatar-colorDefault.css-1p5b6ca-MuiAvatar-root>, 1 more... ]' to have CSS property 'width' with the value '120px', but the value was '28px'\n    at Context.eval (webpack://justiwise/./cypress/e2e/profile.cy.ts:37:9)",
+                    "diff": "- '28px'\n+ '120px'\n"
+                  },
+                  "uuid": "70b82091-c1bf-423a-ac53-86032e027048",
+                  "parentUUID": "ff7b54b2-4673-4710-b1b2-39e729f04302",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should display formatted join date",
+                  "fullTitle": "Profile Component Tests Profile Display should display formatted join date",
+                  "timedOut": null,
+                  "duration": 5446,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.contains('Katılma Tarihi:')\n    .parent()\n    .should('contain.text', ':')\n    .and('match', /\\d{1,2}\\.\\d{1,2}\\.\\d{4}/); // Turkish date format",
+                  "err": {
+                    "message": "AssertionError: Timed out retrying after 4000ms: expected '<p.MuiTypography-root.MuiTypography-body1.css-12jmvcs-MuiTypography-root>' to match /\\d{1,2}\\.\\d{1,2}\\.\\d{4}/",
+                    "estack": "AssertionError: Timed out retrying after 4000ms: expected '<p.MuiTypography-root.MuiTypography-body1.css-12jmvcs-MuiTypography-root>' to match /\\d{1,2}\\.\\d{1,2}\\.\\d{4}/\n    at Context.eval (webpack://justiwise/./cypress/e2e/profile.cy.ts:45:9)",
+                    "diff": null
+                  },
+                  "uuid": "2b519679-b4ab-45e6-afb6-c09aae9bc276",
+                  "parentUUID": "ff7b54b2-4673-4710-b1b2-39e729f04302",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "9acaf30c-6920-4aa6-b4d7-e57089f5091b"
+              ],
+              "failures": [
+                "70b82091-c1bf-423a-ac53-86032e027048",
+                "2b519679-b4ab-45e6-afb6-c09aae9bc276"
+              ],
+              "pending": [],
+              "skipped": [],
+              "duration": 12825,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 2000
+            },
+            {
+              "uuid": "09eca419-06e9-4e30-9082-76b17bb559aa",
+              "title": "Profile Edit Dialog",
+              "fullFile": "",
+              "file": "",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "should open edit dialog when edit button is clicked",
+                  "fullTitle": "Profile Component Tests Profile Edit Dialog should open edit dialog when edit button is clicked",
+                  "timedOut": null,
+                  "duration": 8161,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.get('[role=\"dialog\"]').should('be.visible');\ncy.contains('Profili Düzenle').should('be.visible');\n// Check dialog content\ncy.get('[role=\"dialog\"]').within(function () {\n    cy.get('.MuiAvatar-root').should('be.visible');\n    cy.get('input[name=\"username\"]').should('be.visible');\n    cy.get('input[name=\"role\"]').should('be.visible');\n    cy.contains('button', 'Kaydet').should('be.visible');\n    cy.contains('button', 'İptal').should('be.visible');\n});",
+                  "err": {
+                    "message": "AssertionError: Timed out retrying after 4000ms: expected '<input.MuiSelect-nativeInput.css-j0riat-MuiSelect-nativeInput>' to be 'visible'\n\nThis element `<input.MuiSelect-nativeInput.css-j0riat-MuiSelect-nativeInput>` is not visible because it has CSS property: `opacity: 0`",
+                    "estack": "AssertionError: Timed out retrying after 4000ms: expected '<input.MuiSelect-nativeInput.css-j0riat-MuiSelect-nativeInput>' to be 'visible'\n\nThis element `<input.MuiSelect-nativeInput.css-j0riat-MuiSelect-nativeInput>` is not visible because it has CSS property: `opacity: 0`\n    at Context.eval (webpack://justiwise/./cypress/e2e/profile.cy.ts:64:37)\n    at withinFn (http://localhost:3000/__cypress/runner/cypress_runner.js:135507:8)\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:135588:16)\n    at __WEBPACK_DEFAULT_EXPORT__ (http://localhost:3000/__cypress/runner/cypress_runner.js:133446:10)\n    at Context.within (http://localhost:3000/__cypress/runner/cypress_runner.js:135574:67)\n    at wrapped (http://localhost:3000/__cypress/runner/cypress_runner.js:141133:19)",
+                    "diff": null
+                  },
+                  "uuid": "9ecaa6b3-df22-4e99-b162-ff17fd380abd",
+                  "parentUUID": "09eca419-06e9-4e30-9082-76b17bb559aa",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should display current user data in edit form",
+                  "fullTitle": "Profile Component Tests Profile Edit Dialog should display current user data in edit form",
+                  "timedOut": null,
+                  "duration": 8146,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "// Check if username field has a value\ncy.get('input[name=\"username\"]').should('not.have.value', '');\n// Check if role dropdown has a value\ncy.get('input[name=\"role\"]').should('not.have.value', '');\n// Check if avatar is displayed in dialog\ncy.get('[role=\"dialog\"] .MuiAvatar-root').should('be.visible');",
+                  "err": {
+                    "message": "AssertionError: Timed out retrying after 4000ms: expected '<input#:r7:.MuiInputBase-input.MuiOutlinedInput-input.css-o2o0fb-MuiInputBase-input-MuiOutlinedInput-input>' not to have value ''",
+                    "estack": "AssertionError: Timed out retrying after 4000ms: expected '<input#:r7:.MuiInputBase-input.MuiOutlinedInput-input.css-o2o0fb-MuiInputBase-input-MuiOutlinedInput-input>' not to have value ''\n    at Context.eval (webpack://justiwise/./cypress/e2e/profile.cy.ts:72:39)",
+                    "diff": ""
+                  },
+                  "uuid": "d0bb967a-8716-4e19-b1c3-3d865ba1893d",
+                  "parentUUID": "09eca419-06e9-4e30-9082-76b17bb559aa",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should allow editing username",
+                  "fullTitle": "Profile Component Tests Profile Edit Dialog should allow editing username",
+                  "timedOut": null,
+                  "duration": 4787,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "var newUsername = 'newusername' + Date.now(); // Unique username\ncy.get('input[name=\"username\"]')\n    .clear()\n    .type(newUsername)\n    .should('have.value', newUsername);",
+                  "err": {},
+                  "uuid": "d29db69f-da9c-40db-9021-f6f42a89a241",
+                  "parentUUID": "09eca419-06e9-4e30-9082-76b17bb559aa",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should allow changing role",
+                  "fullTitle": "Profile Component Tests Profile Edit Dialog should allow changing role",
+                  "timedOut": null,
+                  "duration": 8347,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "// Click on role dropdown\ncy.get('input[name=\"role\"]').click();\n// Check if dropdown options are visible\ncy.get('.MuiMenuItem-root').should('have.length.at.least', 3);\n// Select lawyer role\ncy.contains('.MuiMenuItem-root', 'Lawyer').click();\n// Verify selection\ncy.get('input[name=\"role\"]').should('have.value', 'lawyer');",
+                  "err": {
+                    "message": "CypressError: Timed out retrying after 4050ms: `cy.click()` failed because this element:\n\n`<input aria-invalid=\"false\" aria-hidden=\"true\" tabindex=\"-1\" class=\"MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput\" value=\"\" name=\"role\">`\n\nhas CSS `pointer-events: none`\n\n`pointer-events: none` prevents user mouse interaction.\n\nFix this problem, or use {force: true} to disable error checking.\n\nhttps://on.cypress.io/element-cannot-be-interacted-with",
+                    "estack": "CypressError: Timed out retrying after 4050ms: `cy.click()` failed because this element:\n\n`<input aria-invalid=\"false\" aria-hidden=\"true\" tabindex=\"-1\" class=\"MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput\" value=\"\" name=\"role\">`\n\nhas CSS `pointer-events: none`\n\n`pointer-events: none` prevents user mouse interaction.\n\nFix this problem, or use {force: true} to disable error checking.\n\nhttps://on.cypress.io/element-cannot-be-interacted-with\n    at ensureElDoesNotHaveCSS (http://localhost:3000/__cypress/runner/cypress_runner.js:113955:66)\n    at ensureDescendents (http://localhost:3000/__cypress/runner/cypress_runner.js:114063:5)\n    at ensureDescendentsAndScroll (http://localhost:3000/__cypress/runner/cypress_runner.js:114071:14)\n    at ensureElIsNotCovered (http://localhost:3000/__cypress/runner/cypress_runner.js:114202:5)\n    at runAllChecks (http://localhost:3000/__cypress/runner/cypress_runner.js:114401:52)\n    at retryActionability (http://localhost:3000/__cypress/runner/cypress_runner.js:114438:16)\n    at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise.attempt.Promise.try (http://localhost:3000/__cypress/runner/cypress_runner.js:4285:29)\n    at whenStable (http://localhost:3000/__cypress/runner/cypress_runner.js:146806:68)\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:146747:14)\n    at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise._settlePromiseFromHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:1489:31)\n    at Promise._settlePromise (http://localhost:3000/__cypress/runner/cypress_runner.js:1546:18)\n    at Promise._settlePromise0 (http://localhost:3000/__cypress/runner/cypress_runner.js:1591:10)\n    at Promise._settlePromises (http://localhost:3000/__cypress/runner/cypress_runner.js:1671:18)\n    at Promise._fulfill (http://localhost:3000/__cypress/runner/cypress_runner.js:1615:18)\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:5420:46)",
+                    "diff": null
+                  },
+                  "uuid": "51d383d6-e2c0-4999-b1a0-60887eec8614",
+                  "parentUUID": "09eca419-06e9-4e30-9082-76b17bb559aa",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should display all role options in dropdown",
+                  "fullTitle": "Profile Component Tests Profile Edit Dialog should display all role options in dropdown",
+                  "timedOut": null,
+                  "duration": 9224,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.get('input[name=\"role\"]').click();\n// Check if all roles are present\ncy.contains('.MuiMenuItem-root', 'Client').should('be.visible');\ncy.contains('.MuiMenuItem-root', 'Lawyer').should('be.visible');\ncy.contains('.MuiMenuItem-root', 'Student').should('be.visible');",
+                  "err": {
+                    "message": "CypressError: Timed out retrying after 4050ms: `cy.click()` failed because this element:\n\n`<input aria-invalid=\"false\" aria-hidden=\"true\" tabindex=\"-1\" class=\"MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput\" value=\"\" name=\"role\">`\n\nhas CSS `pointer-events: none`\n\n`pointer-events: none` prevents user mouse interaction.\n\nFix this problem, or use {force: true} to disable error checking.\n\nhttps://on.cypress.io/element-cannot-be-interacted-with",
+                    "estack": "CypressError: Timed out retrying after 4050ms: `cy.click()` failed because this element:\n\n`<input aria-invalid=\"false\" aria-hidden=\"true\" tabindex=\"-1\" class=\"MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput\" value=\"\" name=\"role\">`\n\nhas CSS `pointer-events: none`\n\n`pointer-events: none` prevents user mouse interaction.\n\nFix this problem, or use {force: true} to disable error checking.\n\nhttps://on.cypress.io/element-cannot-be-interacted-with\n    at ensureElDoesNotHaveCSS (http://localhost:3000/__cypress/runner/cypress_runner.js:113955:66)\n    at ensureDescendents (http://localhost:3000/__cypress/runner/cypress_runner.js:114063:5)\n    at ensureDescendentsAndScroll (http://localhost:3000/__cypress/runner/cypress_runner.js:114071:14)\n    at ensureElIsNotCovered (http://localhost:3000/__cypress/runner/cypress_runner.js:114202:5)\n    at runAllChecks (http://localhost:3000/__cypress/runner/cypress_runner.js:114401:52)\n    at retryActionability (http://localhost:3000/__cypress/runner/cypress_runner.js:114438:16)\n    at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise.attempt.Promise.try (http://localhost:3000/__cypress/runner/cypress_runner.js:4285:29)\n    at whenStable (http://localhost:3000/__cypress/runner/cypress_runner.js:146806:68)\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:146747:14)\n    at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise._settlePromiseFromHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:1489:31)\n    at Promise._settlePromise (http://localhost:3000/__cypress/runner/cypress_runner.js:1546:18)\n    at Promise._settlePromise0 (http://localhost:3000/__cypress/runner/cypress_runner.js:1591:10)\n    at Promise._settlePromises (http://localhost:3000/__cypress/runner/cypress_runner.js:1671:18)\n    at Promise._fulfill (http://localhost:3000/__cypress/runner/cypress_runner.js:1615:18)\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:5420:46)",
+                    "diff": null
+                  },
+                  "uuid": "26cf8ade-4979-4245-a778-f6aa9a52323f",
+                  "parentUUID": "09eca419-06e9-4e30-9082-76b17bb559aa",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should close dialog when cancel button is clicked",
+                  "fullTitle": "Profile Component Tests Profile Edit Dialog should close dialog when cancel button is clicked",
+                  "timedOut": null,
+                  "duration": 4345,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.contains('button', 'İptal').click();\ncy.get('[role=\"dialog\"]').should('not.exist');",
+                  "err": {},
+                  "uuid": "08b92030-d160-4f7c-a347-fdb5cedf3bd3",
+                  "parentUUID": "09eca419-06e9-4e30-9082-76b17bb559aa",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should close dialog when pressing Escape key",
+                  "fullTitle": "Profile Component Tests Profile Edit Dialog should close dialog when pressing Escape key",
+                  "timedOut": null,
+                  "duration": 4038,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.get('[role=\"dialog\"]').type('{esc}');\ncy.get('[role=\"dialog\"]').should('not.exist');",
+                  "err": {},
+                  "uuid": "7b40584d-4716-4ff5-8732-cffa4ddd0059",
+                  "parentUUID": "09eca419-06e9-4e30-9082-76b17bb559aa",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "d29db69f-da9c-40db-9021-f6f42a89a241",
+                "08b92030-d160-4f7c-a347-fdb5cedf3bd3",
+                "7b40584d-4716-4ff5-8732-cffa4ddd0059"
+              ],
+              "failures": [
+                "9ecaa6b3-df22-4e99-b162-ff17fd380abd",
+                "d0bb967a-8716-4e19-b1c3-3d865ba1893d",
+                "51d383d6-e2c0-4999-b1a0-60887eec8614",
+                "26cf8ade-4979-4245-a778-f6aa9a52323f"
+              ],
+              "pending": [],
+              "skipped": [],
+              "duration": 47048,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 2000
+            },
+            {
+              "uuid": "0f170717-1153-461f-be13-2e08eedfc5f7",
+              "title": "Image Upload",
+              "fullFile": "",
+              "file": "",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "should display photo upload button",
+                  "fullTitle": "Profile Component Tests Image Upload should display photo upload button",
+                  "timedOut": null,
+                  "duration": 3603,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.get('input[type=\"file\"]#profile-image-upload').should('exist').and('not.be.visible');\ncy.get('label[for=\"profile-image-upload\"]').should('be.visible');\ncy.get('label[for=\"profile-image-upload\"] .MuiIconButton-root').should('be.visible');",
+                  "err": {},
+                  "uuid": "f14917f6-1c8e-4cdf-b407-182f3fb66057",
+                  "parentUUID": "0f170717-1153-461f-be13-2e08eedfc5f7",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should handle image file selection",
+                  "fullTitle": "Profile Component Tests Image Upload should handle image file selection",
+                  "timedOut": null,
+                  "duration": 3991,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "var fileName = 'test-image.jpg';\n// Create a small test image file\ncy.get('input[type=\"file\"]#profile-image-upload').selectFile({\n    contents: Cypress.Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==', 'base64'),\n    fileName: fileName,\n    mimeType: 'image/png'\n}, { force: true });\n// Verify file input has the file\ncy.get('input[type=\"file\"]#profile-image-upload').should(function ($input) {\n    expect($input[0].files).to.have.length(1);\n    expect($input[0].files[0].name).to.equal(fileName);\n});",
+                  "err": {},
+                  "uuid": "2fdca313-b873-474b-b1e3-fd4dfa9d51ca",
+                  "parentUUID": "0f170717-1153-461f-be13-2e08eedfc5f7",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should only accept image files",
+                  "fullTitle": "Profile Component Tests Image Upload should only accept image files",
+                  "timedOut": null,
+                  "duration": 3927,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.get('input[type=\"file\"]#profile-image-upload').should('have.attr', 'accept', 'image/*');",
+                  "err": {},
+                  "uuid": "f1d7dadc-0d38-4642-8039-28a6d5cc8a60",
+                  "parentUUID": "0f170717-1153-461f-be13-2e08eedfc5f7",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "f14917f6-1c8e-4cdf-b407-182f3fb66057",
+                "2fdca313-b873-474b-b1e3-fd4dfa9d51ca",
+                "f1d7dadc-0d38-4642-8039-28a6d5cc8a60"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 11521,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 2000
+            },
+            {
+              "uuid": "d8ac4da3-2a9d-4787-aed0-384a991bf0de",
+              "title": "Save Functionality",
+              "fullFile": "",
+              "file": "",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "should save username changes successfully",
+                  "fullTitle": "Profile Component Tests Save Functionality should save username changes successfully",
+                  "timedOut": null,
+                  "duration": 4956,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "var newUsername = 'testuser_' + Date.now();\n// Make changes\ncy.get('input[name=\"username\"]').clear().type(newUsername);\n// Save changes\ncy.contains('button', 'Kaydet').click();\n// Wait for dialog to close\ncy.get('[role=\"dialog\"]').should('not.exist');\n// Verify change is reflected on the page\ncy.contains(newUsername).should('be.visible');",
+                  "err": {
+                    "message": "Error: The following error originated from your application code, not from Cypress. It was caused by an unhandled promise rejection.\n\n  > new row for relation \"users\" violates check constraint \"users_role_check\"\n\nWhen Cypress detects uncaught errors originating from your application it will automatically fail the current test.\n\nThis behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.\n\nhttps://on.cypress.io/uncaught-exception-from-application",
+                    "estack": "Error: The following error originated from your application code, not from Cypress. It was caused by an unhandled promise rejection.\n\n  > new row for relation \"users\" violates check constraint \"users_role_check\"\n\nWhen Cypress detects uncaught errors originating from your application it will automatically fail the current test.\n\nThis behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.\n\nhttps://on.cypress.io/uncaught-exception-from-application\n    at updateUser (http://localhost:3000/static/js/bundle.js:108606:11)\n    at async handleSave (http://localhost:3000/static/js/bundle.js:106243:5)",
+                    "diff": null
+                  },
+                  "uuid": "6af001e1-44d8-4190-8765-ee5bbceda9c4",
+                  "parentUUID": "d8ac4da3-2a9d-4787-aed0-384a991bf0de",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should save role changes successfully",
+                  "fullTitle": "Profile Component Tests Save Functionality should save role changes successfully",
+                  "timedOut": null,
+                  "duration": 8172,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "// Change role\ncy.get('input[name=\"role\"]').click();\ncy.contains('.MuiMenuItem-root', 'Student').click();\n// Save changes\ncy.contains('button', 'Kaydet').click();\n// Wait for dialog to close\ncy.get('[role=\"dialog\"]').should('not.exist');\n// Verify role change is reflected\ncy.contains('student').should('be.visible');",
+                  "err": {
+                    "message": "CypressError: Timed out retrying after 4050ms: `cy.click()` failed because this element:\n\n`<input aria-invalid=\"false\" aria-hidden=\"true\" tabindex=\"-1\" class=\"MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput\" value=\"\" name=\"role\">`\n\nhas CSS `pointer-events: none`\n\n`pointer-events: none` prevents user mouse interaction.\n\nFix this problem, or use {force: true} to disable error checking.\n\nhttps://on.cypress.io/element-cannot-be-interacted-with",
+                    "estack": "CypressError: Timed out retrying after 4050ms: `cy.click()` failed because this element:\n\n`<input aria-invalid=\"false\" aria-hidden=\"true\" tabindex=\"-1\" class=\"MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput\" value=\"\" name=\"role\">`\n\nhas CSS `pointer-events: none`\n\n`pointer-events: none` prevents user mouse interaction.\n\nFix this problem, or use {force: true} to disable error checking.\n\nhttps://on.cypress.io/element-cannot-be-interacted-with\n    at ensureElDoesNotHaveCSS (http://localhost:3000/__cypress/runner/cypress_runner.js:113955:66)\n    at ensureDescendents (http://localhost:3000/__cypress/runner/cypress_runner.js:114063:5)\n    at ensureDescendentsAndScroll (http://localhost:3000/__cypress/runner/cypress_runner.js:114071:14)\n    at ensureElIsNotCovered (http://localhost:3000/__cypress/runner/cypress_runner.js:114202:5)\n    at runAllChecks (http://localhost:3000/__cypress/runner/cypress_runner.js:114401:52)\n    at retryActionability (http://localhost:3000/__cypress/runner/cypress_runner.js:114438:16)\n    at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise.attempt.Promise.try (http://localhost:3000/__cypress/runner/cypress_runner.js:4285:29)\n    at whenStable (http://localhost:3000/__cypress/runner/cypress_runner.js:146806:68)\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:146747:14)\n    at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise._settlePromiseFromHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:1489:31)\n    at Promise._settlePromise (http://localhost:3000/__cypress/runner/cypress_runner.js:1546:18)\n    at Promise._settlePromise0 (http://localhost:3000/__cypress/runner/cypress_runner.js:1591:10)\n    at Promise._settlePromises (http://localhost:3000/__cypress/runner/cypress_runner.js:1671:18)\n    at Promise._fulfill (http://localhost:3000/__cypress/runner/cypress_runner.js:1615:18)\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:5420:46)",
+                    "diff": null
+                  },
+                  "uuid": "8cc0aaae-0694-4120-8c71-feb5e219673c",
+                  "parentUUID": "d8ac4da3-2a9d-4787-aed0-384a991bf0de",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should save both username and role changes",
+                  "fullTitle": "Profile Component Tests Save Functionality should save both username and role changes",
+                  "timedOut": null,
+                  "duration": 9990,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "var newUsername = 'multichange_' + Date.now();\n// Make multiple changes\ncy.get('input[name=\"username\"]').clear().type(newUsername);\ncy.get('input[name=\"role\"]').click();\ncy.contains('.MuiMenuItem-root', 'Lawyer').click();\n// Save changes\ncy.contains('button', 'Kaydet').click();\n// Wait for dialog to close\ncy.get('[role=\"dialog\"]').should('not.exist');\n// Verify both changes are reflected\ncy.contains(newUsername).should('be.visible');\ncy.contains('lawyer').should('be.visible');",
+                  "err": {
+                    "message": "CypressError: Timed out retrying after 4050ms: `cy.click()` failed because this element:\n\n`<input aria-invalid=\"false\" aria-hidden=\"true\" tabindex=\"-1\" class=\"MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput\" value=\"\" name=\"role\">`\n\nhas CSS `pointer-events: none`\n\n`pointer-events: none` prevents user mouse interaction.\n\nFix this problem, or use {force: true} to disable error checking.\n\nhttps://on.cypress.io/element-cannot-be-interacted-with",
+                    "estack": "CypressError: Timed out retrying after 4050ms: `cy.click()` failed because this element:\n\n`<input aria-invalid=\"false\" aria-hidden=\"true\" tabindex=\"-1\" class=\"MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput\" value=\"\" name=\"role\">`\n\nhas CSS `pointer-events: none`\n\n`pointer-events: none` prevents user mouse interaction.\n\nFix this problem, or use {force: true} to disable error checking.\n\nhttps://on.cypress.io/element-cannot-be-interacted-with\n    at ensureElDoesNotHaveCSS (http://localhost:3000/__cypress/runner/cypress_runner.js:113955:66)\n    at ensureDescendents (http://localhost:3000/__cypress/runner/cypress_runner.js:114063:5)\n    at ensureDescendentsAndScroll (http://localhost:3000/__cypress/runner/cypress_runner.js:114071:14)\n    at ensureElIsNotCovered (http://localhost:3000/__cypress/runner/cypress_runner.js:114202:5)\n    at runAllChecks (http://localhost:3000/__cypress/runner/cypress_runner.js:114401:52)\n    at retryActionability (http://localhost:3000/__cypress/runner/cypress_runner.js:114438:16)\n    at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise.attempt.Promise.try (http://localhost:3000/__cypress/runner/cypress_runner.js:4285:29)\n    at whenStable (http://localhost:3000/__cypress/runner/cypress_runner.js:146806:68)\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:146747:14)\n    at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise._settlePromiseFromHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:1489:31)\n    at Promise._settlePromise (http://localhost:3000/__cypress/runner/cypress_runner.js:1546:18)\n    at Promise._settlePromise0 (http://localhost:3000/__cypress/runner/cypress_runner.js:1591:10)\n    at Promise._settlePromises (http://localhost:3000/__cypress/runner/cypress_runner.js:1671:18)\n    at Promise._fulfill (http://localhost:3000/__cypress/runner/cypress_runner.js:1615:18)\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:5420:46)",
+                    "diff": null
+                  },
+                  "uuid": "465e319b-64fd-45a9-a275-947f736213a7",
+                  "parentUUID": "d8ac4da3-2a9d-4787-aed0-384a991bf0de",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should handle save with image upload",
+                  "fullTitle": "Profile Component Tests Save Functionality should handle save with image upload",
+                  "timedOut": null,
+                  "duration": 4826,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "var fileName = 'profile-pic.png';\n// Upload image\ncy.get('input[type=\"file\"]#profile-image-upload').selectFile({\n    contents: Cypress.Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==', 'base64'),\n    fileName: fileName,\n    mimeType: 'image/png'\n}, { force: true });\n// Save changes\ncy.contains('button', 'Kaydet').click();\n// Wait for dialog to close (image upload might take time)\ncy.get('[role=\"dialog\"]').should('not.exist', { timeout: 10000 });",
+                  "err": {
+                    "message": "Error: The following error originated from your application code, not from Cypress. It was caused by an unhandled promise rejection.\n\n  > new row for relation \"users\" violates check constraint \"users_role_check\"\n\nWhen Cypress detects uncaught errors originating from your application it will automatically fail the current test.\n\nThis behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.\n\nhttps://on.cypress.io/uncaught-exception-from-application",
+                    "estack": "Error: The following error originated from your application code, not from Cypress. It was caused by an unhandled promise rejection.\n\n  > new row for relation \"users\" violates check constraint \"users_role_check\"\n\nWhen Cypress detects uncaught errors originating from your application it will automatically fail the current test.\n\nThis behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.\n\nhttps://on.cypress.io/uncaught-exception-from-application\n    at updateUser (http://localhost:3000/static/js/bundle.js:108606:11)\n    at async handleSave (http://localhost:3000/static/js/bundle.js:106243:5)",
+                    "diff": null
+                  },
+                  "uuid": "aba3556f-e2d6-4a73-9a26-093d1934f2ce",
+                  "parentUUID": "d8ac4da3-2a9d-4787-aed0-384a991bf0de",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should not save when required fields are empty",
+                  "fullTitle": "Profile Component Tests Save Functionality should not save when required fields are empty",
+                  "timedOut": null,
+                  "duration": 4154,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "// Clear username\ncy.get('input[name=\"username\"]').clear();\n// Try to save\ncy.contains('button', 'Kaydet').click();\n// Dialog might remain open or show validation error\n// Adjust based on your validation implementation\ncy.get('input[name=\"username\"]').should('be.focused').or(cy.get('[role=\"dialog\"]').should('be.visible'));",
+                  "err": {
+                    "message": "TypeError: cy.get(...).should(...).or is not a function",
+                    "estack": "TypeError: cy.get(...).should(...).or is not a function\n    at Context.eval (webpack://justiwise/./cypress/e2e/profile.cy.ts:240:60)\n    at runnable.fn (http://localhost:3000/__cypress/runner/cypress_runner.js:141400:19)\n    at callFn (http://localhost:3000/__cypress/runner/cypress_runner.js:160478:21)\n    at Runnable.run (http://localhost:3000/__cypress/runner/cypress_runner.js:160465:7)\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:166537:30)\n    at PassThroughHandlerContext.finallyHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:4042:23)\n    at PassThroughHandlerContext.tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise._settlePromiseFromHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:1489:31)\n    at Promise._settlePromise (http://localhost:3000/__cypress/runner/cypress_runner.js:1546:18)",
+                    "diff": null
+                  },
+                  "uuid": "7ebd374c-bd09-4186-ab8c-5b48cb0695ff",
+                  "parentUUID": "d8ac4da3-2a9d-4787-aed0-384a991bf0de",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [],
+              "failures": [
+                "6af001e1-44d8-4190-8765-ee5bbceda9c4",
+                "8cc0aaae-0694-4120-8c71-feb5e219673c",
+                "465e319b-64fd-45a9-a275-947f736213a7",
+                "aba3556f-e2d6-4a73-9a26-093d1934f2ce",
+                "7ebd374c-bd09-4186-ab8c-5b48cb0695ff"
+              ],
+              "pending": [],
+              "skipped": [],
+              "duration": 32098,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 2000
+            },
+            {
+              "uuid": "dc3fb1a0-db8a-452e-b265-389fa01cf47c",
+              "title": "User Interface Interactions",
+              "fullFile": "",
+              "file": "",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "should show hover effects on buttons",
+                  "fullTitle": "Profile Component Tests User Interface Interactions should show hover effects on buttons",
+                  "timedOut": null,
+                  "duration": 1452,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.contains('button', 'Profili Düzenle')\n    .trigger('mouseover')\n    .should('have.css', 'cursor', 'pointer');",
+                  "err": {},
+                  "uuid": "a7b8977b-94a8-4ec4-b52e-3592a79e9556",
+                  "parentUUID": "dc3fb1a0-db8a-452e-b265-389fa01cf47c",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should handle form field focus states",
+                  "fullTitle": "Profile Component Tests User Interface Interactions should handle form field focus states",
+                  "timedOut": null,
+                  "duration": 5697,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.contains('button', 'Profili Düzenle').click();\ncy.get('input[name=\"username\"]')\n    .focus()\n    .should('have.focus')\n    .and('have.class', 'Mui-focused');",
+                  "err": {
+                    "message": "AssertionError: Timed out retrying after 4000ms: expected '<input#:r7:.MuiInputBase-input.MuiOutlinedInput-input.css-o2o0fb-MuiInputBase-input-MuiOutlinedInput-input>' to have class 'Mui-focused'",
+                    "estack": "AssertionError: Timed out retrying after 4000ms: expected '<input#:r7:.MuiInputBase-input.MuiOutlinedInput-input.css-o2o0fb-MuiInputBase-input-MuiOutlinedInput-input>' to have class 'Mui-focused'\n    at Context.eval (webpack://justiwise/./cypress/e2e/profile.cy.ts:257:9)",
+                    "diff": null
+                  },
+                  "uuid": "a24cf41e-2591-4183-a23e-96e216b11698",
+                  "parentUUID": "dc3fb1a0-db8a-452e-b265-389fa01cf47c",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should maintain form state when switching between fields",
+                  "fullTitle": "Profile Component Tests User Interface Interactions should maintain form state when switching between fields",
+                  "timedOut": null,
+                  "duration": 6195,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.contains('button', 'Profili Düzenle').click();\nvar testUsername = 'focustest';\n// Type in username field\ncy.get('input[name=\"username\"]').clear().type(testUsername);\n// Switch to role field\ncy.get('input[name=\"role\"]').click();\ncy.contains('.MuiMenuItem-root', 'Student').click();\n// Check username field still has the value\ncy.get('input[name=\"username\"]').should('have.value', testUsername);",
+                  "err": {
+                    "message": "CypressError: Timed out retrying after 4050ms: `cy.click()` failed because this element:\n\n`<input aria-invalid=\"false\" aria-hidden=\"true\" tabindex=\"-1\" class=\"MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput\" value=\"\" name=\"role\">`\n\nhas CSS `pointer-events: none`\n\n`pointer-events: none` prevents user mouse interaction.\n\nFix this problem, or use {force: true} to disable error checking.\n\nhttps://on.cypress.io/element-cannot-be-interacted-with",
+                    "estack": "CypressError: Timed out retrying after 4050ms: `cy.click()` failed because this element:\n\n`<input aria-invalid=\"false\" aria-hidden=\"true\" tabindex=\"-1\" class=\"MuiSelect-nativeInput css-j0riat-MuiSelect-nativeInput\" value=\"\" name=\"role\">`\n\nhas CSS `pointer-events: none`\n\n`pointer-events: none` prevents user mouse interaction.\n\nFix this problem, or use {force: true} to disable error checking.\n\nhttps://on.cypress.io/element-cannot-be-interacted-with\n    at ensureElDoesNotHaveCSS (http://localhost:3000/__cypress/runner/cypress_runner.js:113955:66)\n    at ensureDescendents (http://localhost:3000/__cypress/runner/cypress_runner.js:114063:5)\n    at ensureDescendentsAndScroll (http://localhost:3000/__cypress/runner/cypress_runner.js:114071:14)\n    at ensureElIsNotCovered (http://localhost:3000/__cypress/runner/cypress_runner.js:114202:5)\n    at runAllChecks (http://localhost:3000/__cypress/runner/cypress_runner.js:114401:52)\n    at retryActionability (http://localhost:3000/__cypress/runner/cypress_runner.js:114438:16)\n    at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise.attempt.Promise.try (http://localhost:3000/__cypress/runner/cypress_runner.js:4285:29)\n    at whenStable (http://localhost:3000/__cypress/runner/cypress_runner.js:146806:68)\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:146747:14)\n    at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise._settlePromiseFromHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:1489:31)\n    at Promise._settlePromise (http://localhost:3000/__cypress/runner/cypress_runner.js:1546:18)\n    at Promise._settlePromise0 (http://localhost:3000/__cypress/runner/cypress_runner.js:1591:10)\n    at Promise._settlePromises (http://localhost:3000/__cypress/runner/cypress_runner.js:1671:18)\n    at Promise._fulfill (http://localhost:3000/__cypress/runner/cypress_runner.js:1615:18)\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:5420:46)",
+                    "diff": null
+                  },
+                  "uuid": "1ff08926-fd10-4d16-9bc3-d04ab83b2a1c",
+                  "parentUUID": "dc3fb1a0-db8a-452e-b265-389fa01cf47c",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "a7b8977b-94a8-4ec4-b52e-3592a79e9556"
+              ],
+              "failures": [
+                "a24cf41e-2591-4183-a23e-96e216b11698",
+                "1ff08926-fd10-4d16-9bc3-d04ab83b2a1c"
+              ],
+              "pending": [],
+              "skipped": [],
+              "duration": 13344,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 2000
+            },
+            {
+              "uuid": "0f53810b-cbd4-4a14-8275-d992064063ff",
+              "title": "Responsive Design",
+              "fullFile": "",
+              "file": "",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "should display correctly on mobile devices",
+                  "fullTitle": "Profile Component Tests Responsive Design should display correctly on mobile devices",
+                  "timedOut": null,
+                  "duration": 4104,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.viewport('iphone-6');\n// Profile should be visible and properly formatted\ncy.contains('h4', 'Profil').should('be.visible');\ncy.get('.MuiAvatar-root').should('be.visible');\ncy.contains('button', 'Profili Düzenle').should('be.visible');\n// Open dialog on mobile\ncy.contains('button', 'Profili Düzenle').click();\ncy.get('[role=\"dialog\"]').should('be.visible');",
+                  "err": {},
+                  "uuid": "23928188-58d2-490f-9b77-4a09e36df7bd",
+                  "parentUUID": "0f53810b-cbd4-4a14-8275-d992064063ff",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should display correctly on tablet devices",
+                  "fullTitle": "Profile Component Tests Responsive Design should display correctly on tablet devices",
+                  "timedOut": null,
+                  "duration": 1496,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.viewport('ipad-2');\n// Profile should be visible and properly formatted\ncy.contains('h4', 'Profil').should('be.visible');\ncy.get('.MuiAvatar-root').should('be.visible');\ncy.contains('button', 'Profili Düzenle').should('be.visible');",
+                  "err": {},
+                  "uuid": "72a84494-61ba-41b2-9f5d-5d6933b80050",
+                  "parentUUID": "0f53810b-cbd4-4a14-8275-d992064063ff",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should maintain functionality on different screen sizes",
+                  "fullTitle": "Profile Component Tests Responsive Design should maintain functionality on different screen sizes",
+                  "timedOut": null,
+                  "duration": 10736,
+                  "state": "passed",
+                  "speed": "slow",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "var viewports = ['macbook-15', 'ipad-2', 'iphone-6'];\nviewports.forEach(function (viewport) {\n    cy.viewport(viewport);\n    // Test basic functionality\n    cy.contains('button', 'Profili Düzenle').click();\n    cy.get('[role=\"dialog\"]').should('be.visible');\n    cy.contains('button', 'İptal').click();\n    cy.get('[role=\"dialog\"]').should('not.exist');\n});",
+                  "err": {},
+                  "uuid": "b351fc73-248e-4f64-84d6-93f5776e662c",
+                  "parentUUID": "0f53810b-cbd4-4a14-8275-d992064063ff",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "23928188-58d2-490f-9b77-4a09e36df7bd",
+                "72a84494-61ba-41b2-9f5d-5d6933b80050",
+                "b351fc73-248e-4f64-84d6-93f5776e662c"
+              ],
+              "failures": [],
+              "pending": [],
+              "skipped": [],
+              "duration": 16336,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 2000
+            },
+            {
+              "uuid": "dd6a7013-f78b-4a44-983e-e7aa4e671dcf",
+              "title": "Accessibility",
+              "fullFile": "",
+              "file": "",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "should have proper dialog accessibility",
+                  "fullTitle": "Profile Component Tests Accessibility should have proper dialog accessibility",
+                  "timedOut": null,
+                  "duration": 2057,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.contains('button', 'Profili Düzenle').click();\ncy.get('[role=\"dialog\"]').should('exist');\ncy.get('[aria-labelledby]').should('exist');",
+                  "err": {},
+                  "uuid": "7e3bf74d-555a-4c33-a4ca-ac105dc63948",
+                  "parentUUID": "dd6a7013-f78b-4a44-983e-e7aa4e671dcf",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should be keyboard navigable",
+                  "fullTitle": "Profile Component Tests Accessibility should be keyboard navigable",
+                  "timedOut": null,
+                  "duration": 1468,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "// Tab to edit button\ncy.get('body').tab();\ncy.focused().should('contain', 'Profili Düzenle');\n// Open dialog with keyboard\ncy.focused().type('{enter}');\ncy.get('[role=\"dialog\"]').should('be.visible');\n// Navigate within dialog using tab\ncy.get('body').tab();\ncy.focused().should('be.visible');",
+                  "err": {
+                    "message": "TypeError: cy.get(...).tab is not a function",
+                    "estack": "TypeError: cy.get(...).tab is not a function\n    at Context.eval (webpack://justiwise/./cypress/e2e/profile.cy.ts:325:21)\n    at runnable.fn (http://localhost:3000/__cypress/runner/cypress_runner.js:141400:19)\n    at callFn (http://localhost:3000/__cypress/runner/cypress_runner.js:160478:21)\n    at Runnable.run (http://localhost:3000/__cypress/runner/cypress_runner.js:160465:7)\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:166537:30)\n    at PassThroughHandlerContext.finallyHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:4042:23)\n    at PassThroughHandlerContext.tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise._settlePromiseFromHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:1489:31)\n    at Promise._settlePromise (http://localhost:3000/__cypress/runner/cypress_runner.js:1546:18)",
+                    "diff": null
+                  },
+                  "uuid": "e80c8cbd-ee1a-4b1e-b376-8b3c69bedb30",
+                  "parentUUID": "dd6a7013-f78b-4a44-983e-e7aa4e671dcf",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should have proper form labels",
+                  "fullTitle": "Profile Component Tests Accessibility should have proper form labels",
+                  "timedOut": null,
+                  "duration": 1601,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.contains('button', 'Profili Düzenle').click();\n// Check for proper labeling\ncy.get('input[name=\"username\"]').should('have.attr', 'aria-label').or('be.labelled');\ncy.get('input[name=\"role\"]').should('have.attr', 'aria-label').or('be.labelled');",
+                  "err": {
+                    "message": "TypeError: cy.get(...).should(...).or is not a function",
+                    "estack": "TypeError: cy.get(...).should(...).or is not a function\n    at Context.eval (webpack://justiwise/./cypress/e2e/profile.cy.ts:341:73)\n    at runnable.fn (http://localhost:3000/__cypress/runner/cypress_runner.js:141400:19)\n    at callFn (http://localhost:3000/__cypress/runner/cypress_runner.js:160478:21)\n    at Runnable.run (http://localhost:3000/__cypress/runner/cypress_runner.js:160465:7)\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:166537:30)\n    at PassThroughHandlerContext.finallyHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:4042:23)\n    at PassThroughHandlerContext.tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise._settlePromiseFromHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:1489:31)\n    at Promise._settlePromise (http://localhost:3000/__cypress/runner/cypress_runner.js:1546:18)",
+                    "diff": null
+                  },
+                  "uuid": "dfbc7ada-4689-4053-85c8-b479dc633447",
+                  "parentUUID": "dd6a7013-f78b-4a44-983e-e7aa4e671dcf",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should support screen readers",
+                  "fullTitle": "Profile Component Tests Accessibility should support screen readers",
+                  "timedOut": null,
+                  "duration": 1580,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "// Check for important ARIA attributes\ncy.get('main, [role=\"main\"]').should('exist');\ncy.get('h4').should('have.attr', 'id').or('have.attr', 'aria-label');",
+                  "err": {
+                    "message": "TypeError: cy.get(...).should(...).or is not a function",
+                    "estack": "TypeError: cy.get(...).should(...).or is not a function\n    at Context.eval (webpack://justiwise/./cypress/e2e/profile.cy.ts:348:45)\n    at runnable.fn (http://localhost:3000/__cypress/runner/cypress_runner.js:141400:19)\n    at callFn (http://localhost:3000/__cypress/runner/cypress_runner.js:160478:21)\n    at Runnable.run (http://localhost:3000/__cypress/runner/cypress_runner.js:160465:7)\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:166537:30)\n    at PassThroughHandlerContext.finallyHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:4042:23)\n    at PassThroughHandlerContext.tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise._settlePromiseFromHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:1489:31)\n    at Promise._settlePromise (http://localhost:3000/__cypress/runner/cypress_runner.js:1546:18)",
+                    "diff": null
+                  },
+                  "uuid": "4ad9efce-84d2-4fb9-86ad-1f068250dcd7",
+                  "parentUUID": "dd6a7013-f78b-4a44-983e-e7aa4e671dcf",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "7e3bf74d-555a-4c33-a4ca-ac105dc63948"
+              ],
+              "failures": [
+                "e80c8cbd-ee1a-4b1e-b376-8b3c69bedb30",
+                "dfbc7ada-4689-4053-85c8-b479dc633447",
+                "4ad9efce-84d2-4fb9-86ad-1f068250dcd7"
+              ],
+              "pending": [],
+              "skipped": [],
+              "duration": 6706,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 2000
+            },
+            {
+              "uuid": "65846d31-5c2a-4628-a850-e095c4f9228b",
+              "title": "Error Handling",
+              "fullFile": "",
+              "file": "",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "should handle network errors gracefully",
+                  "fullTitle": "Profile Component Tests Error Handling should handle network errors gracefully",
+                  "timedOut": null,
+                  "duration": 2509,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "// Simulate network failure\ncy.intercept('PUT', '**/users/**', { forceNetworkError: true }).as('networkError');\ncy.contains('button', 'Profili Düzenle').click();\ncy.get('input[name=\"username\"]').clear().type('networkerrortest');\ncy.contains('button', 'Kaydet').click();\n// Should handle error gracefully (check for error message or dialog remaining open)\ncy.wait('@networkError');",
+                  "err": {
+                    "message": "Error: The following error originated from your application code, not from Cypress. It was caused by an unhandled promise rejection.\n\n  > new row for relation \"users\" violates check constraint \"users_role_check\"\n\nWhen Cypress detects uncaught errors originating from your application it will automatically fail the current test.\n\nThis behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.\n\nhttps://on.cypress.io/uncaught-exception-from-application",
+                    "estack": "Error: The following error originated from your application code, not from Cypress. It was caused by an unhandled promise rejection.\n\n  > new row for relation \"users\" violates check constraint \"users_role_check\"\n\nWhen Cypress detects uncaught errors originating from your application it will automatically fail the current test.\n\nThis behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.\n\nhttps://on.cypress.io/uncaught-exception-from-application\n    at updateUser (http://localhost:3000/static/js/bundle.js:108606:11)\n    at async handleSave (http://localhost:3000/static/js/bundle.js:106243:5)",
+                    "diff": null
+                  },
+                  "uuid": "0250b6bd-ff2e-4477-b93c-e89d1aaad052",
+                  "parentUUID": "65846d31-5c2a-4628-a850-e095c4f9228b",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should validate file upload size and type",
+                  "fullTitle": "Profile Component Tests Error Handling should validate file upload size and type",
+                  "timedOut": null,
+                  "duration": 1846,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "cy.contains('button', 'Profili Düzenle').click();\n// Try to upload a non-image file (if validation exists)\ncy.get('input[type=\"file\"]#profile-image-upload').selectFile({\n    contents: 'This is not an image',\n    fileName: 'test.txt',\n    mimeType: 'text/plain'\n}, { force: true });\n// Depending on implementation, this might show an error or be rejected",
+                  "err": {
+                    "message": "CypressError: `cy.selectFile(\"This is not an image\")` failed because the file does not exist at the following path:\n\n`C:\\Users\\Ahmet Engin\\Desktop\\cmpe492\\justiwise\\This is not an image`\n\nhttps://on.cypress.io/selectfile",
+                    "estack": "CypressError: `cy.selectFile(\"This is not an image\")` failed because the file does not exist at the following path:\n\n`C:\\Users\\Ahmet Engin\\Desktop\\cmpe492\\justiwise\\This is not an image`\n\nhttps://on.cypress.io/selectfile\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:115614:70)\n    at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise._settlePromiseFromHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:1489:31)\n    at Promise._settlePromise (http://localhost:3000/__cypress/runner/cypress_runner.js:1546:18)\n    at Promise._settlePromise0 (http://localhost:3000/__cypress/runner/cypress_runner.js:1591:10)\n    at Promise._settlePromises (http://localhost:3000/__cypress/runner/cypress_runner.js:1667:18)\n    at _drainQueueStep (http://localhost:3000/__cypress/runner/cypress_runner.js:2377:12)\n    at _drainQueue (http://localhost:3000/__cypress/runner/cypress_runner.js:2370:9)\n    at Async._drainQueues (http://localhost:3000/__cypress/runner/cypress_runner.js:2386:5)\n    at Async.drainQueues (http://localhost:3000/__cypress/runner/cypress_runner.js:2256:14)",
+                    "diff": null
+                  },
+                  "uuid": "21b6000e-a5b3-4e60-8807-7c20bb806c50",
+                  "parentUUID": "65846d31-5c2a-4628-a850-e095c4f9228b",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [],
+              "failures": [
+                "0250b6bd-ff2e-4477-b93c-e89d1aaad052",
+                "21b6000e-a5b3-4e60-8807-7c20bb806c50"
+              ],
+              "pending": [],
+              "skipped": [],
+              "duration": 4355,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 2000
+            },
+            {
+              "uuid": "6fb1d9d3-1895-40d6-9791-1c604acd65db",
+              "title": "Performance",
+              "fullFile": "",
+              "file": "",
+              "beforeHooks": [],
+              "afterHooks": [],
+              "tests": [
+                {
+                  "title": "should load profile page within acceptable time",
+                  "fullTitle": "Profile Component Tests Performance should load profile page within acceptable time",
+                  "timedOut": null,
+                  "duration": 1536,
+                  "state": "passed",
+                  "speed": "fast",
+                  "pass": true,
+                  "fail": false,
+                  "pending": false,
+                  "context": null,
+                  "code": "var startTime = Date.now();\ncy.visit('/profile').then(function () {\n    var loadTime = Date.now() - startTime;\n    expect(loadTime).to.be.lessThan(3000); // Should load within 3 seconds\n});",
+                  "err": {},
+                  "uuid": "257f860f-df1d-4dac-aee4-10605e0dbc50",
+                  "parentUUID": "6fb1d9d3-1895-40d6-9791-1c604acd65db",
+                  "isHook": false,
+                  "skipped": false
+                },
+                {
+                  "title": "should handle multiple rapid clicks gracefully",
+                  "fullTitle": "Profile Component Tests Performance should handle multiple rapid clicks gracefully",
+                  "timedOut": null,
+                  "duration": 6039,
+                  "state": "failed",
+                  "speed": null,
+                  "pass": false,
+                  "fail": true,
+                  "pending": false,
+                  "context": null,
+                  "code": "// Rapidly click edit button\ncy.contains('button', 'Profili Düzenle')\n    .click()\n    .click()\n    .click();\n// Should only open one dialog\ncy.get('[role=\"dialog\"]').should('have.length', 1);",
+                  "err": {
+                    "message": "CypressError: Timed out retrying after 4050ms: `cy.click()` failed because this element:\n\n`<button class=\"MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary css-ykmjgp-MuiButtonBase-root-MuiButton-root\" tabindex=\"0\" type=\"button\">Profili...</button>`\n\nis being covered by another element:\n\n`<div class=\"MuiDialog-container MuiDialog-scrollPaper css-45uc01-MuiDialog-container\" role=\"presentation\" tabindex=\"-1\" style=\"opacity: 1; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1);\">...</div>`\n\nFix this problem, or use {force: true} to disable error checking.\n\nhttps://on.cypress.io/element-cannot-be-interacted-with",
+                    "estack": "CypressError: Timed out retrying after 4050ms: `cy.click()` failed because this element:\n\n`<button class=\"MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary css-ykmjgp-MuiButtonBase-root-MuiButton-root\" tabindex=\"0\" type=\"button\">Profili...</button>`\n\nis being covered by another element:\n\n`<div class=\"MuiDialog-container MuiDialog-scrollPaper css-45uc01-MuiDialog-container\" role=\"presentation\" tabindex=\"-1\" style=\"opacity: 1; transition: opacity 225ms cubic-bezier(0.4, 0, 0.2, 1);\">...</div>`\n\nFix this problem, or use {force: true} to disable error checking.\n\nhttps://on.cypress.io/element-cannot-be-interacted-with\n    at ensureIsDescendent (http://localhost:3000/__cypress/runner/cypress_runner.js:114014:68)\n    at ensureDescendents (http://localhost:3000/__cypress/runner/cypress_runner.js:114065:5)\n    at ensureDescendentsAndScroll (http://localhost:3000/__cypress/runner/cypress_runner.js:114071:14)\n    at ensureElIsNotCovered (http://localhost:3000/__cypress/runner/cypress_runner.js:114202:5)\n    at runAllChecks (http://localhost:3000/__cypress/runner/cypress_runner.js:114401:52)\n    at retryActionability (http://localhost:3000/__cypress/runner/cypress_runner.js:114438:16)\n    at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise.attempt.Promise.try (http://localhost:3000/__cypress/runner/cypress_runner.js:4285:29)\n    at whenStable (http://localhost:3000/__cypress/runner/cypress_runner.js:146806:68)\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:146747:14)\n    at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise._settlePromiseFromHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:1489:31)\n    at Promise._settlePromise (http://localhost:3000/__cypress/runner/cypress_runner.js:1546:18)\n    at Promise._settlePromise0 (http://localhost:3000/__cypress/runner/cypress_runner.js:1591:10)\n    at Promise._settlePromises (http://localhost:3000/__cypress/runner/cypress_runner.js:1671:18)\n    at Promise._fulfill (http://localhost:3000/__cypress/runner/cypress_runner.js:1615:18)\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:5420:46)",
+                    "diff": null
+                  },
+                  "uuid": "72b7859f-ed2d-4a8c-8cd7-969faf1246f9",
+                  "parentUUID": "6fb1d9d3-1895-40d6-9791-1c604acd65db",
+                  "isHook": false,
+                  "skipped": false
+                }
+              ],
+              "suites": [],
+              "passes": [
+                "257f860f-df1d-4dac-aee4-10605e0dbc50"
+              ],
+              "failures": [
+                "72b7859f-ed2d-4a8c-8cd7-969faf1246f9"
+              ],
+              "pending": [],
+              "skipped": [],
+              "duration": 7575,
+              "root": false,
+              "rootEmpty": false,
+              "_timeout": 2000
+            }
+          ],
+          "passes": [],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 0,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/results",
+        "overwrite": false,
+        "html": true,
+        "json": true,
+        "timestamp": "mm-dd-yyyy_HH-MM-ss",
+        "charts": true,
+        "reportPageTitle": "Cypress Test Raporu - JustiWise",
+        "embeddedScreenshots": true,
+        "inlineAssets": true,
+        "autoOpen": false
+      },
+      "version": "6.2.0"
+    }
+  }
+}
