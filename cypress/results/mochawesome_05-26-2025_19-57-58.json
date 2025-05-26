@@ -1,0 +1,149 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 3,
+    "passes": 3,
+    "pending": 0,
+    "failures": 0,
+    "start": "2025-05-26T16:57:56.332Z",
+    "end": "2025-05-26T16:57:58.789Z",
+    "duration": 2457,
+    "testsRegistered": 3,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "9c1f7db6-7f6e-48cb-aba3-dbcdb81c082d",
+      "title": "",
+      "fullFile": "cypress\\e2e\\logintest.cy.ts",
+      "file": "cypress\\e2e\\logintest.cy.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "d4b5c6cb-bdbd-44c2-b576-08fd1de27d5f",
+          "title": "Login Sayfası Testi",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Login formu render ediliyor",
+              "fullTitle": "Login Sayfası Testi Login formu render ediliyor",
+              "timedOut": null,
+              "duration": 565,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get('input[name=\"email\"]').should('exist');\ncy.get('input[name=\"password\"]').should('exist');\ncy.get('button[type=\"submit\"]').should('exist');",
+              "err": {},
+              "uuid": "0881bec0-3e65-41f2-becc-be7c0d4e6cef",
+              "parentUUID": "d4b5c6cb-bdbd-44c2-b576-08fd1de27d5f",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Geçerli bilgilerle giriş yapılabiliyor",
+              "fullTitle": "Login Sayfası Testi Geçerli bilgilerle giriş yapılabiliyor",
+              "timedOut": null,
+              "duration": 857,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get('input[name=\"email\"]').type('ahmetbyk49@gmail.com');\ncy.get('input[name=\"password\"]').type('Hardalla!2002');\ncy.get('button[type=\"submit\"]').click();\n// Girişten sonra yönlendirme kontrolü\ncy.url().should('include', '/');",
+              "err": {},
+              "uuid": "865ca3f0-1e7f-431b-8145-1d9021640cf3",
+              "parentUUID": "d4b5c6cb-bdbd-44c2-b576-08fd1de27d5f",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Geçersiz bilgilerle toast mesajı gösteriliyor",
+              "fullTitle": "Login Sayfası Testi Geçersiz bilgilerle toast mesajı gösteriliyor",
+              "timedOut": null,
+              "duration": 966,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get('input[name=\"email\"]').type('wrong@example.com');\ncy.get('input[name=\"password\"]').type('wrongpass');\ncy.get('button[type=\"submit\"]').click();\n// Toastify mesajının DOM'da çıktığını kontrol et\ncy.get('.Toastify__toast--error')\n    .should('be.visible')\n    .and('contain', 'Invalid login credentials'); // Hatanın içeriği",
+              "err": {},
+              "uuid": "6b8eb4fa-6b43-4a04-9636-efe24e044076",
+              "parentUUID": "d4b5c6cb-bdbd-44c2-b576-08fd1de27d5f",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "0881bec0-3e65-41f2-becc-be7c0d4e6cef",
+            "865ca3f0-1e7f-431b-8145-1d9021640cf3",
+            "6b8eb4fa-6b43-4a04-9636-efe24e044076"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 2388,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/results",
+        "overwrite": false,
+        "html": true,
+        "json": true,
+        "timestamp": "mm-dd-yyyy_HH-MM-ss",
+        "charts": true,
+        "reportPageTitle": "Cypress Test Raporu - JustiWise",
+        "embeddedScreenshots": true,
+        "inlineAssets": true,
+        "autoOpen": false
+      },
+      "version": "6.2.0"
+    }
+  }
+}

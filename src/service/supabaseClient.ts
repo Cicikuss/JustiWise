@@ -194,3 +194,17 @@ export const deleteCase = async (caseId: string) => {
     }
     return data;
 }
+
+
+export const getCaseById = async (caseId: string) => {
+    const { data, error } = await supabaseClient
+        .from('cases')
+        .select('*')
+        .eq('id', caseId)
+        .single();
+
+    if (error) {
+        throw new Error(error.message);
+    }
+    return data;
+}
