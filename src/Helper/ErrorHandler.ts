@@ -30,3 +30,8 @@ export const showErrorToast = (error: any ) => {
   
   
 };
+
+
+export const showSuccessToast = (message: string) => {
+    toast.success(message);
+};
