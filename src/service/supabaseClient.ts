@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { EditableUser } from '../Models/User';
-import { newCase } from '../Models/Case';
+import { CaseType, newCase } from '../Models/Case';
 
 
 
@@ -299,3 +299,17 @@ export const assignLawyerToCase = async (caseId: string, lawyerId: string) => {
     }
     return data;
 }
+
+
+export const searchCases = async (query: string): Promise<CaseType[]> => {
+
+    const { data, error } = await supabaseClient.rpc('search_all_cases', {
+        search_query: query.toLowerCase() 
+    });
+
+    if (error) {
+        console.error('Error searching cases via RPC:', error.message);
+        throw new Error(`Dava araması yapılırken hata oluştu: ${error.message}`);
+    }
+    return data || [];
+};

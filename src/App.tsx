@@ -20,6 +20,7 @@ import DocumentSummaryChat from './Pages/DocumentSummaryChat/DocumentSummaryChat
 import { NotificationsPage } from './Pages/NotificationsPage/NotifcationsPage';
 import ClientCaseRequestsPage from './Pages/ClientCaseRequestPage/ClientCaseRequestPage';
 import SingleCasePage from './Pages/SingleCasePage/SingleCasePage';
+import { TinyCats } from './Pages/TinyCats/TinyCats';
 
 function AppContent() {
   
@@ -90,6 +91,13 @@ function AppContent() {
           <ProtectedRoute>
             <Navbar />
             <SingleCasePage />
+          </ProtectedRoute>
+        } />
+
+          <Route path="/legalcats" element={
+          <ProtectedRoute>
+            <Navbar />
+            <TinyCats />
           </ProtectedRoute>
         } />
        

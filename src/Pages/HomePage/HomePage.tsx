@@ -40,6 +40,12 @@ const features = [
     icon: <QuestionAnswerIcon fontSize="large" />,
     path: "/qa",
   },
+  {
+    title: "TinyCats",
+    description: "Kedileri seviyorum.",
+    icon: <QuestionAnswerIcon fontSize="large" />,
+    path: "/legalcats",
+  },
 ];
 
 export default function HomePage() {
