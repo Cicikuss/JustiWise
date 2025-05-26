@@ -11,7 +11,7 @@ export type CaseType ={
   file?: File; 
 }
 
-export type CaseTypeWithURL = CaseType & {
+export type CaseTypeWithURL = {
 
    id: string;
   title: string;
