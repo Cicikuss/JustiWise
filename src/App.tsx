@@ -18,7 +18,8 @@ import HomePage from './Pages/HomePage/HomePage';
 import CourtroomPage from './Pages/Courtroom/CourtroomPage';
 import DocumentSummaryChat from './Pages/DocumentSummaryChat/DocumentSummaryChat';
 import { NotificationsPage } from './Pages/NotificationsPage/NotifcationsPage';
-import SingleCasePage from './Pages/SingleCasePage/SingeleCasePage';
+import ClientCaseRequestsPage from './Pages/ClientCaseRequestPage/ClientCaseRequestPage';
+import SingleCasePage from './Pages/SingleCasePage/SingleCasePage';
 
 function AppContent() {
   
@@ -38,6 +39,12 @@ function AppContent() {
           <ProtectedRoute>
             <Navbar />
             <MyCases />
+          </ProtectedRoute>
+        } />
+        <Route path="/client-request-page" element={
+          <ProtectedRoute>
+            <Navbar />
+            <ClientCaseRequestsPage />
           </ProtectedRoute>
         } />
         <Route path="/qa" element={
