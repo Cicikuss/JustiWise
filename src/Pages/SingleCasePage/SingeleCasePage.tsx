@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CaseTypeWithURL } from "../../Models/Case";
-import { getCaseById, getUserById } from "../../service/supabaseClient";
+// applyForCase ve getCaseRequestByLawyerAndCase'i içe aktarın
+import { applyForCase, getCaseById, getUserById, getCaseRequestByLawyerAndCase } from "../../service/supabaseClient";
 
 import {
     Container,
@@ -13,10 +14,14 @@ import {
     Link as MuiLink,
     Divider,
     Box,
-    Alert
+    Alert,
+    Button
 } from "@mui/material";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { showErrorToast } from "../../Helper/ErrorHandler";
+// Toast fonksiyonlarının doğru yerden geldiğinden emin olun
+import { showErrorToast, showSuccessToast } from "../../Helper/ErrorHandler"; // showErrorToast'ın burada olduğunu varsayıyorum
+
+import { useAuth } from "../../Context/AuthContext";
 
 const SingleCasePage = () => {
     const { caseId } = useParams<{ caseId: string }>();
@@ -25,6 +30,25 @@ const SingleCasePage = () => {
     const [error, setError] = useState<string | null>(null);
     const [clientName, setClientName] = useState<string>('Yükleniyor...');
     const [lawyerName, setLawyerName] = useState<string>('Yükleniyor...');
+    const [applyingForCase, setApplyingForCase] = useState<boolean>(false); // Başvuru gönderme işlemi için
+    const [hasAppliedForCase, setHasAppliedForCase] = useState<boolean>(false); // Mevcut kullanıcının zaten başvurup başvurmadığını belirtir
+
+
+    const { user } = useAuth(); // AuthContext'ten kullanıcı objesini al
+
+    // currentUserId ve currentUserType'ı user objesi yüklendiğinde ayarla
+    const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+    const [currentUserType, setCurrentUserType] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (user) {
+            setCurrentUserId(user.id);
+            setCurrentUserType(user.role);
+        } else {
+            setCurrentUserId(null);
+            setCurrentUserType(null);
+        }
+    }, [user]); // 'user' objesi değiştiğinde bu efekti yeniden çalıştır
 
     useEffect(() => {
         if (!caseId) {
@@ -36,43 +60,53 @@ const SingleCasePage = () => {
         const fetchAllCaseDetails = async () => {
             setLoading(true);
             setError(null);
-            setClientName('Yükleniyor...'); // Reset names on new fetch
-            setLawyerName('Yükleniyor...'); // Reset names on new fetch
+            setClientName('Yükleniyor...');
+            setLawyerName('Yükleniyor...');
+            setHasAppliedForCase(false); // Her yeni yüklemede başvuru durumunu sıfırla
 
             try {
-                // 1. Dava verisini getir
                 const response = await getCaseById(caseId);
 
                 if (response) {
                     setCaseData(response);
 
-                    // 2. Dava verisi geldikten sonra, müvekkil ve avukat ID'lerini kullanarak isimlerini getir
-                    // client ve lawyer ID'lerinin null/undefined olma ihtimaline karşı kontrol eklendi
                     const [clientRes, lawyerRes] = await Promise.all([
                         response.client ? getUserById(response.client) : Promise.resolve(null),
                         response.lawyer ? getUserById(response.lawyer) : Promise.resolve(null)
                     ]);
 
+                    // DİKKAT: Burada 'username' hatası alıyorsanız,
+                    // getUserById'den dönen objede kullanıcı adının hangi sütunda olduğunu kontrol edin.
+                    // Örneğin: clientRes?.full_name veya clientRes?.display_name olabilir.
                     setClientName(clientRes?.username || 'Bilinmiyor');
                     setLawyerName(lawyerRes?.username || 'Bilinmiyor');
+
+                    // Eğer bir avukat oturum açmışsa ve davanın henüz bir avukatı yoksa
+                    // Mevcut kullanıcının bu dava için daha önce başvuru yapıp yapmadığını kontrol et
+                    if (currentUserType === 'lawyer' && currentUserId && !response.lawyer) {
+                        const existingRequest = await getCaseRequestByLawyerAndCase(caseId, currentUserId);
+                        if (existingRequest) {
+                            setHasAppliedForCase(true);
+                        }
+                    }
 
                 } else {
                     setError(`ID: ${caseId} için dava bulunamadı.`);
                     setCaseData(null);
-                    setClientName('Bilinmiyor'); // Eğer dava bulunamazsa isimleri sıfırla
+                    setClientName('Bilinmiyor');
                     setLawyerName('Bilinmiyor');
                 }
-            } catch (err) {
-                console.error("Dava veya kullanıcı bilgileri yüklenirken hata:", err); // Hata ayıklama için konsola yaz
-                showErrorToast(err);
+            } catch (err: any) {
+                showErrorToast(err.message || "Dava detayları yüklenirken bir hata oluştu.");
                 setError("Dava detayları yüklenirken bir hata oluştu.");
             } finally {
                 setLoading(false);
             }
         };
 
+        // currentUserId ve currentUserType güncellendiğinde de useEffect'in çalışmasını sağla
         fetchAllCaseDetails();
-    }, [caseId]); // Bağımlılık olarak sadece caseId'yi tutuyoruz
+    }, [caseId, currentUserId, currentUserType]);
 
     const capitalizeFirstLetter = (string: string) => {
         if (!string) return '';
@@ -97,6 +131,27 @@ const SingleCasePage = () => {
         }
     };
 
+    // Davaya başvurma fonksiyonu (isim 'handleClaimCase' yerine 'handleApplyForCase' olarak değiştirildi)
+    const handleApplyForCase = async () => {
+        // currentUserId'nin null olmadığından emin olun
+        if (!caseId || !currentUserId) {
+            showErrorToast("Dava ID'si veya avukat bilgisi eksik.");
+            return;
+        }
+        setApplyingForCase(true); // Başvuru sürecini başlat
+        try {
+            await applyForCase(caseId); // currentUserId'yi applyForCase'e geçirin
+            setHasAppliedForCase(true); // Başvuru başarılı olduğunda state'i güncelle
+            showSuccessToast("Başvurunuz başarıyla gönderildi! Onay bekleniyor.");
+            // Dava avukatını burada güncellemiyoruz, çünkü sadece başvuru yapıldı, atanmadı.
+        } catch (err: any) {
+            showErrorToast(err.message || "Davaya başvurmaya çalışırken bir hata oluştu.");
+        } finally {
+            setApplyingForCase(false); // Başvuru sürecini sonlandır
+        }
+    };
+
+    // Yüklenme durumunda
     if (loading) {
         return (
             <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', py: 4 }}>
@@ -108,6 +163,7 @@ const SingleCasePage = () => {
         );
     }
 
+    // Hata durumunda
     if (error) {
         return (
             <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', py: 4 }}>
@@ -119,6 +175,7 @@ const SingleCasePage = () => {
         );
     }
 
+    // Dava bulunamadığında
     if (!caseData) {
         return (
             <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', py: 4 }}>
@@ -128,6 +185,10 @@ const SingleCasePage = () => {
             </Container>
         );
     }
+
+    // Butonun gösterilme koşulları
+    const showApplyButton = currentUserType === 'lawyer' && !caseData.lawyer && !hasAppliedForCase && currentUserId !== null; // Avukat olmalı, dava boş olmalı, daha önce başvurmamış olmalı ve currentUserId boş olmamalı
+    const showAppliedMessage = currentUserType === 'lawyer' && !caseData.lawyer && hasAppliedForCase && currentUserId !== null; // Avukat olmalı, dava boş olmalı, daha önce başvurmuş olmalı ve currentUserId boş olmamalı
 
     return (
         <Container maxWidth="lg" sx={{ py: { xs: 3, md: 5 } }}>
@@ -217,6 +278,28 @@ const SingleCasePage = () => {
                             </MuiLink>
                         </Box>
                     </>
+                )}
+
+                {/* Buton veya başvuru mesajı buraya eklendi */}
+                {(showApplyButton || showAppliedMessage) && (
+                    <Box sx={{ mt: 4, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+                        {showApplyButton && (
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                size="large"
+                                onClick={handleApplyForCase} // Correct handler
+                                disabled={applyingForCase} // Correct state
+                            >
+                                {applyingForCase ? <CircularProgress size={24} color="inherit" /> : 'Bu Davaya Başvur'} {/* Correct button text */}
+                            </Button>
+                        )}
+                        {showAppliedMessage && (
+                            <Alert severity="info" sx={{ width: 'auto' }}>
+                                Bu davaya zaten başvurdunuz. Onay bekleniyor.
+                            </Alert>
+                        )}
+                    </Box>
                 )}
             </Paper>
         </Container>
