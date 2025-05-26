@@ -208,3 +208,48 @@ export const getCaseById = async (caseId: string) => {
     }
     return data;
 }
+
+export const applyForCase = async (caseId: string) => {
+
+    const { data: existingRequests, error: fetchError } = await supabaseClient
+        .from('case_requests')
+        .select('id')
+        .eq('case_id', caseId)
+        .eq('lawyer_id', userID)
+        .in('request_status', ['pending', 'approved']); 
+
+         if (fetchError) {
+        console.error('Error checking existing requests:', fetchError.message);
+        throw new Error(`Mevcut başvuruları kontrol ederken hata oluştu: ${fetchError.message}`);
+    }
+
+    if (existingRequests && existingRequests.length > 0) {
+        throw new Error("Bu dava için zaten bir başvurunuz bulunuyor veya başvurunuz onaylanmış.");
+    }
+
+    
+    const { data, error } = await supabaseClient
+       .from('case_requests')
+       .insert([{ case_id: caseId, lawyer_id: userID ,request_status: 'pending'}])
+       .select();
+
+    if (error) {
+        throw new Error(error.message);
+    }
+    return data;
+}
+
+export const getCaseRequestByLawyerAndCase = async (caseId: string, lawyerId: string) => {
+    const { data, error } = await supabaseClient
+        .from('case_requests')
+        .select('*')
+        .eq('case_id', caseId)
+        .eq('lawyer_id', lawyerId)
+        .single();
+
+    if (error && error.code !== 'PGRST116') { // PGRST116: no rows found
+        console.error('Error fetching case request:', error.message);
+        return null;
+    }
+    return data;
+};
