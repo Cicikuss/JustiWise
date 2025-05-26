@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { CaseTypeWithURL } from "../../Models/Case"; // Modelinizin yolu
-import { getCaseById } from "../../service/supabaseClient"; // Servisinizin yolu
+import { CaseTypeWithURL } from "../../Models/Case";
+import { getCaseById, getUserById } from "../../service/supabaseClient";
 
-// MUI Bileşenleri
 import {
     Container,
     Typography,
@@ -11,18 +10,21 @@ import {
     Paper,
     Grid,
     Chip,
-    Link as MuiLink, // Link çakışmasını önlemek için yeniden adlandırma
+    Link as MuiLink,
     Divider,
     Box,
     Alert
 } from "@mui/material";
-import OpenInNewIcon from '@mui/icons-material/OpenInNew'; // Doküman linki için ikon
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { showErrorToast } from "../../Helper/ErrorHandler";
 
 const SingleCasePage = () => {
     const { caseId } = useParams<{ caseId: string }>();
     const [caseData, setCaseData] = useState<CaseTypeWithURL | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [clientName, setClientName] = useState<string>('Yükleniyor...');
+    const [lawyerName, setLawyerName] = useState<string>('Yükleniyor...');
 
     useEffect(() => {
         if (!caseId) {
@@ -31,27 +33,46 @@ const SingleCasePage = () => {
             return;
         }
 
-        const fetchCaseData = async () => {
+        const fetchAllCaseDetails = async () => {
             setLoading(true);
             setError(null);
+            setClientName('Yükleniyor...'); // Reset names on new fetch
+            setLawyerName('Yükleniyor...'); // Reset names on new fetch
+
             try {
+                // 1. Dava verisini getir
                 const response = await getCaseById(caseId);
+
                 if (response) {
                     setCaseData(response);
+
+                    // 2. Dava verisi geldikten sonra, müvekkil ve avukat ID'lerini kullanarak isimlerini getir
+                    // client ve lawyer ID'lerinin null/undefined olma ihtimaline karşı kontrol eklendi
+                    const [clientRes, lawyerRes] = await Promise.all([
+                        response.client ? getUserById(response.client) : Promise.resolve(null),
+                        response.lawyer ? getUserById(response.lawyer) : Promise.resolve(null)
+                    ]);
+
+                    setClientName(clientRes?.username || 'Bilinmiyor');
+                    setLawyerName(lawyerRes?.username || 'Bilinmiyor');
+
                 } else {
                     setError(`ID: ${caseId} için dava bulunamadı.`);
                     setCaseData(null);
+                    setClientName('Bilinmiyor'); // Eğer dava bulunamazsa isimleri sıfırla
+                    setLawyerName('Bilinmiyor');
                 }
             } catch (err) {
-                console.error("Dava verileri getirilirken hata:", err);
-                setError(err instanceof Error ? err.message : "Dava verileri getirilirken bilinmeyen bir hata oluştu.");
+                console.error("Dava veya kullanıcı bilgileri yüklenirken hata:", err); // Hata ayıklama için konsola yaz
+                showErrorToast(err);
+                setError("Dava detayları yüklenirken bir hata oluştu.");
             } finally {
                 setLoading(false);
             }
         };
 
-        fetchCaseData();
-    }, [caseId]);
+        fetchAllCaseDetails();
+    }, [caseId]); // Bağımlılık olarak sadece caseId'yi tutuyoruz
 
     const capitalizeFirstLetter = (string: string) => {
         if (!string) return '';
@@ -62,7 +83,7 @@ const SingleCasePage = () => {
         switch (status) {
             case 'active': return 'success';
             case 'pending': return 'warning';
-            case 'closed': return 'default'; // veya 'info'
+            case 'closed': return 'default';
             default: return 'default';
         }
     };
@@ -109,8 +130,8 @@ const SingleCasePage = () => {
     }
 
     return (
-        <Container maxWidth="lg" sx={{ py: { xs: 3, md: 5 } }}> {/* Üst ve alt padding */}
-            <Paper elevation={3} sx={{ p: { xs: 2, sm: 3, md: 4 } }}> {/* İç padding */}
+        <Container maxWidth="lg" sx={{ py: { xs: 3, md: 5 } }}>
+            <Paper elevation={3} sx={{ p: { xs: 2, sm: 3, md: 4 } }}>
                 <Box mb={3}>
                     <Typography variant="h3" component="h1" gutterBottom sx={{ wordBreak: 'break-word' }}>
                         {caseData.title || "Başlıksız Dava"}
@@ -139,11 +160,11 @@ const SingleCasePage = () => {
                     </Grid>
                     <Grid item xs={12} sm={6} md={4}>
                         <Typography variant="subtitle2" color="text.secondary" gutterBottom>Müvekkil:</Typography>
-                        <Typography variant="body1">{caseData.client || "Belirtilmemiş"}</Typography>
+                        <Typography variant="body1">{clientName || "Belirtilmemiş"}</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} md={4}>
                         <Typography variant="subtitle2" color="text.secondary" gutterBottom>Avukat:</Typography>
-                        <Typography variant="body1">{caseData.lawyer || "Belirtilmemiş"}</Typography>
+                        <Typography variant="body1">{lawyerName || "Belirtilmemiş"}</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6} md={4}>
                         <Typography variant="subtitle2" color="text.secondary" gutterBottom>Kategori:</Typography>
