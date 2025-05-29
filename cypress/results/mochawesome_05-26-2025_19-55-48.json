@@ -1,0 +1,273 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 8,
+    "passes": 1,
+    "pending": 0,
+    "failures": 7,
+    "start": "2025-05-26T16:55:07.123Z",
+    "end": "2025-05-26T16:55:48.108Z",
+    "duration": 40985,
+    "testsRegistered": 8,
+    "passPercent": 12.5,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "391f1c71-ff28-4ee9-b6b8-0e0d0b53dd39",
+      "title": "",
+      "fullFile": "cypress\\e2e\\courtroom.cy.ts",
+      "file": "cypress\\e2e\\courtroom.cy.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "ccb3a05e-46a6-4085-912d-5da5bf84987f",
+          "title": "CourtroomPage Bileşeni Testleri",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Başlangıçtaki UI elemanlarını doğru şekilde göstermeli",
+              "fullTitle": "CourtroomPage Bileşeni Testleri Başlangıçtaki UI elemanlarını doğru şekilde göstermeli",
+              "timedOut": null,
+              "duration": 5812,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "cy.contains('h4', 'Mahkeme Simülasyonu').should('be.visible');\ncy.contains('Rolünüzü seçin ve duruşmayı başlatın.').should('be.visible');\n// Rol seçim radyo butonlarını kontrol et\ncy.get('input[type=\"radio\"][value=\"Sanık\"]').should('be.visible');\ncy.get('input[type=\"radio\"][value=\"Avukat\"]').should('be.visible');\ncy.get('input[type=\"radio\"][value=\"Tanık\"]').should('be.visible');\n// \"Duruşmayı Başlat\" butonu başlangıçta devre dışı olmalı\ncy.contains('button', 'Duruşmayı Başlat').should('be.disabled');\n// \"Duruşma Kaydı\" bölümü başlangıçta görünmemeli\ncy.contains('Duruşma Kaydı').should('not.exist');\ncy.contains('Cevapla').should('not.exist');",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 4000ms: expected '<input.PrivateSwitchBase-input.css-j8yymo>' to be 'visible'\n\nThis element `<input.PrivateSwitchBase-input.css-j8yymo>` is not visible because it has CSS property: `opacity: 0`",
+                "estack": "AssertionError: Timed out retrying after 4000ms: expected '<input.PrivateSwitchBase-input.css-j8yymo>' to be 'visible'\n\nThis element `<input.PrivateSwitchBase-input.css-j8yymo>` is not visible because it has CSS property: `opacity: 0`\n    at Context.eval (webpack://justiwise/./cypress/e2e/courtroom.cy.ts:22:49)",
+                "diff": null
+              },
+              "uuid": "f09eeccd-0976-4351-9392-f3c77212b0de",
+              "parentUUID": "ccb3a05e-46a6-4085-912d-5da5bf84987f",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Bir rol seçildiğinde \"Duruşmayı Başlat\" butonunu etkinleştirmeli",
+              "fullTitle": "CourtroomPage Bileşeni Testleri Bir rol seçildiğinde \"Duruşmayı Başlat\" butonunu etkinleştirmeli",
+              "timedOut": null,
+              "duration": 1326,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "// \"Sanık\" rolünü seç\ncy.get('input[type=\"radio\"][value=\"Sanık\"]').check();\ncy.contains('button', 'Duruşmayı Başlat').should('be.enabled');\n// Farklı bir rol seçerek tekrar kontrol et\ncy.get('input[type=\"radio\"][value=\"Avukat\"]').check();\ncy.contains('button', 'Duruşmayı Başlat').should('be.enabled');",
+              "err": {},
+              "uuid": "0d29dcb2-de45-4f94-bbc4-b920d7fdc7e7",
+              "parentUUID": "ccb3a05e-46a6-4085-912d-5da5bf84987f",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Duruşmayı Başlat butonuna tıklandığında simülasyonu başlatmalı ve ilk logları göstermeli",
+              "fullTitle": "CourtroomPage Bileşeni Testleri Duruşmayı Başlat butonuna tıklandığında simülasyonu başlatmalı ve ilk logları göstermeli",
+              "timedOut": null,
+              "duration": 5491,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "var selectedRole = 'Avukat';\ncy.get(\"input[type=\\\"radio\\\"][value=\\\"\".concat(selectedRole, \"\\\"]\")).check();\ncy.contains('button', 'Duruşmayı Başlat').click();\n// UI değişikliklerini kontrol et\ncy.contains('Rolünüzü seçin ve duruşmayı başlatın.').should('not.exist'); // Eski metin kaybolmalı\ncy.contains('Duruşma Kaydı').should('be.visible'); // Yeni bölüm görünmeli\n// İlk logları kontrol et\n// Logların listelendiği Box'ı seçelim ve içindeki Typography (p) elementlerini kontrol edelim\ncy.get('div[style*=\"max-height: 300px\"] p').eq(0).should('have.text', 'Hakim: Duruşma başlamıştır.');\ncy.get('div[style*=\"max-height: 300px\"] p').eq(1).should('have.text', \"Hakim: \".concat(selectedRole, \" haz\\u0131r m\\u0131s\\u0131n\\u0131z?\"));\n// \"Cevapla\" butonu görünür ve etkin olmalı\ncy.contains('button', 'Cevapla').should('be.enabled');",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 4000ms: Expected to find element: `div[style*=\"max-height: 300px\"] p`, but never found it.",
+                "estack": "AssertionError: Timed out retrying after 4000ms: Expected to find element: `div[style*=\"max-height: 300px\"] p`, but never found it.\n    at Context.eval (webpack://justiwise/./cypress/e2e/courtroom.cy.ts:57:7)",
+                "diff": null
+              },
+              "uuid": "95f021ba-af78-447b-b772-0ef7beec74f1",
+              "parentUUID": "ccb3a05e-46a6-4085-912d-5da5bf84987f",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Cevapla butonuna tıklandığında loglara yanıt eklemeli ve butonu devre dışı bırakmalı",
+              "fullTitle": "CourtroomPage Bileşeni Testleri Cevapla butonuna tıklandığında loglara yanıt eklemeli ve butonu devre dışı bırakmalı",
+              "timedOut": null,
+              "duration": 5710,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "var selectedRole = 'Tanık';\ncy.get(\"input[type=\\\"radio\\\"][value=\\\"\".concat(selectedRole, \"\\\"]\")).check();\ncy.contains('button', 'Duruşmayı Başlat').click();\n// \"Cevapla\" butonuna tıkla\ncy.contains('button', 'Cevapla').click();\n// Yeni logun eklenmiş olduğunu kontrol et\ncy.get('div[style*=\"max-height: 300px\"] p').eq(2).should('have.text', \"\".concat(selectedRole, \": Haz\\u0131r\\u0131m, Say\\u0131n Hakim.\"));\n// \"Cevapla\" butonu artık devre dışı olmalı\ncy.contains('button', 'Cevapla').should('be.disabled');\n// Tekrar tıklama girişiminde bulun ve yeni log eklenmediğini doğrula\ncy.contains('button', 'Cevapla').click(); // Devre dışı olduğu için bir etkisi olmamalı\ncy.get('div[style*=\"max-height: 300px\"] p').should('have.length', 3); // Log sayısı hala 3 olmalı",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 4000ms: Expected to find element: `div[style*=\"max-height: 300px\"] p`, but never found it.",
+                "estack": "AssertionError: Timed out retrying after 4000ms: Expected to find element: `div[style*=\"max-height: 300px\"] p`, but never found it.\n    at Context.eval (webpack://justiwise/./cypress/e2e/courtroom.cy.ts:74:7)",
+                "diff": null
+              },
+              "uuid": "28ad15f0-e5c7-44c7-8501-ecb6dd1d00c1",
+              "parentUUID": "ccb3a05e-46a6-4085-912d-5da5bf84987f",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should correctly simulate the process for the role: Sanık",
+              "fullTitle": "CourtroomPage Bileşeni Testleri should correctly simulate the process for the role: Sanık",
+              "timedOut": null,
+              "duration": 5609,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "cy.get(\"input[type=\\\"radio\\\"][value=\\\"\".concat(role, \"\\\"]\")).check();\ncy.contains('button', 'Duruşmayı Başlat').click();\n// Hakimin ilk mesajını kontrol et\ncy.get('div[style*=\"max-height: 300px\"] p').eq(1).should('have.text', \"Hakim: \".concat(role, \" haz\\u0131r m\\u0131s\\u0131n\\u0131z?\"));\n// Cevapla butonuna tıkla\ncy.contains('button', 'Cevapla').click();\n// Rolün yanıtını kontrol et\ncy.get('div[style*=\"max-height: 300px\"] p').eq(2).should('have.text', \"\".concat(role, \": Haz\\u0131r\\u0131m, Say\\u0131n Hakim.\"));\n// Cevapla butonunun devre dışı olduğunu kontrol et\ncy.contains('button', 'Cevapla').should('be.disabled');\n// Toplam log sayısının 3 olduğunu doğrula\ncy.get('div[style*=\"max-height: 300px\"] p').should('have.length', 3);",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 4000ms: Expected to find element: `div[style*=\"max-height: 300px\"] p`, but never found it.",
+                "estack": "AssertionError: Timed out retrying after 4000ms: Expected to find element: `div[style*=\"max-height: 300px\"] p`, but never found it.\n    at Context.eval (webpack://justiwise/./cypress/e2e/courtroom.cy.ts:91:9)",
+                "diff": null
+              },
+              "uuid": "61a5767b-ff92-43bc-afb4-83968da7a779",
+              "parentUUID": "ccb3a05e-46a6-4085-912d-5da5bf84987f",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should correctly simulate the process for the role: Avukat",
+              "fullTitle": "CourtroomPage Bileşeni Testleri should correctly simulate the process for the role: Avukat",
+              "timedOut": null,
+              "duration": 5543,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "cy.get(\"input[type=\\\"radio\\\"][value=\\\"\".concat(role, \"\\\"]\")).check();\ncy.contains('button', 'Duruşmayı Başlat').click();\n// Hakimin ilk mesajını kontrol et\ncy.get('div[style*=\"max-height: 300px\"] p').eq(1).should('have.text', \"Hakim: \".concat(role, \" haz\\u0131r m\\u0131s\\u0131n\\u0131z?\"));\n// Cevapla butonuna tıkla\ncy.contains('button', 'Cevapla').click();\n// Rolün yanıtını kontrol et\ncy.get('div[style*=\"max-height: 300px\"] p').eq(2).should('have.text', \"\".concat(role, \": Haz\\u0131r\\u0131m, Say\\u0131n Hakim.\"));\n// Cevapla butonunun devre dışı olduğunu kontrol et\ncy.contains('button', 'Cevapla').should('be.disabled');\n// Toplam log sayısının 3 olduğunu doğrula\ncy.get('div[style*=\"max-height: 300px\"] p').should('have.length', 3);",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 4000ms: Expected to find element: `div[style*=\"max-height: 300px\"] p`, but never found it.",
+                "estack": "AssertionError: Timed out retrying after 4000ms: Expected to find element: `div[style*=\"max-height: 300px\"] p`, but never found it.\n    at Context.eval (webpack://justiwise/./cypress/e2e/courtroom.cy.ts:91:9)",
+                "diff": null
+              },
+              "uuid": "b4f55eac-6c11-4d92-b322-d9ecceb94daa",
+              "parentUUID": "ccb3a05e-46a6-4085-912d-5da5bf84987f",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should correctly simulate the process for the role: Tanık",
+              "fullTitle": "CourtroomPage Bileşeni Testleri should correctly simulate the process for the role: Tanık",
+              "timedOut": null,
+              "duration": 5513,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "cy.get(\"input[type=\\\"radio\\\"][value=\\\"\".concat(role, \"\\\"]\")).check();\ncy.contains('button', 'Duruşmayı Başlat').click();\n// Hakimin ilk mesajını kontrol et\ncy.get('div[style*=\"max-height: 300px\"] p').eq(1).should('have.text', \"Hakim: \".concat(role, \" haz\\u0131r m\\u0131s\\u0131n\\u0131z?\"));\n// Cevapla butonuna tıkla\ncy.contains('button', 'Cevapla').click();\n// Rolün yanıtını kontrol et\ncy.get('div[style*=\"max-height: 300px\"] p').eq(2).should('have.text', \"\".concat(role, \": Haz\\u0131r\\u0131m, Say\\u0131n Hakim.\"));\n// Cevapla butonunun devre dışı olduğunu kontrol et\ncy.contains('button', 'Cevapla').should('be.disabled');\n// Toplam log sayısının 3 olduğunu doğrula\ncy.get('div[style*=\"max-height: 300px\"] p').should('have.length', 3);",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 4000ms: Expected to find element: `div[style*=\"max-height: 300px\"] p`, but never found it.",
+                "estack": "AssertionError: Timed out retrying after 4000ms: Expected to find element: `div[style*=\"max-height: 300px\"] p`, but never found it.\n    at Context.eval (webpack://justiwise/./cypress/e2e/courtroom.cy.ts:91:9)",
+                "diff": null
+              },
+              "uuid": "cd8a9a27-0a1b-4bb2-aa5a-011a75957d0c",
+              "parentUUID": "ccb3a05e-46a6-4085-912d-5da5bf84987f",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Duruşmayı Başlat butonuna tıklandığında simülasyonu başlatmalı ve ilk logları göstermeli",
+              "fullTitle": "CourtroomPage Bileşeni Testleri Duruşmayı Başlat butonuna tıklandığında simülasyonu başlatmalı ve ilk logları göstermeli",
+              "timedOut": null,
+              "duration": 5636,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "var selectedRole = 'Avukat';\ncy.get(\"input[type=\\\"radio\\\"][value=\\\"\".concat(selectedRole, \"\\\"]\")).check();\ncy.contains('button', 'Duruşmayı Başlat').click();\n// UI'ın tamamen değişmesini ve logların görünmesini beklemek için (en sağlam yol)\ncy.contains('Duruşma Kaydı').should('be.visible'); // Yeni başlığın görünmesini bekle\ncy.pause(); // <<< BURAYA EKLEYİN VE DOM'U İNCELEYİN\n// İlk logları kontrol et\ncy.get('div[style*=\"max-height: 300px\"] p').eq(0).should('have.text', 'Hakim: Duruşma başlamıştır.');\n// ...",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 4000ms: Expected to find element: `div[style*=\"max-height: 300px\"] p`, but never found it.",
+                "estack": "AssertionError: Timed out retrying after 4000ms: Expected to find element: `div[style*=\"max-height: 300px\"] p`, but never found it.\n    at Context.eval (webpack://justiwise/./cypress/e2e/courtroom.cy.ts:117:5)",
+                "diff": null
+              },
+              "uuid": "f0fc2602-a941-467e-b60c-290de55a3d46",
+              "parentUUID": "ccb3a05e-46a6-4085-912d-5da5bf84987f",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "0d29dcb2-de45-4f94-bbc4-b920d7fdc7e7"
+          ],
+          "failures": [
+            "f09eeccd-0976-4351-9392-f3c77212b0de",
+            "95f021ba-af78-447b-b772-0ef7beec74f1",
+            "28ad15f0-e5c7-44c7-8501-ecb6dd1d00c1",
+            "61a5767b-ff92-43bc-afb4-83968da7a779",
+            "b4f55eac-6c11-4d92-b322-d9ecceb94daa",
+            "cd8a9a27-0a1b-4bb2-aa5a-011a75957d0c",
+            "f0fc2602-a941-467e-b60c-290de55a3d46"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 40640,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/results",
+        "overwrite": false,
+        "html": true,
+        "json": true,
+        "timestamp": "mm-dd-yyyy_HH-MM-ss",
+        "charts": true,
+        "reportPageTitle": "Cypress Test Raporu - JustiWise",
+        "embeddedScreenshots": true,
+        "inlineAssets": true,
+        "autoOpen": false
+      },
+      "version": "6.2.0"
+    }
+  }
+}

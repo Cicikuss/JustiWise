@@ -20,6 +20,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 //import { useAuth } from '../../Context/AuthContext';
 import { supabaseClient } from '../../service/supabaseClient';
 import { useAuth } from '../../Context/AuthContext';
+import { showErrorToast } from '../../Helper/ErrorHandler';
 
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -88,12 +89,12 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
     const data = new FormData(event.currentTarget);
     const email = data.get('email') as string;
     const password = data.get('password') as string;
+
   
     try {
      await login(email, password);
     } catch (err) {
-      alert('Bir hata oluştu!');
-      console.error(err);
+      showErrorToast(err);
     }
   };  
 
@@ -236,7 +237,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
               type="submit"
               fullWidth
               variant="contained"
-              //onClick={validateInputs}
+              onClick={validateInputs}
               sx={{
                 mt: 2,
                 py: 1.5,

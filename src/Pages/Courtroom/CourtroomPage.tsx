@@ -8,6 +8,7 @@ import {
   Button,
   Paper,
   Box,
+  useTheme, // useTheme hook'unu içe aktar
 } from "@mui/material";
 import GavelIcon from "@mui/icons-material/Gavel";
 
@@ -18,6 +19,8 @@ export default function CourtroomPage(): JSX.Element {
   const [selectedRole, setSelectedRole] = useState<Role | "">("");
   const [started, setStarted] = useState<boolean>(false);
   const [logs, setLogs] = useState<string[]>([]);
+
+  const theme = useTheme(); 
 
   const handleStart = () => {
     if (!selectedRole) return;
@@ -31,6 +34,12 @@ export default function CourtroomPage(): JSX.Element {
 
   const handleRespond = () => {
     if (!selectedRole) return;
+
+    // "Cevapla" butonu sadece bir kez tıklanabilir hale getirildi
+    // Eğer loglarda zaten seçili rolün cevabı varsa tekrar cevap verilemez
+    if (logs.some((l) => l.includes(`${selectedRole}: Hazırım, Sayın Hakim.`))) {
+        return;
+    }
 
     setLogs((prev) => [...prev, `${selectedRole}: Hazırım, Sayın Hakim.`]);
   };
@@ -87,10 +96,11 @@ export default function CourtroomPage(): JSX.Element {
             sx={{
               maxHeight: "300px",
               overflowY: "auto",
-              border: "1px solid #ddd",
+              // Sabit renkler yerine tema paletinden renkler kullanıldı
+              border: `1px solid ${theme.palette.divider}`, // border için theme.palette.divider uygun
               p: 2,
               borderRadius: 2,
-              background: "#fafafa",
+              background: theme.palette.background.paper, // background için theme.palette.background.paper uygun
             }}
           >
             {logs.map((line, index) => (
@@ -104,7 +114,8 @@ export default function CourtroomPage(): JSX.Element {
             <Button
               variant="outlined"
               onClick={handleRespond}
-              disabled={logs.some((l) => l.includes(`${selectedRole}:`))}
+              // Cevap butonu, seçili rolün cevabı zaten loglarda varsa devre dışı bırakıldı
+              disabled={logs.some((l) => l.includes(`${selectedRole}: Hazırım, Sayın Hakim.`))}
             >
               Cevapla
             </Button>

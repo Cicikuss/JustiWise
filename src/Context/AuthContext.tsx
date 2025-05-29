@@ -1,15 +1,14 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserType } from '../Models/User';
-import { fetchUser, userLogin, userSignUp } from '../service/supabaseClient';
-import { supabaseClient } from '../service/supabaseClient'; // NEW: Supabase client import edildi
-
+import { fetchUser, userLogin, userLogout, userSignUp } from '../service/supabaseClient';
+import { showErrorToast } from '../Helper/ErrorHandler';
 
 type AuthContextType = {
 
     user: UserType | null;
     login: (email: string, password: string) => Promise<void>;
-    signup: (email: string, password: string, role: string) => Promise<void>; //  UPDATED: role parametresi eklendi
+    signup: (email: string, password: string) => Promise<void>;
     checkLoggedInUser: () => boolean;
     logout: () => void;
 };
@@ -23,8 +22,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     // Sayfa yüklendiğinde localStorage'dan isAuthenticated kontrol ediliyor
     useEffect(() => {
+
+       
         const authStatus = localStorage.getItem('isAuthenticated');
         if (authStatus === 'true') {
+        
             const userID=  JSON.parse(localStorage.getItem('user') || '{}').id;
             fetchUser(userID).then((fetchedUser) => {
                 const userData: UserType = {
@@ -49,49 +51,38 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
     }, []); // Bu useEffect sadece component mount edildiğinde çalışacak
 
-    const signup = async (email: string, password: string, role: string) => { // ✅ UPDATED
+    const signup = async (email: string, password: string) => {
         try {
-            const { data, error } = await supabaseClient.auth.signUp({
-                email,
-                password,
-                options: {
-                    data: { role } //  NEW: Rolü metadata'ya kaydet
-                }
-            });
+            const data = await userSignUp(email, password);
 
-            if (error) throw error;
+            // auth durumunu localStorage'a kaydet
+            localStorage.setItem('isAuthenticated', 'true');
+            localStorage.setItem('user', JSON.stringify(data)); // Kullanıcı bilgilerini localStorage'a kaydet
 
-            // Kullanıcı bilgisi döndü mü?
-            if (!data.user) throw new Error("Kullanıcı oluşturulamadı.");
+            navigate('/'); // Başarıyla giriş yaptıktan sonra yönlendir
 
-            // Kullanıcıyı localStorage'a kaydet
-            localStorage.setItem('isAuthenticated', 'true'); //  NEW
-            localStorage.setItem('user', JSON.stringify(data.user)); //  NEW
-
-            navigate('/'); //  NEW: Başarılı kayıt sonrası yönlendirme
         } catch (error) {
-            console.error('Kayıt başarısız:', error);
-            setUser(null); //  NEW: Başarısızlıkta user'ı temizle
+            showErrorToast(error);
+            showErrorToast('Kayıt işlemi başarısız oldu. Lütfen tekrar deneyin.');
+            setUser(null);
         }
     };
 
     const checkLoggedInUser =  () => {
         const authStatus = localStorage.getItem('isAuthenticated');
         if (authStatus === 'true') {
-            // Kullanıcı giriş yapmış
+           
             return true;
         } else {
-            // Kullanıcı giriş yapmamış
+           
             return false;
         }
     }
 
     const login = async (email: string, password: string) => {
         try {
-            const { user, session } = await userLogin(email, password);
-            if (!user) {
-                throw new Error("Kullanıcı bilgisi alınamadı.");
-            }
+            const { user } = await userLogin(email, password);
+          
 
             const fetchedUser = await fetchUser(user.id);
             const userData: UserType = {
@@ -111,20 +102,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             navigate('/'); // Başarıyla giriş yaptıktan sonra yönlendir
 
         } catch (error) {
-            console.error('Giriş başarısız:', error);
+            showErrorToast(error);
             
             setUser(null);
         }
     };
 
-    const logout = () => {
+    const logout = async () => {
       
         setUser(null);
 
-        // auth bilgisini localStorage'dan temizle
+       
         localStorage.removeItem('isAuthenticated');
 
-        navigate('/login'); // Çıkış yapıldığında login sayfasına yönlendir
+        navigate('/login'); 
+        await userLogout();
+        localStorage.removeItem('user'); 
     };
 
     return (

@@ -13,6 +13,7 @@ import {
 import SummarizeIcon from "@mui/icons-material/Summarize";
 import GavelIcon from "@mui/icons-material/Gavel";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
+import RuleFolderIcon from '@mui/icons-material/RuleFolder';
 
 const features = [
   {
@@ -20,6 +21,12 @@ const features = [
     description: "Uzun belgeleri birkaç saniyede özetle.",
     icon: <SummarizeIcon fontSize="large" />,
     path: "/summarize",
+  },
+   {
+    title: "Requested Case Page",
+    description: "Bekleyen istekleri görüntüle.",
+    icon: <RuleFolderIcon fontSize="large" />,
+    path: "/client-request-page",
   },
   {
     title: "Courtroom",
@@ -32,6 +39,12 @@ const features = [
     description: "Belgelerden akıllı sorular sor, cevapları al.",
     icon: <QuestionAnswerIcon fontSize="large" />,
     path: "/qa",
+  },
+  {
+    title: "TinyCats",
+    description: "Kedileri seviyorum.",
+    icon: <QuestionAnswerIcon fontSize="large" />,
+    path: "/legalcats",
   },
 ];
 
