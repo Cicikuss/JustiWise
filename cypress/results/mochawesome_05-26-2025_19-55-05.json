@@ -1,0 +1,181 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 4,
+    "passes": 1,
+    "pending": 0,
+    "failures": 3,
+    "start": "2025-05-26T16:54:45.169Z",
+    "end": "2025-05-26T16:55:05.730Z",
+    "duration": 20561,
+    "testsRegistered": 4,
+    "passPercent": 25,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "b79c5717-2cdd-43e3-bfc4-98c3e42a9a35",
+      "title": "",
+      "fullFile": "cypress\\e2e\\aichat.cy.ts",
+      "file": "cypress\\e2e\\aichat.cy.ts",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "bfb0792f-0e69-4ba0-889e-23d3bbfcd0ad",
+          "title": "JustiWise Chat",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Should load the chat interface with welcome message",
+              "fullTitle": "JustiWise Chat Should load the chat interface with welcome message",
+              "timedOut": null,
+              "duration": 8246,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.contains('JustiWise Chat');\ncy.contains('Merhaba! Ben JustiWise asistanıyım');",
+              "err": {},
+              "uuid": "bd36fd62-b76a-4cbb-a286-3d37a0975d73",
+              "parentUUID": "bfb0792f-0e69-4ba0-889e-23d3bbfcd0ad",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Should allow user to type and send a message",
+              "fullTitle": "JustiWise Chat Should allow user to type and send a message",
+              "timedOut": null,
+              "duration": 1534,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "var userMessage = 'Merhaba AI!';\ncy.get('textarea').type(userMessage);\ncy.get('button').contains('Gönder').click(); // Eğer \"Gönder\" yerine sadece ikon varsa alternatif aşağıda\ncy.contains(userMessage);",
+              "err": {
+                "message": "CypressError: `cy.type()` can only be called on a single element. Your subject contained 2 elements.\n\nhttps://on.cypress.io/type",
+                "estack": "CypressError: `cy.type()` can only be called on a single element. Your subject contained 2 elements.\n\nhttps://on.cypress.io/type\n    at Context.type (http://localhost:3000/__cypress/runner/cypress_runner.js:116379:68)\n    at wrapped (http://localhost:3000/__cypress/runner/cypress_runner.js:141133:19)\nFrom Your Spec Code:\n    at Object.proxyGetter [as get] (http://localhost:3000/__cypress/runner/cypress_runner.js:79924:22)\n    at exists (http://localhost:3000/__cypress/runner/cypress_runner.js:145988:26)\n    at elExists (http://localhost:3000/__cypress/runner/cypress_runner.js:146003:10)\n    at ensureExistence (http://localhost:3000/__cypress/runner/cypress_runner.js:146184:22)\n    at onFailFn (http://localhost:3000/__cypress/runner/cypress_runner.js:146213:53)",
+                "diff": null
+              },
+              "uuid": "d513d13e-50a7-4af0-b9f5-cdbf863b847d",
+              "parentUUID": "bfb0792f-0e69-4ba0-889e-23d3bbfcd0ad",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Should allow file to be attached and previewed",
+              "fullTitle": "JustiWise Chat Should allow file to be attached and previewed",
+              "timedOut": null,
+              "duration": 5341,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "var fileName = 'example.txt';\ncy.get('input[type=\"file\"]').selectFile({\n    contents: Cypress.Buffer.from('Bu test dosyasıdır'),\n    fileName: fileName,\n    mimeType: 'text/plain',\n    lastModified: Date.now(),\n});\ncy.contains(fileName);",
+              "err": {
+                "message": "CypressError: Timed out retrying after 4000ms: `cy.selectFile()` failed because this element is not visible:\n\n`<input hidden=\"\" type=\"file\">`\n\nThis element `<input>` is not visible because it has CSS property: `display: none`\n\nFix this problem, or use `{force: true}` to disable error checking.\n\nhttps://on.cypress.io/element-cannot-be-interacted-with",
+                "estack": "CypressError: Timed out retrying after 4000ms: `cy.selectFile()` failed because this element is not visible:\n\n`<input hidden=\"\" type=\"file\">`\n\nThis element `<input>` is not visible because it has CSS property: `display: none`\n\nFix this problem, or use `{force: true}` to disable error checking.\n\nhttps://on.cypress.io/element-cannot-be-interacted-with\n    at runVisibilityCheck (http://localhost:3000/__cypress/runner/cypress_runner.js:147979:58)\n    at Object.isStrictlyVisible (http://localhost:3000/__cypress/runner/cypress_runner.js:147993:10)\n    at runAllChecks (http://localhost:3000/__cypress/runner/cypress_runner.js:114370:26)\n    at retryActionability (http://localhost:3000/__cypress/runner/cypress_runner.js:114438:16)\n    at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise.attempt.Promise.try (http://localhost:3000/__cypress/runner/cypress_runner.js:4285:29)\n    at whenStable (http://localhost:3000/__cypress/runner/cypress_runner.js:146806:68)\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:146747:14)\n    at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise._settlePromiseFromHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:1489:31)\n    at Promise._settlePromise (http://localhost:3000/__cypress/runner/cypress_runner.js:1546:18)\n    at Promise._settlePromise0 (http://localhost:3000/__cypress/runner/cypress_runner.js:1591:10)\n    at Promise._settlePromises (http://localhost:3000/__cypress/runner/cypress_runner.js:1671:18)\n    at Promise._fulfill (http://localhost:3000/__cypress/runner/cypress_runner.js:1615:18)\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:5420:46)\nFrom Your Spec Code:\n    at Object.proxyGetter [as get] (http://localhost:3000/__cypress/runner/cypress_runner.js:79924:22)\n    at exists (http://localhost:3000/__cypress/runner/cypress_runner.js:145988:26)\n    at elExists (http://localhost:3000/__cypress/runner/cypress_runner.js:146003:10)\n    at ensureExistence (http://localhost:3000/__cypress/runner/cypress_runner.js:146184:22)\n    at onFailFn (http://localhost:3000/__cypress/runner/cypress_runner.js:146213:53)",
+                "diff": null
+              },
+              "uuid": "b3195190-fc8e-49ff-a1ea-e7309e2abee3",
+              "parentUUID": "bfb0792f-0e69-4ba0-889e-23d3bbfcd0ad",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Should send message with attached file and show AI response placeholder",
+              "fullTitle": "JustiWise Chat Should send message with attached file and show AI response placeholder",
+              "timedOut": null,
+              "duration": 5317,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "var message = 'Lütfen bu dosyayı analiz et';\ncy.get('input[type=\"file\"]').selectFile({\n    contents: Cypress.Buffer.from('Dosya içeriği'),\n    fileName: 'dosya.txt',\n    mimeType: 'text/plain',\n});\ncy.get('textarea').type(message);\ncy.get('button').last().click(); // send button (icon)\n// Kullanıcı mesajları ve dosya görünüyor mu?\ncy.contains('dosya.txt');\ncy.contains(message);\n// Cevap yükleniyor simgesi\ncy.get('[role=\"progressbar\"]').should('exist');",
+              "err": {
+                "message": "CypressError: Timed out retrying after 4000ms: `cy.selectFile()` failed because this element is not visible:\n\n`<input hidden=\"\" type=\"file\">`\n\nThis element `<input>` is not visible because it has CSS property: `display: none`\n\nFix this problem, or use `{force: true}` to disable error checking.\n\nhttps://on.cypress.io/element-cannot-be-interacted-with",
+                "estack": "CypressError: Timed out retrying after 4000ms: `cy.selectFile()` failed because this element is not visible:\n\n`<input hidden=\"\" type=\"file\">`\n\nThis element `<input>` is not visible because it has CSS property: `display: none`\n\nFix this problem, or use `{force: true}` to disable error checking.\n\nhttps://on.cypress.io/element-cannot-be-interacted-with\n    at runVisibilityCheck (http://localhost:3000/__cypress/runner/cypress_runner.js:147979:58)\n    at Object.isStrictlyVisible (http://localhost:3000/__cypress/runner/cypress_runner.js:147993:10)\n    at runAllChecks (http://localhost:3000/__cypress/runner/cypress_runner.js:114370:26)\n    at retryActionability (http://localhost:3000/__cypress/runner/cypress_runner.js:114438:16)\n    at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise.attempt.Promise.try (http://localhost:3000/__cypress/runner/cypress_runner.js:4285:29)\n    at whenStable (http://localhost:3000/__cypress/runner/cypress_runner.js:146806:68)\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:146747:14)\n    at tryCatcher (http://localhost:3000/__cypress/runner/cypress_runner.js:1777:23)\n    at Promise._settlePromiseFromHandler (http://localhost:3000/__cypress/runner/cypress_runner.js:1489:31)\n    at Promise._settlePromise (http://localhost:3000/__cypress/runner/cypress_runner.js:1546:18)\n    at Promise._settlePromise0 (http://localhost:3000/__cypress/runner/cypress_runner.js:1591:10)\n    at Promise._settlePromises (http://localhost:3000/__cypress/runner/cypress_runner.js:1671:18)\n    at Promise._fulfill (http://localhost:3000/__cypress/runner/cypress_runner.js:1615:18)\n    at <unknown> (http://localhost:3000/__cypress/runner/cypress_runner.js:5420:46)\nFrom Your Spec Code:\n    at Object.proxyGetter [as get] (http://localhost:3000/__cypress/runner/cypress_runner.js:79924:22)\n    at exists (http://localhost:3000/__cypress/runner/cypress_runner.js:145988:26)\n    at elExists (http://localhost:3000/__cypress/runner/cypress_runner.js:146003:10)\n    at ensureExistence (http://localhost:3000/__cypress/runner/cypress_runner.js:146184:22)\n    at onFailFn (http://localhost:3000/__cypress/runner/cypress_runner.js:146213:53)",
+                "diff": null
+              },
+              "uuid": "bb93fdf0-faff-4a61-9051-da1c2761ae2e",
+              "parentUUID": "bfb0792f-0e69-4ba0-889e-23d3bbfcd0ad",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "bd36fd62-b76a-4cbb-a286-3d37a0975d73"
+          ],
+          "failures": [
+            "d513d13e-50a7-4af0-b9f5-cdbf863b847d",
+            "b3195190-fc8e-49ff-a1ea-e7309e2abee3",
+            "bb93fdf0-faff-4a61-9051-da1c2761ae2e"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 20438,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.2.0"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.3"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "cypress/results",
+        "overwrite": false,
+        "html": true,
+        "json": true,
+        "timestamp": "mm-dd-yyyy_HH-MM-ss",
+        "charts": true,
+        "reportPageTitle": "Cypress Test Raporu - JustiWise",
+        "embeddedScreenshots": true,
+        "inlineAssets": true,
+        "autoOpen": false
+      },
+      "version": "6.2.0"
+    }
+  }
+}
