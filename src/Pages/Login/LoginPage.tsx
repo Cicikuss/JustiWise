@@ -19,6 +19,8 @@ import ColorModeSelect from '../../shared-theme/ColorModeSelect';
 import { useNavigate, useLocation } from 'react-router-dom';
 //import { useAuth } from '../../Context/AuthContext';
 import { supabaseClient } from '../../service/supabaseClient';
+import { useAuth } from '../../Context/AuthContext';
+import { showErrorToast } from '../../Helper/ErrorHandler';
 
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -70,9 +72,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [open, setOpen] = React.useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
-  // const { login } = useAuth();
+  const { login } = useAuth();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -89,22 +89,12 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
     const data = new FormData(event.currentTarget);
     const email = data.get('email') as string;
     const password = data.get('password') as string;
+
   
     try {
-      const { data: loginData, error } = await supabaseClient.auth.signInWithPassword({
-        email,
-        password,
-      });
-  
-      if (error) {
-        alert(`Giriş başarısız: ${error.message}`);
-      } else {
-        alert('Giriş başarılı!');
-        navigate('/', { replace: true });
-      }
+     await login(email, password);
     } catch (err) {
-      alert('Bir hata oluştu!');
-      console.error(err);
+      showErrorToast(err);
     }
   };  
 
@@ -247,7 +237,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
               type="submit"
               fullWidth
               variant="contained"
-              //onClick={validateInputs}
+              onClick={validateInputs}
               sx={{
                 mt: 2,
                 py: 1.5,
