@@ -1,12 +1,12 @@
-import * as React from 'react';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import type { ThemeOptions } from '@mui/material/styles';
-import { inputsCustomizations } from './customizations/inputs';
-import { dataDisplayCustomizations } from './customizations/dataDisplay';
-import { feedbackCustomizations } from './customizations/feedback';
-import { navigationCustomizations } from './customizations/navigation';
-import { surfacesCustomizations } from './customizations/surfaces';
-import { colorSchemes, typography, shadows, shape } from './themePrimitives';
+import * as React from "react";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import type { ThemeOptions } from "@mui/material/styles";
+import { inputsCustomizations } from "./customizations/inputs";
+import { dataDisplayCustomizations } from "./customizations/dataDisplay";
+import { feedbackCustomizations } from "./customizations/feedback";
+import { navigationCustomizations } from "./customizations/navigation";
+import { surfacesCustomizations } from "./customizations/surfaces";
+import { colorSchemes, typography, shadows, shape } from "./themePrimitives";
 
 interface AppThemeProps {
   children: React.ReactNode;
@@ -14,7 +14,7 @@ interface AppThemeProps {
    * This is for the docs site. You can ignore it or remove it.
    */
   disableCustomTheme?: boolean;
-  themeComponents?: ThemeOptions['components'];
+  themeComponents?: ThemeOptions["components"];
 }
 
 export default function AppTheme(props: AppThemeProps) {
@@ -25,8 +25,8 @@ export default function AppTheme(props: AppThemeProps) {
       : createTheme({
           // For more details about CSS variables configuration, see https://mui.com/material-ui/customization/css-theme-variables/configuration/
           cssVariables: {
-            colorSchemeSelector: 'data-mui-color-scheme',
-            cssVarPrefix: 'template',
+            colorSchemeSelector: "data-mui-color-scheme",
+            cssVarPrefix: "template",
           },
           colorSchemes, // Recently added in v6 for building light & dark mode app, see https://mui.com/material-ui/customization/palette/#color-schemes
           typography,
@@ -39,6 +39,22 @@ export default function AppTheme(props: AppThemeProps) {
             ...navigationCustomizations,
             ...surfacesCustomizations,
             ...themeComponents,
+            MuiMenu: {
+              styleOverrides: {
+                paper: ({ theme }) => ({
+                  backgroundColor:
+                    theme.palette.mode === "dark" ? "#1e1e1e" : "#fff",
+                  color: theme.palette.mode === "dark" ? "#fff" : "#000",
+                }),
+              },
+            },
+            MuiMenuItem: {
+              styleOverrides: {
+                root: ({ theme }) => ({
+                  color: theme.palette.mode === "dark" ? "#fff" : "#000",
+                }),
+              },
+            },
           },
         });
   }, [disableCustomTheme, themeComponents]);
