@@ -16,6 +16,7 @@ import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import RuleFolderIcon from "@mui/icons-material/RuleFolder";
 import QuizIcon from "@mui/icons-material/Quiz";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
+import EditIcon from '@mui/icons-material/Edit';
 
 const features = [
   {
@@ -54,6 +55,12 @@ const features = [
     description: "Hukuk bilginizi test edin.",
     icon: <QuizIcon fontSize="large" />,
     path: "/quiz",
+  },
+   {
+    title: "UDF Editor",
+    description: "UDF dosyalarını düzenle.",
+    icon: <EditIcon fontSize="large" />,
+    path: "/udf-editor-page",
   },
 ];
 

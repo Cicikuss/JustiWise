@@ -71,7 +71,7 @@ const QuizPage = () => {
     );
   }
 
-  // test bitti
+
   if (!currentQuiz) {
     return (
       <Box
@@ -85,7 +85,7 @@ const QuizPage = () => {
     );
   }
 
-  // Aktif quiz kartı
+  
   return (
     <Box
       display="flex"
