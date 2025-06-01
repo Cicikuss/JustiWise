@@ -13,7 +13,9 @@ import {
 import SummarizeIcon from "@mui/icons-material/Summarize";
 import GavelIcon from "@mui/icons-material/Gavel";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
-import RuleFolderIcon from '@mui/icons-material/RuleFolder';
+import RuleFolderIcon from "@mui/icons-material/RuleFolder";
+import QuizIcon from "@mui/icons-material/Quiz";
+import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 
 const features = [
   {
@@ -22,7 +24,7 @@ const features = [
     icon: <SummarizeIcon fontSize="large" />,
     path: "/summarize",
   },
-   {
+  {
     title: "Requested Case Page",
     description: "Bekleyen istekleri görüntüle.",
     icon: <RuleFolderIcon fontSize="large" />,
@@ -43,8 +45,15 @@ const features = [
   {
     title: "TinyCats",
     description: "Kedileri seviyorum.",
-    icon: <QuestionAnswerIcon fontSize="large" />,
+    icon: <AutoStoriesIcon fontSize="large" />,
+
     path: "/legalcats",
+  },
+  {
+    title: "Quiz",
+    description: "Hukuk bilginizi test edin.",
+    icon: <QuizIcon fontSize="large" />,
+    path: "/quiz",
   },
 ];
 
@@ -92,7 +101,11 @@ export default function HomePage() {
                 <Typography variant="h5" component="div">
                   {feature.title}
                 </Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ mt: 1 }}
+                >
                   {feature.description}
                 </Typography>
               </CardContent>
