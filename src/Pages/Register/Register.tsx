@@ -11,7 +11,7 @@ import Stack from "@mui/material/Stack";
 import MuiCard from "@mui/material/Card";
 import { styled } from "@mui/material/styles";
 import AppTheme from "../../shared-theme/AppTheme";
-import { SitemarkIcon } from "../../Components/CustomIcon/CustomIcons";
+//import { SitemarkIcon } from "../../Components/CustomIcon/CustomIcons";
 import ColorModeSelect from "../../shared-theme/ColorModeSelect";
 import { supabaseClient } from "../../service/supabaseClient";
 import { useAuth } from "../../Context/AuthContext";
@@ -133,11 +133,56 @@ export default function Register(props: { disableCustomTheme?: boolean }) {
           sx={{ position: "fixed", top: "1rem", right: "1rem" }}
         />
         <Card variant="outlined">
-          <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
-            <Box sx={{ width: 48, height: 48 }}>
-              <SitemarkIcon />
+          <Box sx={{ display: "flex", justifyContent: "center", mb: 0.5 }}>
+            <Box display="flex" flexDirection="column" alignItems="center">
+              <img
+                src="/jw.png"
+                alt="JustiWise Logo"
+                style={{
+                  width: 110,
+                  height: 110,
+                  objectFit: "contain",
+                  marginBottom: 8,
+                  transition: "transform 0.3s ease-in-out",
+                }}
+                onMouseOver={(e) =>
+                  (e.currentTarget.style.transform = "scale(1.1)")
+                }
+                onMouseOut={(e) =>
+                  (e.currentTarget.style.transform = "scale(1.0)")
+                }
+              />
+              <Typography
+                variant="h5"
+                fontWeight={700}
+                component="a"
+                href="/"
+                sx={{
+                  fontSize: "1.5rem",
+                  textDecoration: "none",
+                  textAlign: "center",
+                  position: "relative",
+                  transition: "all 0.3s ease-in-out",
+                  color: (theme) =>
+                    theme.palette.mode === "dark" ? "#fff" : "#000",
+                  textShadow:
+                    "0 0 8px rgba(0, 255, 255, 0.5), 0 0 12px rgba(0, 255, 255, 0.4), 0 0 20px rgba(0, 255, 255, 0.3)",
+                  animation: "waveContinuous 2.5s ease-in-out infinite",
+
+                  "@keyframes waveContinuous": {
+                    "0%": { transform: "scale(1) translateY(0px)" },
+                    "25%": { transform: "scale(1.05) translateY(-1px)" },
+                    "50%": { transform: "scale(1.08) translateY(-2px)" },
+                    "75%": { transform: "scale(1.05) translateY(-1px)" },
+                    "100%": { transform: "scale(1) translateY(0px)" },
+                  },
+                }}
+              >
+                JustiWise
+              </Typography>
             </Box>
           </Box>
+
           <Typography
             component="h1"
             variant="h4"
