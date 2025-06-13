@@ -5,6 +5,10 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import './shared-theme/i18n';
+
+
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

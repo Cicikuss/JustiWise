@@ -33,6 +33,8 @@ import { useAuth } from "../../Context/AuthContext";
 import { Notification } from "../../Models/Notification";
 // import { get } from "http"; // Not used
 import { getNotifications } from "../../service/supabaseClient";
+import SettingsModal from '../SettingsModal/SettingsModal';
+import { useTranslation } from 'react-i18next';
 
 export const Navbar = () => {
   const theme = useTheme();
@@ -40,6 +42,10 @@ export const Navbar = () => {
   const { toggleTheme } = useThemeContext();
   const { searchQuery, setSearchQuery } = useSearch();
   const { user, logout } = useAuth();
+  const { t } = useTranslation(); // çeviri fonksiyonu
+
+  // modal için state
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [notificationsAnchor, setNotificationsAnchor] =
@@ -106,7 +112,10 @@ export const Navbar = () => {
   const openNotificationsMenu = Boolean(notificationsAnchor);
 
   return (
-    <AppBar
+    <>
+      {/* appBar'ın dışına modal bileşenini koyduk */}
+      <SettingsModal open={settingsOpen} onClose={() => setSettingsOpen(false)} />
+      <AppBar
       position="sticky"
       elevation={0}
       sx={{
@@ -174,7 +183,7 @@ export const Navbar = () => {
           >
             <TextField
               fullWidth
-              placeholder="Site genelinde ara..."
+              placeholder={t("searchPlaceholder")}
               value={searchQuery}
               onChange={handleSearchChange}
               InputProps={{
@@ -284,11 +293,12 @@ export const Navbar = () => {
                 variant="body2"
                 sx={{ ml: 1, display: { xs: "none", sm: "block" } }}
               >
-                {user?.username || "User"}
+                {user?.username || t("user")}
               </Typography>
             </Button>
           </Stack>
-
+          
+          {/* ayarlar modalını tetikler */}
           <Menu
             id={profileMenuId}
             anchorEl={anchorEl}
@@ -331,7 +341,7 @@ export const Navbar = () => {
               }}
             >
               <PersonIcon sx={{ mr: 1 }} />
-              Profil
+              {t("profile")}
             </MenuItem>
             <MenuItem
               onClick={() => {
@@ -346,13 +356,14 @@ export const Navbar = () => {
               }}
             >
               <FolderIcon sx={{ mr: 1 }} />
-              Davalarım
+              {t("myCases")}
             </MenuItem>
             <MenuItem
               onClick={() => {
                 // TODO: Implement navigation or action for Settings
                 handleMenuClose();
                 // navigate('/settings');
+                setSettingsOpen(true); // modal aç
               }}
               sx={{
                 color: theme.palette.text.primary,
@@ -362,7 +373,7 @@ export const Navbar = () => {
               }}
             >
               <SettingsIcon sx={{ mr: 1 }} />
-              Ayarlar
+              {t("settings")}
             </MenuItem>
             <MenuItem
               onClick={handleLogout}
@@ -378,7 +389,7 @@ export const Navbar = () => {
               }}
             >
               <LogoutIcon sx={{ mr: 1 }} />
-              Oturumu kapat
+               {t("logout")}
             </MenuItem>
           </Menu>
 
@@ -417,7 +428,7 @@ export const Navbar = () => {
                 disabled
                 sx={{ color: theme.palette.text.secondary, cursor: "default" }}
               >
-                <Typography variant="body2">Yeni bildirim yok</Typography>
+                <Typography variant="body2">{t("noNewNotifications")}</Typography>
               </MenuItem>
             ) : (
               notifications.map((notif) => (
@@ -491,5 +502,6 @@ export const Navbar = () => {
         </Toolbar>
       </Container>
     </AppBar>
+    </>
   );
 };
