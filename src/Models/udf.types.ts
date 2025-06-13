@@ -79,8 +79,10 @@ export interface UdfParagraphElement {
   image?: UdfImageProps | UdfImageProps[]; // Inline images within a paragraph
 }
 
-export interface UdfCellElement {
+export interface UdfCellElement extends UdfStyleAttribute { // If cell can inherit/override styles
   "@_Alignment"?: "0" | "1" | "2" | "3" | 0 | 1 | 2 | 3;
+  "@_vAlign"?: "0" | "1" | "2" | 0 | 1 | 2; // Vertical Alignment (0:Top, 1:Middle, 2:Bottom)
+  // Other potential cell-specific attributes like @_colspan, @_rowspan, @_bgColor etc.
   paragraph?: UdfParagraphElement | UdfParagraphElement[];
   image?: UdfImageProps | UdfImageProps[]; // Block images directly in a cell
   table?: UdfTableElement | UdfTableElement[];
