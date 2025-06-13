@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useRef, FC, useEffect } from "react";
+import React, { useState, useMemo, useCallback, useRef, FC, useEffect } from "react"; // useEffect eklendi
 import JSZip from "jszip";
 import { useTheme } from "@mui/material/styles";
 import {
@@ -11,29 +11,28 @@ import {
 } from "@mui/material";
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import type { Editor as CKEditorCore } from '@ckeditor/ckeditor5-core'; // CKEditorCore olarak yeniden adlandırıldı
+
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 import DownloadIcon from '@mui/icons-material/Download';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import { DEFAULT_UDF_TEMPLATE_CONTENT } from "../../Models/udf.constants";
 import { UdfTemplate } from "../../Models/udf.types";
+// Import parseUdfFileContent and buildUdfXmlForDownload from util file
 import { parseUdfFileContent, buildUdfXmlForDownload } from "../../Helper/udf.util";
 
-
-
-// Add these types at the top of the component
+// Type for the editor instance
 type EditorInstance = {
   getData: () => string;
-  // Add other methods you're using
+  setData: (data: string) => void;
 };
 
 const UdfEditor: FC = () => {
   const [udfXmlData, setUdfXmlData] = useState<UdfTemplate | null>(null);
-  // mainCdata is mostly for reference now, as parsing directly yields HTML
-  // const [mainCdata, setMainCdata] = useState<string>(''); 
   const [editorData, setEditorData] = useState<string>('');
   const [fileName, setFileName] = useState<string>("yeni_belge.udf");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  // Change the ref type to be more generic
   const editorInstanceRef = useRef<EditorInstance | null>(null);
 
   const theme = useTheme();
@@ -50,54 +49,66 @@ const UdfEditor: FC = () => {
   }), [theme, isDark]);
 
   const handleNewDocument = useCallback(() => {
-    const newDocParsed = JSON.parse(JSON.stringify(DEFAULT_UDF_TEMPLATE_CONTENT)); // Deep copy
+    const newDocParsed = JSON.parse(JSON.stringify(DEFAULT_UDF_TEMPLATE_CONTENT));
     setUdfXmlData(newDocParsed.template);
-    // setMainCdata(newDocParsed.template.content['#cdata'] || '');
-    setEditorData('<p> </p>'); // Start with an empty paragraph with non-breaking space
+    setEditorData('<p> </p>');
     setFileName("yeni_belge.udf");
     setErrorMessage(null);
+    if (editorInstanceRef.current) {
+        editorInstanceRef.current.setData('<p> </p>');
+    }
   }, []);
+
+  // Bileşen ilk yüklendiğinde yeni bir belge başlat
+  useEffect(() => {
+    handleNewDocument();
+  }, [handleNewDocument]);
+
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     setErrorMessage(null);
-    setEditorData(''); // Clear editor while processing
+    setEditorData('');
     setUdfXmlData(null);
-    // setMainCdata('');
 
     if (!file.name.toLowerCase().endsWith('.udf')) {
       setErrorMessage("Lütfen bir .udf dosyası seçin.");
+      if (e.target) e.target.value = ''; // Reset file input
       return;
     }
     setFileName(file.name);
 
     try {
+      console.log("Dosya yükleme başlıyor...");
       const zip = await JSZip.loadAsync(file);
+      console.log("JSZip.loadAsync başarılı.");
       const xmlFile = zip.file("content.xml");
+      console.log("zip.file('content.xml') alındı:", xmlFile ? "Bulundu" : "Bulunamadı");
 
       if (!xmlFile) {
         throw new Error("UDF dosyasında 'content.xml' bulunamadı.");
       }
       const xmlString = await xmlFile.async("text");
+      console.log("xmlFile.async('text') başarılı, XML uzunluğu:", xmlString.length);
       
-      const { html, udfTemplate: parsedTemplate } = parseUdfFileContent(xmlString);
+      // Use imported parseUdfFileContent function
+      const { html, udfTemplate, mainCdata } = parseUdfFileContent(xmlString);
+      console.log("parseUdfFileContent başarılı.");
       
-      setUdfXmlData(parsedTemplate);
-      // setMainCdata(cdata); // cdata is available if needed for other purposes
+      setUdfXmlData(udfTemplate);
       setEditorData(html);
+      if (editorInstanceRef.current) {
+        editorInstanceRef.current.setData(html);
+      }
 
     } catch (error: any) {
-      console.error("UDF dosyası okunurken hata:", error);
+      console.error("handleFileUpload içinde hata:", error.message, error.stack, error); // Daha fazla detay
       setErrorMessage(`UDF dosyası okunurken bir hata oluştu: ${error.message}`);
-      setUdfXmlData(null);
-      // setMainCdata('');
-      setEditorData('');
     } finally {
-        // Reset file input to allow re-uploading the same file
         if (e.target) {
-            e.target.value = '';
+            e.target.value = ''; // Allow re-uploading the same file
         }
     }
   };
@@ -116,6 +127,7 @@ const UdfEditor: FC = () => {
     const currentEditorHtml = editorInstanceRef.current.getData();
 
     try {
+      // Use imported buildUdfXmlForDownload function
       const contentXmlString = buildUdfXmlForDownload(udfXmlData, currentEditorHtml);
 
       const zip = new JSZip();
@@ -140,12 +152,6 @@ const UdfEditor: FC = () => {
       setErrorMessage(`UDF dosyası oluşturulurken bir hata oluştu: ${error.message}`);
     }
   };
-
-  // Update the useState to useEffect for initialization
-  useEffect(() => {
-    handleNewDocument();
-  }, [handleNewDocument]); // Add proper dependency
-
 
   return (
     <Box sx={{
@@ -182,7 +188,7 @@ const UdfEditor: FC = () => {
                 backgroundColor: theme.palette.success.dark,
               },
             }}
-            disabled={!udfXmlData} // Disable if no UDF data is loaded
+            disabled={!udfXmlData}
           >
             UDF İndir
           </Button>
@@ -212,7 +218,7 @@ const UdfEditor: FC = () => {
             color: themeColors.text,
             minHeight: { xs: 'calc(100vh - 200px)', sm: 'calc(100vh - 180px)'},
             boxSizing: 'border-box',
-            padding: '20px !important', // Override default CKEditor padding
+            padding: '20px !important',
             lineHeight: '1.7',
           },
           '& .ck.ck-toolbar': {
@@ -239,17 +245,17 @@ const UdfEditor: FC = () => {
           }
         }}>
         <CKEditor
-            // @ts-expect-error: ClassicEditor type is compatible at runtime, this is a common workaround for CJS module style of CKEditor builds
-            editor={ClassicEditor}
+            editor={ClassicEditor as any} // Use type assertion as a workaround for the TypeScript error
             data={editorData}
             onReady={(editor) => {
-                editorInstanceRef.current = editor ;
+                // Properly store the editor instance with the correct type
+                editorInstanceRef.current = {
+                  getData: () => (editor as unknown as CKEditorCore).getData(),
+                  setData: (data: string) => (editor as unknown as CKEditorCore).setData(data)
+                };
             }}
-            onChange={(event: any, editor: any) => {
-                // const data = editor.getData();
-                // console.log({ event, editor, data });
-                // You might want to update some state here if needed for real-time validation or other purposes,
-                // but for download, we get the latest data directly from editorInstanceRef.current.getData()
+            onChange={(event, editor) => {
+                // No need to setEditorData here as we're using the editor instance directly for download
             }}
             config={{
                 toolbar: {
@@ -258,10 +264,10 @@ const UdfEditor: FC = () => {
                         'heading', '|',
                         'fontFamily', 'fontSize', 'fontColor', 'fontBackgroundColor', '|',
                         'bold', 'italic', 'underline', 'strikethrough', '|',
-                        'alignment', '|', // handles text-align
+                        'alignment', '|',
                         'link', 'blockQuote', '|',
                         'bulletedList', 'numberedList', 'outdent', 'indent', '|',
-                        'imageUpload', 'insertTable', /*'mediaEmbed',*/ '|', // MediaEmbed might be too complex for UDF
+                        'imageUpload', 'insertTable', '|',
                         'removeFormat',
                     ],
                     shouldNotGroupWhenFull: true
@@ -288,7 +294,6 @@ const UdfEditor: FC = () => {
                         { model: 'heading3', view: 'h3', title: 'Heading 3', class: 'ck-heading_heading3' }
                     ]
                 },
-                // Add more configurations as needed
             }}
         />
       </Box>
