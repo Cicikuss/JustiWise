@@ -18,13 +18,7 @@ import GavelIcon from "@mui/icons-material/Gavel";
 const roles = ["davacı", "davalı", "savunma makamı", "iddia makamı"] as const;
 type Role = (typeof roles)[number];
 
-// API yanıtının tip tanımı
-interface SimulationResponse {
-  session_id: string;
-  history: string[];
-  next_speaker: string | null;
-  simulation_over: boolean;
-}
+
 
 export default function CourtroomPage(): JSX.Element {
   // State'ler
@@ -51,16 +45,12 @@ export default function CourtroomPage(): JSX.Element {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(`http://127.0.0.1:8000${endpoint}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-      if (!response.ok) {
-        const errData = await response.json();
-        throw new Error(errData.detail || 'API tarafında bir hata oluştu.');
+      const response = await apiCalltoSimulation(endpoint, body);
+      if (!response || (response as any).detail) {
+        const errMsg = (response && (response as any).detail) ? (response as any).detail : 'API tarafında bir hata oluştu.';
+        throw new Error(errMsg);
       }
-      return await response.json();
+      return response;
     } catch (err: any) {
       setError(err.message);
       return null;
