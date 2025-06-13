@@ -16,49 +16,51 @@ import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
 import RuleFolderIcon from "@mui/icons-material/RuleFolder";
 import QuizIcon from "@mui/icons-material/Quiz";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
-
-const features = [
-  {
-    title: "Summarize",
-    description: "Uzun belgeleri birkaç saniyede özetle.",
-    icon: <SummarizeIcon fontSize="large" />,
-    path: "/summarize",
-  },
-  {
-    title: "Requested Case Page",
-    description: "Bekleyen istekleri görüntüle.",
-    icon: <RuleFolderIcon fontSize="large" />,
-    path: "/client-request-page",
-  },
-  {
-    title: "Courtroom",
-    description: "Simülasyon mahkeme ortamına giriş yap.",
-    icon: <GavelIcon fontSize="large" />,
-    path: "/courtroom",
-  },
-  {
-    title: "Q&A",
-    description: "Belgelerden akıllı sorular sor, cevapları al.",
-    icon: <QuestionAnswerIcon fontSize="large" />,
-    path: "/qa",
-  },
-  {
-    title: "TinyCats",
-    description: "Kedileri seviyorum.",
-    icon: <AutoStoriesIcon fontSize="large" />,
-
-    path: "/legalcats",
-  },
-  {
-    title: "Quiz",
-    description: "Hukuk bilginizi test edin.",
-    icon: <QuizIcon fontSize="large" />,
-    path: "/quiz",
-  },
-];
+import { useTranslation } from "react-i18next";
 
 export default function HomePage() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  const features = [
+    {
+      title: t("features.summarize.title"),
+      description: t("features.summarize.description"),
+      icon: <SummarizeIcon fontSize="large" />,
+      path: "/summarize",
+    },
+    {
+      title: t("features.requestedCasePage.title"),
+      description: t("features.requestedCasePage.description"),
+      icon: <RuleFolderIcon fontSize="large" />,
+      path: "/client-request-page",
+    },
+    {
+      title: t("features.courtroom.title"),
+      description: t("features.courtroom.description"),
+      icon: <GavelIcon fontSize="large" />,
+      path: "/courtroom",
+    },
+    {
+      title: t("features.qna.title"),
+      description: t("features.qna.description"),
+      icon: <QuestionAnswerIcon fontSize="large" />,
+      path: "/qa",
+    },
+    {
+      title: t("features.tinyCats.title"),
+      description: t("features.tinyCats.description"),
+      icon: <AutoStoriesIcon fontSize="large" />,
+
+      path: "/legalcats",
+    },
+    {
+      title: t("features.quiz.title"),
+      description: t("features.quiz.description"),
+      icon: <QuizIcon fontSize="large" />,
+      path: "/quiz",
+    },
+  ];
 
   return (
     <Container maxWidth="lg" sx={{ mt: 8 }}>
@@ -68,7 +70,7 @@ export default function HomePage() {
         gutterBottom
         sx={{ fontWeight: "bold" }}
       >
-        👩‍⚖️ Legal Assistant AI Paneli
+        👩‍⚖️ {t("aiPanelTitle")}
       </Typography>
 
       <Typography
@@ -77,7 +79,7 @@ export default function HomePage() {
         color="text.secondary"
         sx={{ mb: 6 }}
       >
-        Belgeleri özetle, mahkeme simülasyonuna katıl veya akıllı sorular sor.
+        {t("aiPanelSubtitle")}
       </Typography>
 
       <Grid container spacing={4}>
@@ -115,7 +117,7 @@ export default function HomePage() {
                   size="medium"
                   onClick={() => navigate(feature.path)}
                 >
-                  Git
+                  {t("go")}
                 </Button>
               </CardActions>
             </Card>
