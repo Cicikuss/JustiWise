@@ -24,6 +24,7 @@ import { TinyCats } from "./Pages/TinyCats/TinyCats";
 import QuizPage from "./Pages/QuizPage/QuizPage";
 import UdfEditor from "./Pages/UdfEditorPage/UdfEditorPage";
 import DocumentGenerator from "./Pages/DocumentGenerator/DocumentGenerator";
+import SummarizerPage from "./Pages/Summarizer/Summarizer";
 
 function AppContent() {
   return (
@@ -46,6 +47,15 @@ function AppContent() {
             <ProtectedRoute>
               <Navbar />
               <MyCases />
+            </ProtectedRoute>
+          }
+        />
+         <Route
+          path="/summarizer"
+          element={
+            <ProtectedRoute>
+              <Navbar />
+              <SummarizerPage />
             </ProtectedRoute>
           }
         />

@@ -27,6 +27,12 @@ const features = [
     icon: <SummarizeIcon fontSize="large" />,
     path: "/summarize",
   },
+   {
+    title: "Summarize-v2",
+    description: "Uzun belgeleri birkaç saniyede özetle.",
+    icon: <SummarizeIcon fontSize="large" />,
+    path: "/summarizer",
+  },
   {
     title: "Requested Case Page",
     description: "Bekleyen istekleri görüntüle.",
