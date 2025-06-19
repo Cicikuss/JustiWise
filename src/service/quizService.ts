@@ -33,7 +33,7 @@ Sadece aşağıdaki formatta, açıklama yapmadan yanıt ver:
     const response = await result.response;
     const text = response.text();
 
-    // Eğer markdown formatı varsa (```json gibi), temizle
+  
     const cleanedText = text.replace(/```json|```/g, "").trim();
 
     console.log("Gemini'den gelen JSON:", cleanedText);
