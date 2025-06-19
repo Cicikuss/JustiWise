@@ -10,6 +10,7 @@ import {
   Button,
   Box,
 } from "@mui/material";
+import DescriptionIcon from '@mui/icons-material/Description';
 import SummarizeIcon from "@mui/icons-material/Summarize";
 import GavelIcon from "@mui/icons-material/Gavel";
 import QuestionAnswerIcon from "@mui/icons-material/QuestionAnswer";
@@ -17,6 +18,7 @@ import RuleFolderIcon from "@mui/icons-material/RuleFolder";
 import QuizIcon from "@mui/icons-material/Quiz";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import EditIcon from '@mui/icons-material/Edit';
+
 
 const features = [
   {
@@ -55,6 +57,12 @@ const features = [
     description: "Hukuk bilginizi test edin.",
     icon: <QuizIcon fontSize="large" />,
     path: "/quiz",
+  },
+  {
+    title: "Document Generator",
+    description: "Döküman oluşturma aracı.",
+    icon: <DescriptionIcon fontSize="large" />,
+    path: "/document-generator",
   },
    {
     title: "UDF Editor",
