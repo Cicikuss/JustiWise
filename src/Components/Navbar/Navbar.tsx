@@ -31,7 +31,7 @@ import { useThemeContext } from "../../Context/ThemeContext";
 import { useSearch } from "../../Context/SearchContext";
 import { useAuth } from "../../Context/AuthContext";
 import { Notification } from "../../Models/Notification";
-// import { get } from "http"; // Not used
+
 import { getNotifications } from "../../service/supabaseClient";
 
 export const Navbar = () => {

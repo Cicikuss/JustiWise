@@ -22,6 +22,8 @@ import ClientCaseRequestsPage from "./Pages/ClientCaseRequestPage/ClientCaseRequ
 import SingleCasePage from "./Pages/SingleCasePage/SingleCasePage";
 import { TinyCats } from "./Pages/TinyCats/TinyCats";
 import QuizPage from "./Pages/QuizPage/QuizPage";
+import UdfEditor from "./Pages/UdfEditorPage/UdfEditorPage";
+import DocumentGenerator from "./Pages/DocumentGenerator/DocumentGenerator";
 
 function AppContent() {
   return (
@@ -56,12 +58,31 @@ function AppContent() {
             </ProtectedRoute>
           }
         />
+         <Route
+          path="/udf-editor-page"
+          element={
+            <ProtectedRoute>
+              <Navbar />
+              <UdfEditor />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/qa"
           element={
             <ProtectedRoute>
               <Navbar />
               <AIChat />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/document-generator"
+          element={
+            <ProtectedRoute>
+              <Navbar />
+              <DocumentGenerator />
             </ProtectedRoute>
           }
         />
